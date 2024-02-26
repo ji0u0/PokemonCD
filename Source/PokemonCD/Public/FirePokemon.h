@@ -39,10 +39,17 @@ public:
 	class UParticleSystem* SkillParticle;
 
 	UPROPERTY(EditDefaultsOnly)
+	class UParticleSystemComponent* FireParticleComponent;
+
+	UPROPERTY(EditDefaultsOnly)
 	class AEnemy* Enemy;
 
-	FTimerHandle Timer;
-	
+	FTimerHandle SkillTimer;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float TimeToDestroy = 1.5;
+
 	void FindActor();
 	void SpawnParticle();
+	void DestroyParticle();
 };
