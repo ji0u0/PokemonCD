@@ -54,12 +54,12 @@ void ATrainer::ThrowingMonsterBall()
 	FTransform ThrowingTransfrom = ThrowingPosition->GetComponentTransform();
 	
 	 MonsterBall = GetWorld()->SpawnActor<AMonsterBall>(MonsterBallFactory, ThrowingTransfrom);
-	GetWorld()->GetTimerManager().SetTimer(MonsterBallTimer, this, &ATrainer::SpawnPokemon, 0.5f, false, 0.5f);
+	//GetWorld()->GetTimerManager().SetTimer(MonsterBallTimer, this, &ATrainer::SpawnPokemon, 0.5f, false, 0.5f);
 }
 
 void ATrainer::SpawnPokemon()
 {
-	GetWorld()->SpawnActor<AFirePokemon>(FirePokemon, MonsterBall->GetActorTransform());
+	//GetWorld()->SpawnActor<AFirePokemon>(FirePokemon, MonsterBall->GetActorTransform());
 	MonsterBall->Destroy();
 }
 
