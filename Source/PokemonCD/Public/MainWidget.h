@@ -25,10 +25,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UCanvasPanel* OpponentStatus;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+	class UVerticalBox* SkillBox;
+
 	// Status Widget
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UUserWidget> statusWidgetFactory;
 	
 	UPROPERTY(BlueprintReadOnly)
-	class UUserWidget* statusWidget;
+	class UStatusWidget* statusWidget;
+
+	// Horizontal Box
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UUserWidget> skillWidgetFactory;
+
+	UPROPERTY(BlueprintReadOnly)
+	class USkillWidget* skillWidget;
 };
