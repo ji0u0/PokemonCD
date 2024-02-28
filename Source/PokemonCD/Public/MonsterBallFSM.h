@@ -6,7 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "MonsterBallFSM.generated.h"
 
-UENUM(BlueprintType)
+//UENUM(BlueprintType)
 //enum class EMonsterBallState : uint8
 //{
 //	IDLE		UMETA(DisplayName = "IDLE")

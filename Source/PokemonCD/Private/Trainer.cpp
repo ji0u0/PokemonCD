@@ -5,6 +5,7 @@
 
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ATrainer::ATrainer()
@@ -54,12 +55,19 @@ void ATrainer::ThrowingMonsterBall()
 	FTransform ThrowingTransfrom = ThrowingPosition->GetComponentTransform();
 	
 	 MonsterBall = GetWorld()->SpawnActor<AMonsterBall>(MonsterBallFactory, ThrowingTransfrom);
-	//GetWorld()->GetTimerManager().SetTimer(MonsterBallTimer, this, &ATrainer::SpawnPokemon, 0.5f, false, 0.5f);
+
+	GetWorldTimerManager().SetTimer(MonsterBallTimer, this, &ATrainer::SpawnPokemon, SpawnDelayTime, false);
 }
 
 void ATrainer::SpawnPokemon()
 {
-	//GetWorld()->SpawnActor<AFirePokemon>(FirePokemon, MonsterBall->GetActorTransform());
+	UE_LOG(LogTemp, Log, TEXT("bye"));
+	GetWorldTimerManager().ClearTimer(MonsterBallTimer);
+
+	FTransform MonsterBallTransform = MonsterBall->GetActorTransform();
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SpawnParticle, MonsterBallTransform.GetLocation());
+	FirePokemon = GetWorld()->SpawnActor<AFirePokemon>(FirePokemonFactory, MonsterBallTransform);
+	FirePokemon->BoxComponent->SetSimulatePhysics(true);
 	MonsterBall->Destroy();
 }
 

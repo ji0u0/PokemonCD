@@ -36,7 +36,10 @@ public:
 	class UStaticMeshComponent* MeshComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<AFirePokemon> FirePokemon;
+	TSubclassOf<AFirePokemon> FirePokemonFactory;
+
+	UPROPERTY(EditDefaultsOnly)
+	class AFirePokemon* FirePokemon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AMonsterBall> MonsterBallFactory;
@@ -45,7 +48,16 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UArrowComponent* ThrowingPosition;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float SpawnDelayTime;
+
 	FTimerHandle MonsterBallTimer;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UParticleSystem* SpawnParticle;
+
+
 
 	void ThrowingMonsterBall();
 	void SpawnPokemon();
