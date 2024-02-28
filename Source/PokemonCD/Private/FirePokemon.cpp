@@ -22,14 +22,16 @@ AFirePokemon::AFirePokemon()
 	SetRootComponent(BoxComponent);
 	MeshComponent->SetupAttachment(RootComponent);
 	SkillSpawnPos->SetupAttachment(RootComponent);
+
 	
 }
 
 // Called when the game starts or when spawned
 void AFirePokemon::BeginPlay()
 {
-	FindActor();
-	SpawnParticle();
+	SetActorRelativeRotation(FRotator());
+	/*FindActor();
+	SpawnParticle();*/
 
 }
 
