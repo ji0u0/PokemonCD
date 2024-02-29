@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "Interfaces/OnlineSessionInterface.h"
 #include "TestLobyPlayer.generated.h"
 
 UCLASS()
@@ -32,6 +33,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	class UBoxComponent* BoxComponent;
+
+	IOnlineSessionPtr SessionInterface;
 
 	void CreateSession();
 	void JoinSession();

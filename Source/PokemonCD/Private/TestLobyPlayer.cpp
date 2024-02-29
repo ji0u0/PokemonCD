@@ -44,7 +44,6 @@ void ATestLobyPlayer::CreateSession()
 	IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get();
 	if(OnlineSub)
 	{
-		IOnlineSessionPtr SessionInterface;
 		SessionInterface = OnlineSub->GetSessionInterface();
 		if(SessionInterface.IsValid())
 		{
@@ -59,6 +58,7 @@ void ATestLobyPlayer::CreateSession()
 			SessionSettings.NumPrivateConnections = 0;
 			SessionSettings.bShouldAdvertise = true;
 
+			SessionInterface->CreateSession(0, "HostSession", SessionSettings);
 		}
 	}
 
