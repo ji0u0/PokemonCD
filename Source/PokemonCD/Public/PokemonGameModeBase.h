@@ -18,6 +18,12 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UUserWidget> LoadingUITemplate;
+
+	UPROPERTY()
+	class ULoadingUI* LoadingUI;
+
 	// Main Widget
 	UPROPERTY(EditDefaultsOnly)
 	// TSubclassOf<class UMainWidget> mainWidgetFactory;

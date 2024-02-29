@@ -2,6 +2,8 @@
 
 
 #include "PokemonGameModeBase.h"
+
+#include "LoadingUI.h"
 #include "MainWidget.h"
 
 
@@ -9,20 +11,25 @@ void APokemonGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 
+	LoadingUI = CreateWidget<ULoadingUI>(GetWorld(), LoadingUITemplate);
+	LoadingUI->AddToViewport();
+
+
+
 	// Main Widget 생성
 	// mainWidget = CreateWidget<UMainWidget>(GetWorld(), UMainWidget::StaticClass());
-	mainWidget = CreateWidget<UMainWidget>(GetWorld(), mainWidgetFactory); // Factory는 대체 왜 필요한 것인가
+	//mainWidget = CreateWidget<UMainWidget>(GetWorld(), mainWidgetFactory); // Factory는 대체 왜 필요한 것인가
 
-	if (mainWidget != nullptr)
-	{
-		// Main Widget 표시
-		mainWidget->AddToViewport();
-	}
+	//if (mainWidget != nullptr)
+	//{
+	//	// Main Widget 표시
+	//	mainWidget->AddToViewport();
+	//}
 
-	if (APlayerController* playerController = GetWorld()->GetFirstPlayerController())
-	{
-		playerController->bShowMouseCursor = true;
-	}
+	//if (APlayerController* playerController = GetWorld()->GetFirstPlayerController())
+	//{
+	//	playerController->bShowMouseCursor = true;
+	//}
 
 	// UI only (고쳐야 함)
 	/*APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
