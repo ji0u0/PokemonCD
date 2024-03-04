@@ -3,3 +3,13 @@
 
 #include "LobyGameMode.h"
 
+#include "LobbyServerWidget.h"
+#include "Blueprint/UserWidget.h"
+
+void ALobyGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+
+	LobbyServerWidget = CreateWidget<ULobbyServerWidget>(GetWorld(), LobbyServerWidgetTemplate);
+	LobbyServerWidget->AddToViewport();
+}

@@ -34,8 +34,4 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	class UBoxComponent* BoxComponent;
 
-	IOnlineSessionPtr SessionInterface;
-
-	void CreateSession();
-	void JoinSession();
 };

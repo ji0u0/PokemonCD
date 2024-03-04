@@ -14,6 +14,12 @@ class POKEMONCD_API ALobyGameMode : public AGameMode
 {
 	GENERATED_BODY()
 
+public:
+	virtual  void BeginPlay() override;
 
-	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UUserWidget> LobbyServerWidgetTemplate;
+
+	UPROPERTY()
+	class ULobbyServerWidget* LobbyServerWidget;
 };
