@@ -17,9 +17,17 @@ class POKEMONCD_API UPokemonCDGameInstance : public UGameInstance
 
 
 public:
+	UPokemonCDGameInstance();
+
+	int32 GetNumberPlayers() const { return NumPlayers; }
+
+	void UpdateNumPlayers(int32 NewNumPlayers) { NumPlayers = NewNumPlayers; }
 
 	IOnlineSessionPtr SessionInterface;
 
 	void CreateSession();
 	void JoinSession();
+
+protected:
+	int32 NumPlayers;
 };

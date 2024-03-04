@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PokemonCDGameInstance.h"
 #include "GameFramework/GameMode.h"
 #include "LobyGameMode.generated.h"
 
@@ -10,16 +11,26 @@
  * 
  */
 UCLASS()
-class POKEMONCD_API ALobyGameMode : public AGameMode
+class POKEMONCD_API ALobyGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
 public:
-	virtual  void BeginPlay() override;
+	ALobyGameMode();
+	virtual void BeginPlay() override;
+	virtual void PostLogin(APlayerController* NewPlayer) override;
+	virtual void Logout(AController* Exiting) override;
+
+	
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UUserWidget> LobbyServerWidgetTemplate;
 
 	UPROPERTY()
 	class ULobbyServerWidget* LobbyServerWidget;
+
+
+protected:
+	UPROPERTY()
+	class UPokemonCDGameInstance* GameInstance;
 };

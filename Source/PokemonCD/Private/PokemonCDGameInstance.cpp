@@ -7,6 +7,10 @@
 #include "OnlineSubsystem.h"
 #include "Kismet/GameplayStatics.h"
 
+UPokemonCDGameInstance::UPokemonCDGameInstance()
+{
+}
+
 void UPokemonCDGameInstance::CreateSession()
 {
 	IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get();

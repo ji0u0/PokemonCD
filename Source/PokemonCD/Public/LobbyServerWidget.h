@@ -16,14 +16,30 @@ class POKEMONCD_API ULobbyServerWidget : public UUserWidget
 
 	virtual void NativeConstruct() override;
 
-	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	class UButton* CreateSessionButton;
 
-	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	class UButton* JoinSessionButton;
 
+public:
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	class UButton* BattleStartButton;
+
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	class UTextBlock* WatingPlayerText;
+
+protected:
 	UFUNCTION()
 	void CreateSession();
 	UFUNCTION()
 	void JoinSession();
+	UFUNCTION()
+	void OpenBattleLevel();
+
+	void UpdatePlayerCount(int32 PlayerCount);
+
+
+	UPROPERTY()
+	class UPokemonCDGameInstance* GameInstance;
 };

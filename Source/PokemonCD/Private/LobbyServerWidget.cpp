@@ -5,6 +5,7 @@
 
 #include "PokemonCDGameInstance.h"
 #include "Components/Button.h"
+#include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 
 void ULobbyServerWidget::NativeConstruct()
@@ -13,22 +14,38 @@ void ULobbyServerWidget::NativeConstruct()
 
 	CreateSessionButton->OnClicked.AddDynamic(this, &ULobbyServerWidget::CreateSession);
 	JoinSessionButton->OnClicked.AddDynamic(this, &ULobbyServerWidget::JoinSession);
-
-
+	GameInstance = Cast<UPokemonCDGameInstance>(GetGameInstance());
+	if(GameInstance)
+	{
+		UpdatePlayerCount(GameInstance->GetNumberPlayers());
+	}
 }
 
 void ULobbyServerWidget::CreateSession()
 {
-	auto PokemonCDGameInstance = Cast<UPokemonCDGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	PokemonCDGameInstance->CreateSession();
-	
+	if (GameInstance)
+	{
+		GameInstance->CreateSession();
+	}
 }
 
 void ULobbyServerWidget::JoinSession()
 {
-	auto PokemonCDGameInstance = Cast<UPokemonCDGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	if (PokemonCDGameInstance)
+	if (GameInstance)
 	{
-		PokemonCDGameInstance->JoinSession();
+		GameInstance->JoinSession();
+	}
+}
+
+void ULobbyServerWidget::OpenBattleLevel()
+{
+
+}
+
+void ULobbyServerWidget::UpdatePlayerCount(int32 PlayerCount)
+{
+	if (WatingPlayerText)
+	{
+		WatingPlayerText->SetText(FText::FromString(FString::Printf(TEXT("플레이어 입장 대기중...: (%d/2)"), PlayerCount)));
 	}
 }
