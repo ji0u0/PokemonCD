@@ -3,8 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FirePokemon.h"
-#include "MonsterBall.h"
 #include "GameFramework/Pawn.h"
 #include "Trainer.generated.h"
 
@@ -29,36 +27,55 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
+	// Components
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* BoxComponent;
 
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* MeshComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<AFirePokemon> FirePokemonFactory;
-
-	UPROPERTY(EditDefaultsOnly)
-	class AFirePokemon* FirePokemon;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<AMonsterBall> MonsterBallFactory;
-	AMonsterBall* MonsterBall;
-
 	UPROPERTY(EditAnywhere)
 	class UArrowComponent* ThrowingPosition;
 
+	// 소유 포켓몬
+	UPROPERTY(EditDefaultsOnly)
+	class APokemon* firstPokemon = nullptr;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float SpawnDelayTime;
+	UPROPERTY(EditDefaultsOnly)
+	class APokemon* secondPokemon = nullptr;
 
-	FTimerHandle MonsterBallTimer;
+	UPROPERTY(EditDefaultsOnly)
+	class APokemon* thirdPokemon = nullptr;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly)
+	class APokemon* currentPokemon = nullptr;
+
+	// Monster Ball
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AMonsterBall> MonsterBallFactory;
+
+	UPROPERTY()
+	class AMonsterBall* MonsterBall;
+
+	UPROPERTY(EditAnywhere)
 	class UParticleSystem* SpawnParticle;
 
+	// spawn pokemon
+	void SpawnPokemon(APokemon* pokemon);
 
+	FVector pokemonLoc = FVector(-40.f, 830.f, 150.f);
 
-	void ThrowingMonsterBall();
-	void SpawnPokemon();
+	///// Widget /////
+	UFUNCTION()
+	void CreateWidget();
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UMainWidget> mainWidgetFactory;
+
+	UPROPERTY(BlueprintReadWrite)
+	class UMainWidget* mainWidget;
+
+	UPROPERTY(BlueprintReadWrite)
+	class UWidgetSkill* skillWidget;
+
 };

@@ -15,12 +15,16 @@ class POKEMONCD_API APokemonWater : public APokemon
 	GENERATED_BODY()
 	
 public:
+	APokemonWater();
 
-	// Static Mesh
-	UPROPERTY(EditDefaultsOnly)
+	// Components
+	UPROPERTY(EditAnywhere)
+	class UBoxComponent* BoxComponent;
+
+	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* MeshComponent;
 
-	// Skill Components
-	UPROPERTY(EditDefaultsOnly)
+	// Skills
+	UPROPERTY(BlueprintReadWrite)
 	class USkillWater* waterSkill;
 };

@@ -33,7 +33,10 @@ public:
 	TSubclassOf<class UUserWidget> statusWidgetFactory;
 	
 	UPROPERTY(BlueprintReadOnly)
-	class UStatusWidget* statusWidget;
+	class UStatusWidget* myStatusWidget;
+
+	UPROPERTY(BlueprintReadOnly)
+	class UStatusWidget* oppoStatusWidget;
 
 	// Horizontal Box
 	UPROPERTY(EditDefaultsOnly)

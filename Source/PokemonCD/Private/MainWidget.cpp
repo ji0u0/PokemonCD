@@ -9,7 +9,6 @@
 #include "Components/CanvasPanelSlot.h"
 #include "Components/VerticalBox.h"
 #include "Components/VerticalBoxSlot.h"
-#include "Components/SlateWrapperTypes.h"
 
 
 void UMainWidget::NativeConstruct()
@@ -17,13 +16,13 @@ void UMainWidget::NativeConstruct()
 	Super::NativeConstruct();
 
 	// My Status 추가
-	statusWidget = CreateWidget<UStatusWidget>(GetWorld(), statusWidgetFactory);
-	UCanvasPanelSlot* MyStatusSlot = MyStatus->AddChildToCanvas(statusWidget);
+	myStatusWidget = CreateWidget<UStatusWidget>(GetWorld(), statusWidgetFactory);
+	UCanvasPanelSlot* MyStatusSlot = MyStatus->AddChildToCanvas(myStatusWidget);
 	MyStatusSlot->SetSize(FVector2D(360, 240));
 
 	// Opponent Status 추가
-	statusWidget = CreateWidget<UStatusWidget>(GetWorld(), statusWidgetFactory);
-	UCanvasPanelSlot* OpponentStatusSlot = OpponentStatus->AddChildToCanvas(statusWidget);
+	oppoStatusWidget = CreateWidget<UStatusWidget>(GetWorld(), statusWidgetFactory);
+	UCanvasPanelSlot* OpponentStatusSlot = OpponentStatus->AddChildToCanvas(oppoStatusWidget);
 	OpponentStatusSlot->SetSize(FVector2D(360, 240));
 	
 	// Skill Box 추가

@@ -18,7 +18,7 @@ APokemon::APokemon()
 void APokemon::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame

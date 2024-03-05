@@ -6,6 +6,14 @@
 #include "GameFramework/Pawn.h"
 #include "Pokemon.generated.h"
 
+UENUM(BlueprintType)
+enum class Type : uint8
+{
+	grass UMETA(DisplayName = "Grass"),
+	fire UMETA(DisplayName = "Fire"),
+	water UMETA(DisplayName = "Water")
+};
+
 UCLASS()
 class POKEMONCD_API APokemon : public APawn
 {
@@ -30,6 +38,38 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void FindTarget();
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	class AEnemy* Target;
+
+	///// status /////
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	FString pokemonName;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	Type pokemonType;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	int pokemonHealth;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float pokemonAttack;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float pokemonDefense;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float pokemonSpeed;
+
+	///// Skill /////
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	class USkill* skillfirst;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	class USkill* skillsecond;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	class USkill* skillthird;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	class USkill* skillfourth;
 };
