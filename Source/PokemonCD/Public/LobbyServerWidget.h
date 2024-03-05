@@ -41,7 +41,7 @@ protected:
 
 
 	UPROPERTY()
-	class UPokemonCDGameInstance* GameInstance;
+	class UPokemonGameInstanceSubSystem* PokemonGameInstanceSubSystem;
 	UPROPERTY()
 	class ALobyGameMode* GameMode;
 };

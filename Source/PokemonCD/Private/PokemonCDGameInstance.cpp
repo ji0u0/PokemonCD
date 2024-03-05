@@ -88,7 +88,6 @@ void UPokemonCDGameInstance::JoinSession()
 	// Find Session Complete Delegate µî·Ï
 	OnlineSessionInterface->AddOnFindSessionsCompleteDelegate_Handle(FindSessionCompleteDelegate);
 
-
 	SessionSearch = MakeShareable(new FOnlineSessionSearch);
 	// Find Game Session
 	SessionSearch = MakeShareable(new FOnlineSessionSearch());

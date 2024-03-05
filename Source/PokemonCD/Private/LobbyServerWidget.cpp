@@ -5,6 +5,7 @@
 
 #include "LobyGameMode.h"
 #include "PokemonCDGameInstance.h"
+#include "PokemonGameInstanceSubSystem.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
@@ -16,27 +17,25 @@ void ULobbyServerWidget::NativeConstruct()
 	CreateSessionButton->OnClicked.AddDynamic(this, &ULobbyServerWidget::CreateSession);
 	JoinSessionButton->OnClicked.AddDynamic(this, &ULobbyServerWidget::JoinSession);
 	BattleStartButton->OnClicked.AddDynamic(this, &ULobbyServerWidget::OpenBattleLevel);
-	GameInstance = Cast<UPokemonCDGameInstance>(GetGameInstance());
-	if(GameInstance)
-	{
-		UpdatePlayerCount(GameInstance->GetNumberPlayers());
-	}
+	PokemonGameInstanceSubSystem = GetGameInstance()->GetSubsystem<UPokemonGameInstanceSubSystem>();
+
+	
 	GameMode = Cast<ALobyGameMode>(GetWorld()->GetAuthGameMode());
 }
 
 void ULobbyServerWidget::CreateSession()
 {
-	if (GameInstance)
+	if (PokemonGameInstanceSubSystem)
 	{
-		GameInstance->CreateSession();
+		PokemonGameInstanceSubSystem->CreateSession(2, FString("MatchType"));
 	}
 }
 
 void ULobbyServerWidget::JoinSession()
 {
-	if (GameInstance)
+	if (PokemonGameInstanceSubSystem)
 	{
-		GameInstance->JoinSession();
+		PokemonGameInstanceSubSystem->FindSession(30);
 	}
 }
 

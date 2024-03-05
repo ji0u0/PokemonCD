@@ -29,7 +29,7 @@ public:
 
 	IOnlineSessionPtr SessionInterface;
 	TSharedPtr<FOnlineSessionSearch> SessionSearch;
-
+	
 	void CreateSession();
 	void JoinSession();
 
