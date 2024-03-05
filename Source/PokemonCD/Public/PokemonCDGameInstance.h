@@ -3,9 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "OnlineSubsystem.h"
-#include "Engine/GameInstance.h"
 #include "OnlineSessionSettings.h"
+#include "Engine/GameInstance.h"
 #include "Interfaces/OnlineSessionInterface.h"
 #include "PokemonCDGameInstance.generated.h"
 
@@ -13,64 +12,33 @@
  * 
  */
 
-USTRUCT()
-struct FSessionInfo
-{
-    GENERATED_BODY()
-
-    FString RoomSessionName;
-    int32 CurrentPlayerCount;
-    int32 MaxPlayerCount;
-    int32 PingNumber;
-    int32 SlotIndex;
-};
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSearchResult, FSessionInfo, sessionInfo);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSearchFinished);
-
-
-
 UCLASS()
 class POKEMONCD_API UPokemonCDGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
-    
-	UPokemonCDGameInstance();
+
 public:
-	virtual void Init() override;
+	UPokemonCDGameInstance();
+	FOnCreateSessionCompleteDelegate CreateSessionCompleteDelegate;
+	FOnFindSessionsCompleteDelegate FindSessionCompleteDelegate;
+	FOnJoinSessionCompleteDelegate OnJoinSessionCompleteDelegate;
 
-    
-    IOnlineSessionPtr SessionInterface;
+	int32 GetNumberPlayers() const { return NumPlayers; }
 
-    TSharedPtr<FOnlineSessionSearch> SessionSearch;
+	void UpdateNumPlayers(int32 NewNumPlayers) { NumPlayers = NewNumPlayers; }
 
-    //declare delegate for Searching sessions
-    FOnSearchResult SearchResultDelegate;
-    FOnSearchFinished SearchFinishedDelegate;
+	IOnlineSessionPtr SessionInterface;
+	TSharedPtr<FOnlineSessionSearch> SessionSearch;
 
-    FName PlayerID;
+	void CreateSession();
+	void JoinSession();
 
-#pragma region Create Session
-    //rename later
-    void CreateMySession(FString InRoomName, int32 InPlayerCount);
+	void OnCreateSessionComplete(FName SessionName, bool bWasSuccessful);
+	void OnFindSessionComplete(bool bWasSuccessful);
+	void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
 
-    UFUNCTION()
-    void OnCreateSessionComplete(FName InSessionName, bool bIsSuccess);
-#pragma endregion
+	IOnlineSessionPtr OnlineSessionInterface;
 
-
-#pragma region Find and Join Sessions
-    //Finds created sessions
-    void FindMySession();
-    UFUNCTION()
-    void OnFindSessionComplete(bool bWasSuccessful);
-
-    void JoinMySession(int32 InSessionIndex);
-
-    //Delegate for Joining Sessions
-    FOnJoinSessionCompleteDelegate OnJoinSessionCompleteDelegate;
-
-    void OnJoinSessionComplete(FName InSessionName, EOnJoinSessionCompleteResult::Type InJoinResult);
-#pragma endregion
-
+protected:
+	int32 NumPlayers = 0;
 };

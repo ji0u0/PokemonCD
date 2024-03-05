@@ -2,173 +2,189 @@
 
 
 #include "PokemonCDGameInstance.h"
-#include "OnlineSubsystem.h"
 #include "OnlineSessionSettings.h"
 #include "Online/OnlineSessionNames.h"
+#include "OnlineSubsystem.h"
+#include "Kismet/GameplayStatics.h"
 
 UPokemonCDGameInstance::UPokemonCDGameInstance()
 {
-	PlayerID = "tmp";
+	CreateSessionCompleteDelegate = FOnCreateSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnCreateSessionComplete);
+	FindSessionCompleteDelegate = FOnFindSessionsCompleteDelegate::CreateUObject(this, &ThisClass::OnFindSessionComplete);
+	OnJoinSessionCompleteDelegate = FOnJoinSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnJoinSessionComplete);
 }
 
-void UPokemonCDGameInstance::Init()
+void UPokemonCDGameInstance::CreateSession()
 {
-	Super::Init();
+	// OnlineSubsystem에 Access
+	IOnlineSubsystem* OnlineSubsystem = IOnlineSubsystem::Get();
+	if (OnlineSubsystem)
+	{
+		// 온라인 세션 받아오기
+		OnlineSessionInterface = OnlineSubsystem->GetSessionInterface();
 
-    //Get IOnlineSubsystem class that has the online session functionality
-    IOnlineSubsystem* IOnlineSubsystem = IOnlineSubsystem::Get();
+		if (GEngine)
+		{
+			// OnlineSubsystem 이름 출력하기
+			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Blue, FString::Printf(TEXT("Found subsystem %s"), *OnlineSubsystem->GetSubsystemName().ToString()));
+		}
+	}
 
-    //if subsystem is not a null
-    if (IOnlineSubsystem) {
-        SessionInterface = IOnlineSubsystem->GetSessionInterface();
-        if (SessionInterface) {
-            //Bind function
-            SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UPokemonCDGameInstance::OnCreateSessionComplete);
-            SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UPokemonCDGameInstance::OnFindSessionComplete);
-            SessionInterface->OnJoinSessionCompleteDelegates.AddUObject(this, &UPokemonCDGameInstance::OnJoinSessionComplete);
-        }
-    }
+	if (!OnlineSessionInterface.IsValid())
+	{
+		//log
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, FString::Printf(TEXT("Game Session is invailed")));
+		}
 
-#pragma region Debug Platform Name: NULL or Steam
-    //Log connected platform
-    FString PlatformName = IOnlineSubsystem->GetSubsystemName().ToString();
-    UE_LOG(LogTemp, Warning, TEXT("%s"), *PlatformName);
-#pragma endregion
-}
+		return;
+	}
 
-void UPokemonCDGameInstance::CreateMySession(FString InRoomName, int32 InPlayerCount)
-{
-    if (SessionInterface) {
-        //Create a session information
-        FOnlineSessionSettings SessionSettings;
+	auto ExistingSession = OnlineSessionInterface->GetNamedSession(NAME_GameSession);
+	if (ExistingSession != nullptr)
+	{
+		OnlineSessionInterface->DestroySession(NAME_GameSession);
+		//log
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, FString::Printf(TEXT("Destroy Session")));
+		}
+	}
 
-        SessionSettings.bAllowInvites = false;
-        SessionSettings.bAllowJoinInProgress = true;            //allow users to join while session is in progress
-        //???
-        SessionSettings.bAllowJoinViaPresence = true;
-        //making it public
-        SessionSettings.bShouldAdvertise = true;
-        SessionSettings.bIsDedicated = false;
+	// 세션 생성 완료 후 호출될 delegate 리스트에 CreateSessionCompleteDelegate 추가
+	OnlineSessionInterface->AddOnCreateSessionCompleteDelegate_Handle(CreateSessionCompleteDelegate);
 
-        //if the online subsystem type is NULL do lan matching, if it's STEAM then do server matching
-        SessionSettings.bIsLANMatch = IOnlineSubsystem::Get()->GetSubsystemName() == "NULL";
-        //max number of clients that can connect
-        SessionSettings.NumPublicConnections = InPlayerCount;
+	TSharedPtr<FOnlineSessionSettings> SessionSettings = MakeShareable(new FOnlineSessionSettings());
 
-        SessionSettings.Set(FName("KEY_RoomName"), InRoomName, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
+	SessionSettings->bIsLANMatch = false;			// LAN 연결
+	SessionSettings->NumPublicConnections = 2;		// 최대 접속 가능 수
+	SessionSettings->bAllowJoinInProgress = false;	// Session 진행중에 접속 허용
+	SessionSettings->bAllowJoinViaPresence = true;// 세션 참가 지역을 현재 지역으로 제한 (스팀의 presence 사용)
+	SessionSettings->bShouldAdvertise = true;		// 현재 세션을 광고할지 (스팀의 다른 플레이어에게 세션 홍보 여부)
+	SessionSettings->bUsesPresence = true;			// 현재 지역에 세션 표시
+	SessionSettings->bUseLobbiesIfAvailable = true; // 플랫폼이 지원하는 경우 로비 API 사용
+	SessionSettings->Set(FName("MatchType"), FString("FreeForAll"), EOnlineDataAdvertisementType::ViaOnlineServiceAndPing); // 세션의 MatchType을 모두에게 열림, 온라인서비스와 핑을 통해 세션 홍보 옵션으로 설정
 
-        //create session
-        SessionInterface->CreateSession(0, PlayerID, SessionSettings);
+	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
+	OnlineSessionInterface->CreateSession(*LocalPlayer->GetPreferredUniqueNetId(), NAME_GameSession, *SessionSettings);
 
-        UE_LOG(LogTemp, Warning, TEXT("Trying to Create Session"));
-    }
-}
-
-void UPokemonCDGameInstance::OnCreateSessionComplete(FName InSessionName, bool bIsSuccess)
-{
-    FString Result;
-
-    if (bIsSuccess) {
-        Result = TEXT("Create Session Succeeded");
-    }
-    else {
-        Result = TEXT("Create Session Failed");
-    }
-
-    //UE_LOG(LogTemp, Warning, TEXT("%s: %s"), Result, InSessionName.ToString());
-
-    //if session is successfully created, move all players connected to the session to the main map
-    if (bIsSuccess) {
-        //note that Game/ refers to Content Folder
-        //[Map directory] ? Listen
-        GetWorld()->ServerTravel("/Game/Maps/LV_LobyMap.LV_LobyMap?Listen");
-
-    }
 }
 
 
-
-void UPokemonCDGameInstance::FindMySession()
+void UPokemonCDGameInstance::JoinSession()
 {
-    //create a query for finding a session; FOnlineSessionSearch is a pointer in Native c++ not unreal
-    SessionSearch = MakeShareable(new FOnlineSessionSearch());
+	// 세션 인터페이스 유효성 검사
+	if (!OnlineSessionInterface.IsValid())
+	{
+		// log
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, FString(TEXT("Game Session Interface is invailed")));
+		}
+		return;
+	}
 
-    //checking if lan connection; true if subsystem name is null
-    SessionSearch->bIsLanQuery = IOnlineSubsystem::Get()->GetSubsystemName() == "NULL";
-    //number of sessions to be found
-    SessionSearch->MaxSearchResults = 30;
-    //Finds specific room by a key; Basically a search filter functionality
-    //sessionSearch->QuerySettings.Set(FName("KEY_RoomName"), INSERTROOMNAME, EOnlineComparisonOp::GreaterThanEquals);
+	// Find Session Complete Delegate 등록
+	OnlineSessionInterface->AddOnFindSessionsCompleteDelegate_Handle(FindSessionCompleteDelegate);
 
-    //searching by prseence
-    SessionSearch->QuerySettings.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
 
-    //Find session using the created query; casting the sessionSearch from TSharedPtr to ToSharedRef
-    SessionInterface->FindSessions(0, SessionSearch.ToSharedRef());
+	SessionSearch = MakeShareable(new FOnlineSessionSearch);
+	// Find Game Session
+	SessionSearch = MakeShareable(new FOnlineSessionSearch());
+	SessionSearch->MaxSearchResults = 1000;
+	SessionSearch->bIsLanQuery = true;// LAN 사용 여부
+	SessionSearch->QuerySettings.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals); // 찾을 세션 쿼리를 현재로 설정한다
+
+	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
+	OnlineSessionInterface->FindSessions(*LocalPlayer->GetPreferredUniqueNetId(), SessionSearch.ToSharedRef());
+}
+
+
+
+void UPokemonCDGameInstance::OnCreateSessionComplete(FName SessionName, bool bWasSuccessful)
+{
+	// 세션 생성 성공!
+	if (bWasSuccessful)
+	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Blue, FString::Printf(TEXT("Created session : %s"), *SessionName.ToString()));
+		}
+	}
+
+	// 세선 생성 실패
+	else
+	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, FString(TEXT("Failed to create session!")));
+		}
+	}
 }
 
 void UPokemonCDGameInstance::OnFindSessionComplete(bool bWasSuccessful)
 {
-    if (bWasSuccessful) {
-        //get array of search results
-        TArray<FOnlineSessionSearchResult> SearchResults = SessionSearch->SearchResults;
+	if (!OnlineSessionInterface.IsValid()
+		|| !bWasSuccessful)
+		return;
 
-        UE_LOG(LogTemp, Warning, TEXT("UServerGameInstance::OnFindSessionComplete - Session Count: %d"), SearchResults.Num());
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Cyan, FString(TEXT("======== Search Result ========")));
+	}
 
-        for (int32 i = 0; i < SearchResults.Num(); i++) {
+	for (auto Result : SessionSearch->SearchResults)
+	{
+		FString Id = Result.GetSessionIdStr();
+		FString User = Result.Session.OwningUserName;
 
-            FSessionInfo SearchedSessionInfo;
+		// 매치 타입 확인하기
+		FString MatchType;
+		Result.Session.SessionSettings.Get(FName("MatchType"), MatchType);
 
-            FString RoomName;
-            SearchResults[i].Session.SessionSettings.Get(FName("KEY_RoomName"), RoomName);
+		// 찾은 세션의 정보 출력하기
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Cyan, FString::Printf(TEXT("Session ID : %s / Owner : %s"), *Id, *User));
+		}
 
-            SearchedSessionInfo.RoomSessionName = RoomName;
+		// 세션의 매치 타입이 "FreeForAll"일 경우 세션 참가
+		if (MatchType == FString("FreeForAll"))
+		{
+			if (GEngine)
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Cyan, FString::Printf(TEXT("Joining Match Type : %s"), *MatchType));
+			}
 
-            //total number of connections: available and taken
-            SearchedSessionInfo.MaxPlayerCount = SearchResults[i].Session.SessionSettings.NumPublicConnections;
+			// Join Session Complete Delegate 등록 
+			OnlineSessionInterface->AddOnJoinSessionCompleteDelegate_Handle(OnJoinSessionCompleteDelegate);
 
-            //open connections means free, not taken, available connections; maxplayers - open connections = # of connected players
-            SearchedSessionInfo.CurrentPlayerCount = SearchedSessionInfo.MaxPlayerCount - SearchResults[i].Session.NumOpenPublicConnections;
 
-            //ping in milliseconds
-            SearchedSessionInfo.PingNumber = SearchResults[i].PingInMs;
-
-            //slot index
-            SearchedSessionInfo.SlotIndex = i;
-
-            //sending to login widget the necessary information to create a child slot widget 
-            SearchResultDelegate.Broadcast(SearchedSessionInfo);
-        }
-    }
-    else {
-        UE_LOG(LogTemp, Warning, TEXT("Failed to find sessions..."));
-    }
-
-    SearchFinishedDelegate.Broadcast();
+			const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
+			OnlineSessionInterface->JoinSession(*LocalPlayer->GetPreferredUniqueNetId(), NAME_GameSession, Result);
+		}
+	}
 }
 
-void UPokemonCDGameInstance::JoinMySession(int32 InSessionIndex)
+void UPokemonCDGameInstance::OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result)
 {
-    //select session from list of search results with index 
-    FOnlineSessionSearchResult SelectedSession = SessionSearch->SearchResults[InSessionIndex];
+	if (!OnlineSessionInterface.IsValid())
+		return;
 
-    //using the sessionID that was made in the login widget, join session
-    SessionInterface->JoinSession(0, PlayerID, SelectedSession);
-}
+	// 세션에 조인했다면 IP Address얻어와서 해당 서버에 접속
+	FString Address;
+	if (OnlineSessionInterface->GetResolvedConnectString(NAME_GameSession, Address))
+	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Yellow, FString::Printf(TEXT("Connect String : %s"), *Address));
+		}
 
-void UPokemonCDGameInstance::OnJoinSessionComplete(FName InSessionName, EOnJoinSessionCompleteResult::Type InJoinResult)
-{
-    //if succeeded in joining, move to coinciding level of the IP Address
-    if (InJoinResult == EOnJoinSessionCompleteResult::Success) {
-
-        //get the IP address with session name
-        FString JoinAddress;
-        SessionInterface->GetResolvedConnectString(InSessionName, JoinAddress);
-
-        //UE_LOG(LogTemp, Warning, TEXT("Join Address: %s"), JoinAddress);
-
-        if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController()) {
-            PlayerController->ClientTravel(JoinAddress, ETravelType::TRAVEL_Absolute);
-        }
-    }
+		APlayerController* PlayerController = GetWorld()->GetGameInstance()->GetFirstLocalPlayerController();
+		if (PlayerController)
+		{
+			PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute);
+		}
+	}
 }

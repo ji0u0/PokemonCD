@@ -39,33 +39,3 @@ void ATestLobyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 }
 
-void ATestLobyPlayer::CreateSession()
-{
-	IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get();
-	if(OnlineSub)
-	{
-		SessionInterface = OnlineSub->GetSessionInterface();
-		if(SessionInterface.IsValid())
-		{
-			FOnlineSessionSettings SessionSettings;
-
-			SessionSettings.bIsLANMatch = true;
-			SessionSettings.bIsDedicated = false;
-			SessionSettings.bAllowJoinInProgress = true;
-			SessionSettings.bAllowInvites = true;
-
-			SessionSettings.NumPublicConnections = 2;
-			SessionSettings.NumPrivateConnections = 0;
-			SessionSettings.bShouldAdvertise = true;
-
-			SessionInterface->CreateSession(0, "HostSession", SessionSettings);
-		}
-	}
-
-}
-
-void ATestLobyPlayer::JoinSession()
-{
-	UGameplayStatics::OpenLevel(GetWorld(), FName("192.168.240.92"));
-}
-
