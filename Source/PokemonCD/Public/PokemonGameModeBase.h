@@ -18,6 +18,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+<<<<<<< Updated upstream
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UUserWidget> LoadingUITemplate;
 
@@ -25,12 +26,14 @@ public:
 	class ULoadingUI* LoadingUI;
 
 	// Main Widget
+=======
+	// Choose Pokemon Widget
+>>>>>>> Stashed changes
 	UPROPERTY(EditDefaultsOnly)
-	// TSubclassOf<class UMainWidget> mainWidgetFactory;
-	TSubclassOf<class UUserWidget> mainWidgetFactory;
+	TSubclassOf<class UWidgetChoosePokemon> chooseWidgetFactory;
 	
 	UPROPERTY(BlueprintReadOnly)
-	// class UMainWidget* mainWidget;
-	class UUserWidget* mainWidget;
-	
+	class UWidgetChoosePokemon* chooseWidget;
+
+	void CreateChooseWidget();
 };

@@ -3,23 +3,33 @@
 
 #include "MainWidget.h"
 
-#include "MainStatusWidget.h"
+#include "SkillWidget.h"
+#include "StatusWidget.h"
 #include "Components/CanvasPanel.h"
+#include "Components/CanvasPanelSlot.h"
+#include "Components/VerticalBox.h"
+#include "Components/VerticalBoxSlot.h"
 
 
 void UMainWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	// statusWidget 생성
-	statusWidget = CreateWidget<UMainStatusWidget>(GetWorld(), statusWidgetFactory);
-
 	// My Status 추가
-	MyStatus->AddChildToCanvas(statusWidget);
-
-	// statusWidget 생성
-	statusWidget = CreateWidget<UMainStatusWidget>(GetWorld(), statusWidgetFactory);
+	myStatusWidget = CreateWidget<UStatusWidget>(GetWorld(), statusWidgetFactory);
+	UCanvasPanelSlot* MyStatusSlot = MyStatus->AddChildToCanvas(myStatusWidget);
+	MyStatusSlot->SetSize(FVector2D(360, 240));
 
 	// Opponent Status 추가
-	OpponentStatus->AddChildToCanvas(statusWidget);
+	oppoStatusWidget = CreateWidget<UStatusWidget>(GetWorld(), statusWidgetFactory);
+	UCanvasPanelSlot* OpponentStatusSlot = OpponentStatus->AddChildToCanvas(oppoStatusWidget);
+	OpponentStatusSlot->SetSize(FVector2D(360, 240));
+	
+	// Skill Box 추가
+	for(int i = 0; i < 4; i++) {
+		skillWidget = CreateWidget<USkillWidget>(GetWorld(), skillWidgetFactory);
+		skillWidget->InitValue(this, i, "스킬 입력");
+		UVerticalBoxSlot* SkillBoxSlot = SkillBox->AddChildToVerticalBox(skillWidget);
+		SkillBoxSlot->SetSize(FSlateChildSize (ESlateSizeRule::Type::Fill));
+	}
 }
