@@ -3,6 +3,7 @@
 
 #include "LobbyServerWidget.h"
 
+#include "LobyGameMode.h"
 #include "PokemonCDGameInstance.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
@@ -14,11 +15,13 @@ void ULobbyServerWidget::NativeConstruct()
 
 	CreateSessionButton->OnClicked.AddDynamic(this, &ULobbyServerWidget::CreateSession);
 	JoinSessionButton->OnClicked.AddDynamic(this, &ULobbyServerWidget::JoinSession);
+	BattleStartButton->OnClicked.AddDynamic(this, &ULobbyServerWidget::OpenBattleLevel);
 	GameInstance = Cast<UPokemonCDGameInstance>(GetGameInstance());
 	if(GameInstance)
 	{
 		UpdatePlayerCount(GameInstance->GetNumberPlayers());
 	}
+	GameMode = Cast<ALobyGameMode>(GetWorld()->GetAuthGameMode());
 }
 
 void ULobbyServerWidget::CreateSession()
@@ -39,7 +42,11 @@ void ULobbyServerWidget::JoinSession()
 
 void ULobbyServerWidget::OpenBattleLevel()
 {
-
+	if(GameMode)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, TEXT(" CreateSession")); // 화면출력
+		GameMode->TravelLevel();
+	}
 }
 
 void ULobbyServerWidget::UpdatePlayerCount(int32 PlayerCount)

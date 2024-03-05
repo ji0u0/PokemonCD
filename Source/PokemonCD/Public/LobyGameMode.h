@@ -29,6 +29,7 @@ public:
 	UPROPERTY()
 	class ULobbyServerWidget* LobbyServerWidget;
 
+	void TravelLevel();
 
 protected:
 	UPROPERTY()

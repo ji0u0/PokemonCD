@@ -40,3 +40,9 @@ void ALobyGameMode::Logout(AController* Exiting)
 	}
 }
 
+void ALobyGameMode::TravelLevel()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, TEXT(" Travel")); // 화면출력
+	GetWorld()->ServerTravel("/Game/Maps/LV_Total.LV_Total?listen");
+}
+
