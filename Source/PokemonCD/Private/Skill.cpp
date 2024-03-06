@@ -3,6 +3,8 @@
 
 #include "Skill.h"
 
+#include "Trainer.h"
+
 // Sets default values for this component's properties
 USkill::USkill()
 {

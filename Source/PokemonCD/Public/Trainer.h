@@ -37,6 +37,12 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UArrowComponent* ThrowingPosition;
 
+	// 상대방
+	UPROPERTY(EditDefaultsOnly)
+	class ATrainer* oppoTrainer;
+
+	void FindOpponentTrainer();
+
 	// 소유 포켓몬
 	UPROPERTY(EditDefaultsOnly)
 	class APokemon* firstPokemon = nullptr;

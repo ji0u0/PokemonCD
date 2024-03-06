@@ -15,6 +15,14 @@ class POKEMONCD_API UWidgetSkill : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	virtual void NativeConstruct() override;
+
+	/*UPROPERTY(EditDefaultsOnly)
+	class APlayerController* pc;*/
+
+	UPROPERTY(EditDefaultsOnly)
+	class ATrainer* trainer;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UButton* firstSkill;
 
@@ -38,4 +46,18 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UTextBlock* fourthSkillName;
+
+	void SetSkillName(FString first, FString second, FString third, FString fourth);
+
+	UFUNCTION()
+	void ClickFirstSkill();
+
+	UFUNCTION()
+	void ClickSecondSkill();
+
+	UFUNCTION()
+	void ClickThirdSkill();
+
+	UFUNCTION()
+	void ClickFourthSkill();
 };

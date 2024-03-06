@@ -20,5 +20,7 @@ APokemonWater::APokemonWater()
 
 	// Skill Components
 	waterSkill = CreateDefaultSubobject<USkillWater>(TEXT("WaterSkill"));
-	skillfirst = waterSkill;
+	firstSkill = waterSkill;
+
+	pokemonName = "Sobble";
 }

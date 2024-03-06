@@ -3,22 +3,18 @@
 
 #include "PokemonGameModeBase.h"
 
-<<<<<<< Updated upstream
 #include "LoadingUI.h"
 #include "MainWidget.h"
-=======
 #include "Blueprint/UserWidget.h"
 #include "WidgetChoosePokemon.h"
->>>>>>> Stashed changes
 
 
 void APokemonGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-<<<<<<< Updated upstream
-	LoadingUI = CreateWidget<ULoadingUI>(GetWorld(), LoadingUITemplate);
-	LoadingUI->AddToViewport();
+	/*LoadingUI = CreateWidget<ULoadingUI>(GetWorld(), LoadingUITemplate);
+	LoadingUI->AddToViewport();*/
 
 
 
@@ -45,7 +41,6 @@ void APokemonGameModeBase::BeginPlay()
 		InputMode.SetWidgetToFocus(/* 여기에 포커스를 설정할 UI 위젯을 넣어줍니다 #1#);
 		PlayerController->SetInputMode(InputMode);
 	}*/
-=======
 	CreateChooseWidget();
 }
 
@@ -64,5 +59,4 @@ void APokemonGameModeBase::CreateChooseWidget()
 	{
 		playerController->bShowMouseCursor = true;
 	}
->>>>>>> Stashed changes
 }

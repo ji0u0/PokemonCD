@@ -17,10 +17,11 @@ class POKEMONCD_API USkillWater : public USkill
 public:
 	USkillWater();
 
-	void SpawnParticle(class APokemon* target);
-	void DestroyParticle();
+	virtual void Attack(ATrainer* trainer) override;
 
-	void WaterAttack(class APokemon* target);
+	void SpawnParticle(AActor* target);
+	void DestroyParticle();
+	void CameraShake();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float TimeToDestroy = 1.5;

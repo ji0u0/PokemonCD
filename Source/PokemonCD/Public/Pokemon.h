@@ -39,7 +39,7 @@ public:
 	void FindTarget();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	class AEnemy* Target;
+	class APokemon* target;
 
 	///// status /////
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
@@ -62,14 +62,14 @@ public:
 
 	///// Skill /////
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	class USkill* skillfirst;
+	class USkill* firstSkill;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	class USkill* skillsecond;
+	class USkill* secondSkill;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	class USkill* skillthird;
+	class USkill* thirdSkill;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	class USkill* skillfourth;
+	class USkill* fourthSkill;
 };

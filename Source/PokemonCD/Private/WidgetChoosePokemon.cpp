@@ -26,6 +26,10 @@ void UWidgetChoosePokemon::CompleteUI()
 	trainer->secondPokemon = GetWorld()->SpawnActor<APokemon>(secondFactory, secondLoc, FRotator::ZeroRotator);
 	trainer->thirdPokemon = GetWorld()->SpawnActor<APokemon>(thirdFactory, thirdLoc, FRotator::ZeroRotator);
 
+	// Possess Player Controller
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	PlayerController->Possess(trainer);
+
 	// 위젯 (완전) 삭제
 	this->RemoveFromParent();
 }

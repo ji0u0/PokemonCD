@@ -4,11 +4,13 @@
 #include "SkillWater.h"
 
 #include "Pokemon.h"
+#include "Trainer.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
 
 USkillWater::USkillWater()
 {
+	skillName = "Water Skill";
 	static ConstructorHelpers::FObjectFinder<UParticleSystem> ParticleSystem(TEXT("/Game/FXVarietyPack/Particles/P_ky_laser01"));
 
 	// 파티클 시스템이 로드되었는지 확인 후 설정
@@ -18,11 +20,19 @@ USkillWater::USkillWater()
 	}
 }
 
-void USkillWater::SpawnParticle(APokemon* target)
+void USkillWater::SpawnParticle(AActor* target)
 {
+	if(SkillParticle == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No particle"));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, "No particle");
+
+		return;
+	}
+
 	// Enemy의 Location을 가져와 그 위치에 파티클 스폰
 	ParticleComp = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SkillParticle, target->GetActorLocation());
-
+	
 	// 5초 후에 파티클을 지우도록 설정
 	GetOwner()->GetWorldTimerManager().SetTimer(SkillTimer, this, &USkillWater::DestroyParticle, TimeToDestroy, false);
 }
@@ -31,12 +41,40 @@ void USkillWater::DestroyParticle()
 {
 	if (ParticleComp != nullptr)
 	{
-		ParticleComp->DestroyComponent();
+		// ParticleComp->DestroyComponent();
 	}
 }
 
-void USkillWater::WaterAttack(APokemon* target)
+void USkillWater::CameraShake()
 {
-	SpawnParticle(target);
-	DestroyParticle();
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if(PlayerController)
+	{
+		APlayerCameraManager* CameraManager = PlayerController->PlayerCameraManager;
+		if (CameraManager)
+		{
+			// 카메라를 흔들기 위해 특정 벡터를 더합니다. 예를 들어, X축으로 10만큼 흔들어 보겠습니다.
+			FVector ShakeOffset = FVector(10.f, 0.f, 0.f);
+
+			// 카메라의 위치를 변경하여 흔들림을 시뮬레이션합니다.
+			CameraManager->PlayWorldCameraShake(GetWorld(), UCameraShakeBase::StaticClass(), );
+		}
+	}
+}
+
+void USkillWater::Attack(ATrainer* trainer)
+{
+	APokemon* target = trainer->currentPokemon;
+
+	UE_LOG(LogTemp, Warning, TEXT("Attack"));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, "Attack");
+
+	if(trainer != nullptr)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan,trainer->GetActorLabel(true));
+		SpawnParticle(trainer);
+		DestroyParticle();
+	}
+	else
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, "oppo trainer == null");
 }
