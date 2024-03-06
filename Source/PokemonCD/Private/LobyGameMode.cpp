@@ -16,17 +16,14 @@ void ALobyGameMode::BeginPlay()
 	Super::BeginPlay();
 
 	GameInstance = Cast<UPokemonCDGameInstance>(GetGameInstance());
-	LobbyServerWidget = CreateWidget<ULobbyServerWidget>(GetWorld(), LobbyServerWidgetTemplate);
-	LobbyServerWidget->AddToViewport();
+	//LobbyServerWidget = CreateWidget<ULobbyServerWidget>(GetWorld(), LobbyServerWidgetTemplate);
+	//LobbyServerWidget->AddToViewport();
 }
 
 void ALobyGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
-	if(GameInstance)
-	{
-		GameInstance->UpdateNumPlayers(GameInstance->GetNumberPlayers() + 1);
-	}
+	
 
 }
 
@@ -34,10 +31,7 @@ void ALobyGameMode::Logout(AController* Exiting)
 {
 	Super::Logout(Exiting);
 
-	if (GameInstance)
-	{
-		GameInstance->UpdateNumPlayers(GameInstance->GetNumberPlayers() - 1);
-	}
+	
 }
 
 void ALobyGameMode::TravelLevel()

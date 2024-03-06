@@ -15,9 +15,11 @@ void ULobbyServerWidget::NativeConstruct()
 	Super::NativeConstruct();
 
 	CreateSessionButton->OnClicked.AddDynamic(this, &ULobbyServerWidget::CreateSession);
-	JoinSessionButton->OnClicked.AddDynamic(this, &ULobbyServerWidget::JoinSession);
-	BattleStartButton->OnClicked.AddDynamic(this, &ULobbyServerWidget::OpenBattleLevel);
+	JoinServerButton->OnClicked.AddDynamic(this, &ULobbyServerWidget::JoinSession);
+	ServerTravelButton->OnClicked.AddDynamic(this, &ULobbyServerWidget::ServerTravel);
+
 	PokemonGameInstanceSubSystem = GetGameInstance()->GetSubsystem<UPokemonGameInstanceSubSystem>();
+	GameInstance = Cast<UPokemonCDGameInstance>(GetWorld()->GetGameInstance());
 
 	
 	GameMode = Cast<ALobyGameMode>(GetWorld()->GetAuthGameMode());
@@ -25,27 +27,26 @@ void ULobbyServerWidget::NativeConstruct()
 
 void ULobbyServerWidget::CreateSession()
 {
-	if (PokemonGameInstanceSubSystem)
+	/*if (PokemonGameInstanceSubSystem)
 	{
 		PokemonGameInstanceSubSystem->CreateSession(2, FString("MatchType"));
-	}
+	}*/
+	GameInstance->OpenLobby();
 }
 
 void ULobbyServerWidget::JoinSession()
 {
-	if (PokemonGameInstanceSubSystem)
-	{
-		PokemonGameInstanceSubSystem->FindSession(30);
-	}
+	//if (GameMode)
+	//{
+	//	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, TEXT(" CreateSession")); // 화면출력
+	//	GameMode->TravelLevel();
+	//}
+	GameInstance->CallOpenLevel("192.168.240.92");
 }
 
-void ULobbyServerWidget::OpenBattleLevel()
+void ULobbyServerWidget::ServerTravel()
 {
-	if(GameMode)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, TEXT(" CreateSession")); // 화면출력
-		GameMode->TravelLevel();
-	}
+	GameInstance->ServerTravel();
 }
 
 void ULobbyServerWidget::UpdatePlayerCount(int32 PlayerCount)
