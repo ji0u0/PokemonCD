@@ -13,6 +13,7 @@ void UWidgetSkill::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	SwapButton->OnClicked.AddDynamic(this, &UWidgetSkill::ClickSwapButton);
 	firstSkill->OnClicked.AddDynamic(this, &UWidgetSkill::ClickFirstSkill);
 	secondSkill->OnClicked.AddDynamic(this, &UWidgetSkill::ClickSecondSkill);
 	thirdSkill->OnClicked.AddDynamic(this, &UWidgetSkill::ClickThirdSkill);
@@ -44,6 +45,16 @@ void UWidgetSkill::SetSkillName(APokemon* Pokemon)
 	{
 		fourthSkillName->SetText(FText::FromString(Pokemon->fourthSkill->skillName));
 	}
+}
+
+void UWidgetSkill::ClickSwapButton()
+{
+	trainer->currentPokemon->Destroy();
+
+	FTimerHandle timerHandle;
+	trainer->GetWorldTimerManager().SetTimer(timerHandle, [this]() {
+			trainer->SpawnPokemon(trainer->currentPokemon);
+		}, 1.f, false);
 }
 
 void UWidgetSkill::ClickFirstSkill()
