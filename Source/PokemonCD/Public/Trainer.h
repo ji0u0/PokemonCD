@@ -31,11 +31,11 @@ public:
 
 public:
 	// Components
-	/*UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere)
 	class UBoxComponent* BoxComponent;
 
 	UPROPERTY(EditAnywhere)
-	class UStaticMeshComponent* MeshComponent;*/
+	class UStaticMeshComponent* MeshComponent;
 
 	UPROPERTY(EditAnywhere)
 	class UArrowComponent* ThrowingPosition;
@@ -51,8 +51,8 @@ public:
 	/// 노은채
 	/// 몬스터볼 메시 추가
 	/// </summary>
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	class UStaticMeshComponent* BallComp;
+	/*UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	class USceneComponet* BallComp;*/
 
 	// 상대방
 	UPROPERTY(EditDefaultsOnly)
