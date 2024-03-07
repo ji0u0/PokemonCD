@@ -46,13 +46,13 @@ ATrainer::ATrainer()
 		TrainerSkelMeshComp->SetRelativeScale3D(FVector(0.3f));
 	}
 
-	/*BallComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BallComp"));
+	BallComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BallComp"));
 	BallComp->SetupAttachment(TrainerSkelMeshComp);
 	ConstructorHelpers::FObjectFinder<UStaticMesh> tempBallMesh(TEXT("/Script/Engine.StaticMesh'/Game/NEC/Model/PokeBall/NormalB/StaticMesh_NormalBall.StaticMesh_NormalBall'"));
 	if(tempBallMesh.Succeeded())
 	{
-		BallComp.setsk
-	}*/
+		;
+	}
 }
 
 // Called when the game starts or when spawned
