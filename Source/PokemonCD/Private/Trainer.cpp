@@ -34,13 +34,19 @@ ATrainer::ATrainer()
 
 	TrainerSkelMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComp"));
 	TrainerSkelMeshComp->SetupAttachment(RootComponent);
-	TrainerSkelMeshComp->SetRelativeRotation
+	TrainerSkelMeshComp->SetRelativeLocationAndRotation
 		(
-			/*FVector(0, 0, -80),*/
+			FVector(0, 0, 25),
 			FRotator(0, -90, 0)
 		);
-	TrainerSkelMeshComp->SetRelativeScale3D(FVector(0.3f));
+	TrainerSkelMeshComp->SetRelativeScale3D(FVector(0.1f));
 
+	handComp = CreateDefaultSubobject<USceneComponent>(TEXT("handComp"));
+	handComp->SetupAttachment(TrainerSkelMeshComp, TEXT("PokeBallPoint"));
+	handComp->SetRelativeLocationAndRotation(
+		FVector(-0.936682f, -80.906958f, 32.031394f),
+		FRotator(180, -90., 0));
+	handComp->SetRelativeScale3D(FVector(0.3f));
 }
 // Called when the game starts or when spawned
 /**
@@ -49,21 +55,41 @@ ATrainer::ATrainer()
 void ATrainer::BeginPlay()
 {
 	Super::BeginPlay();
+
 	// 1초 후 띄우고
 	FTimerHandle timerHandle;
 	GetWorldTimerManager().SetTimer(timerHandle, [this]() {
 			// 포켓몬을 소환한다
 			SpawnPokemon(firstPokemon);
+			AttachBall();
 			// 상대 트레이너를 찾는다
 			FindOpponentTrainer();
 		}, 1.f, false);
+
+}
+void ATrainer::AttachBall()
+{
+	auto mesh = MonsterBall->GetComponentByClass<UStaticMeshComponent>();
+	mesh->SetSimulatePhysics(false);
+	mesh->AttachToComponent(handComp, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("PokeBallPoint"));
+	isAttachBall = true;
+}
+
+void ATrainer::DetachBall()
+{
+	auto mesh = MonsterBall->GetComponentByClass<UStaticMeshComponent>();
+	if (nullptr == mesh)	return;
+	mesh->SetSimulatePhysics(true);
+	mesh->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
+	MonsterBall->Destroy();
+	SpawnPokemon(firstPokemon);
+	isAttachBall = false;
 }
 
 // Called every frame
 void ATrainer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input
@@ -72,10 +98,6 @@ void ATrainer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
-
-
-
-
 void ATrainer::FindOpponentTrainer()
 {
 	// 서버에서 상대 트레이너를 찾는다... 로 변경 요망
@@ -105,6 +127,7 @@ void ATrainer::SpawnPokemon(APokemon* pokemon)
 
 	// 몬스터볼 생성
 	MonsterBall = GetWorld()->SpawnActor<AMonsterBall>(MonsterBallFactory, ThrowingTransfrom);
+	MonsterBall->SetActorRelativeScale3D(FVector(0.1f));
 	if (MonsterBall == nullptr || pokemon == nullptr) return;
 
 	// 1초 후 포켓몬 소환

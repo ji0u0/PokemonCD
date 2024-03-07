@@ -48,6 +48,22 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	class USkeletalMeshComponent* TrainerSkelMeshComp;
 
+	/// <summary>
+	/// 노은채
+	/// 트레이너 핸드 소켓 추가 및 ball 추가
+	/// </summary>
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	class USceneComponent* handComp;
+
+	void AttachBall();
+	void DetachBall();
+
+	/// <summary>
+	/// 노은채
+	/// 애니메이션 조건
+	/// </summary>
+	UPROPERTY(EditDefaultsOnly)
+	bool isAttachBall;
 
 	// 상대방
 	UPROPERTY(EditDefaultsOnly)
@@ -92,8 +108,5 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UWidgetSkill* skillWidget;
-
-
-
 
 };
