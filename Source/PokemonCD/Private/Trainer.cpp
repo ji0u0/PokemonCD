@@ -147,7 +147,7 @@ void ATrainer::SpawnPokemon(APokemon* pokemon)
 		// currentPokemon
 		currentPokemon = pokemon;
 		skillWidget->SetSkillName(currentPokemon);
-		}, 1.0f, false);
+		}, 2.0f, false);
 }
 
 void ATrainer::CreateWidget()

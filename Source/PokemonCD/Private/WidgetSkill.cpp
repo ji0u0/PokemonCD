@@ -28,11 +28,22 @@ void UWidgetSkill::NativeConstruct()
 
 void UWidgetSkill::SetSkillName(APokemon* Pokemon)
 {
-	firstSkillName->SetText(FText::FromString(Pokemon->firstSkill->skillName));
-	if(Pokemon->secondSkill == nullptr)	return;
-	secondSkillName->SetText(FText::FromString(Pokemon->secondSkill->skillName));
-	thirdSkillName->SetText(FText::FromString(Pokemon->thirdSkill->skillName));
-	fourthSkillName->SetText(FText::FromString(Pokemon->fourthSkill->skillName));
+	if(Pokemon->firstSkill)
+	{
+		firstSkillName->SetText(FText::FromString(Pokemon->firstSkill->skillName));
+	}
+	if(Pokemon->secondSkill)
+	{
+		secondSkillName->SetText(FText::FromString(Pokemon->secondSkill->skillName));
+	}
+	if(Pokemon->thirdSkill)
+	{
+		thirdSkillName->SetText(FText::FromString(Pokemon->thirdSkill->skillName));
+	}
+	if(Pokemon->fourthSkill)
+	{
+		fourthSkillName->SetText(FText::FromString(Pokemon->fourthSkill->skillName));
+	}
 }
 
 void UWidgetSkill::ClickFirstSkill()
