@@ -17,14 +17,23 @@ class POKEMONCD_API ATestGameMode : public AGameMode
 	ATestGameMode();
 	virtual void BeginPlay() override;
 
+	
 public:
 
 	void SpawnPlayerCharacter();
 	void SetValue();
 
+	void PossessPlayerCharacter(APlayerController* NewPlayer);
+
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class ATestLobyPlayer> LobbyPlayerTemplate;
 
+	ATestLobyPlayer* Authority;
+	ATestLobyPlayer* Autonomous;
+
+	TArray<APlayerController*> ControllerArray;
+
+protected:
 	FTransform AuthorityTransform;
 	FTransform AutonomousProxyTransform;
 
@@ -36,4 +45,6 @@ public:
 	FQuat AutonomousProxySpawnRotate;
 
 	FVector PlayerScale;
+
+	virtual void PostLogin(APlayerController* NewPlayer) override;
 };
