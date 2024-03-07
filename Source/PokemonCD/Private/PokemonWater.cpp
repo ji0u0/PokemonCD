@@ -20,5 +20,11 @@ APokemonWater::APokemonWater()
 
 	// Skill Components
 	waterSkill = CreateDefaultSubobject<USkillWater>(TEXT("WaterSkill"));
-	skillfirst = waterSkill;
+	firstSkill = waterSkill;
+
+	// Set info
+	pokemonName = "Sobble";
+	pokemonType = Type::Water;
+	pokemonMaxHealth = 150;
+	pokemonCurHealth = pokemonMaxHealth;
 }

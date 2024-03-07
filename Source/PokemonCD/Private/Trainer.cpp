@@ -5,6 +5,7 @@
 
 #include "MonsterBall.h"
 #include "Pokemon.h"
+#include "WidgetSkill.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -39,10 +40,14 @@ ATrainer::ATrainer()
 void ATrainer::BeginPlay()
 {
 	Super::BeginPlay();
-	// 1초 후 포켓몬 소환
+	
+	// 1초 후 띄우고
 	FTimerHandle timerHandle;
 	GetWorldTimerManager().SetTimer(timerHandle, [this]() {
+			// 포켓몬을 소환한다
 			SpawnPokemon(firstPokemon);
+			// 상대 트레이너를 찾는다
+			FindOpponentTrainer();
 		}, 1.f, false);
 }
 
@@ -60,6 +65,29 @@ void ATrainer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void ATrainer::FindOpponentTrainer()
+{
+	// 서버에서 상대 트레이너를 찾는다... 로 변경 요망
+
+	// 월드 상에 배치되어있는 액터들을 담아놓을 배열 선언
+	TArray<AActor*> ActorsToFind;
+	if (GetWorld())
+	{
+		// 월드 상에 존재하는 액터 중 AEnemy 클래스인 액터를 배열에 저장
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATrainer::StaticClass(), ActorsToFind);
+	}
+
+	// 액터 클래스 타겟 선언, 배열 전체 탐색
+	for (AActor* target : ActorsToFind)
+	{
+		//타겟이 Null이 아니면 Enemy 캐스팅
+		if (target != nullptr && target != this)
+		{
+			oppoTrainer = Cast<ATrainer>(target);
+		}
+	}
+}
+
 void ATrainer::SpawnPokemon(APokemon* pokemon)
 {
 	FTransform ThrowingTransfrom = ThrowingPosition->GetComponentTransform();
@@ -68,13 +96,20 @@ void ATrainer::SpawnPokemon(APokemon* pokemon)
 	MonsterBall = GetWorld()->SpawnActor<AMonsterBall>(MonsterBallFactory, ThrowingTransfrom);
 	if (MonsterBall == nullptr || pokemon == nullptr) return;
 
-	// n초 후 포켓몬 소환
+	// 1초 후 포켓몬 소환
 	FTimerHandle timerHandle;
 	GetWorldTimerManager().SetTimer(timerHandle, [this, pokemon]() {
+		// 몬스터볼
 		FTransform MonsterBallTransform = MonsterBall->GetActorTransform();
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SpawnParticle, MonsterBallTransform.GetLocation());
+
+		// 포켓몬 소환(?)
 		pokemon->SetActorLocation(MonsterBallTransform.GetLocation());
 		MonsterBall->Destroy();
+
+		// currentPokemon
+		currentPokemon = pokemon;
+		skillWidget->SetSkillName(currentPokemon);
 		}, 1.0f, false);
 }
 

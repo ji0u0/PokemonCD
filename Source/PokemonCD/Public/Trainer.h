@@ -6,6 +6,9 @@
 #include "GameFramework/Pawn.h"
 #include "Trainer.generated.h"
 
+
+
+
 UCLASS()
 class POKEMONCD_API ATrainer : public APawn
 {
@@ -36,6 +39,12 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	class UArrowComponent* ThrowingPosition;
+
+	// 상대방
+	UPROPERTY(EditDefaultsOnly)
+	class ATrainer* oppoTrainer;
+
+	void FindOpponentTrainer();
 
 	// 소유 포켓몬
 	UPROPERTY(EditDefaultsOnly)
@@ -69,13 +78,13 @@ public:
 	UFUNCTION()
 	void CreateWidget();
 
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class UMainWidget> mainWidgetFactory;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UWidgetMain* mainWidget;
 
-	UPROPERTY(BlueprintReadWrite)
-	class UMainWidget* mainWidget;
-
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UWidgetSkill* skillWidget;
+
+
+
 
 };
