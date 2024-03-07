@@ -41,15 +41,7 @@ ATrainer::ATrainer()
 		);
 	TrainerSkelMeshComp->SetRelativeScale3D(FVector(0.3f));
 
-	/*BallComp = CreateDefaultSubobject<USceneComponent>(TEXT("BallComp"));
-	BallComp->SetupAttachment(GetMesh);
-	ConstructorHelpers::FObjectFinder<UStaticMesh> tempBallMesh(TEXT("/Script/Engine.StaticMesh'/Game/NEC/Model/PokeBall/NormalB/StaticMesh_NormalBall.StaticMesh_NormalBall'"));
-	if(tempBallMesh.Succeeded())
-	{
-		;
-	}*/
 }
-
 // Called when the game starts or when spawned
 /**
  * 
@@ -57,7 +49,6 @@ ATrainer::ATrainer()
 void ATrainer::BeginPlay()
 {
 	Super::BeginPlay();
-	
 	// 1초 후 띄우고
 	FTimerHandle timerHandle;
 	GetWorldTimerManager().SetTimer(timerHandle, [this]() {
@@ -81,6 +72,9 @@ void ATrainer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
+
+
+
 
 void ATrainer::FindOpponentTrainer()
 {

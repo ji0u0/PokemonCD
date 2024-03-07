@@ -47,12 +47,7 @@ public:
 	/// </summary>
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	class USkeletalMeshComponent* TrainerSkelMeshComp;
-	/// <summary>
-	/// 노은채
-	/// 몬스터볼 메시 추가
-	/// </summary>
-	/*UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	class USceneComponet* BallComp;*/
+
 
 	// 상대방
 	UPROPERTY(EditDefaultsOnly)
