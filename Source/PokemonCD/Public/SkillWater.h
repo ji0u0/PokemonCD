@@ -6,9 +6,7 @@
 #include "Skill.h"
 #include "SkillWater.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class POKEMONCD_API USkillWater : public USkill
 {
@@ -17,10 +15,14 @@ class POKEMONCD_API USkillWater : public USkill
 public:
 	USkillWater();
 
-	void SpawnParticle(class APokemon* target);
-	void DestroyParticle();
+	
 
-	void WaterAttack(class APokemon* target);
+	UFUNCTION()
+	virtual void Attack(ATrainer* trainer) override;
+
+	void SpawnParticle(AActor* target);
+	void DestroyParticle();
+	void CameraShake();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float TimeToDestroy = 1.5;
@@ -33,4 +35,6 @@ public:
 	class UParticleSystemComponent* ParticleComp;
 
 	FTimerHandle SkillTimer;
+
+
 };

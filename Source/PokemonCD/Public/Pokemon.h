@@ -9,9 +9,10 @@
 UENUM(BlueprintType)
 enum class Type : uint8
 {
-	grass UMETA(DisplayName = "Grass"),
-	fire UMETA(DisplayName = "Fire"),
-	water UMETA(DisplayName = "Water")
+	Normal UMETA(DisplayName = "Nrass"),
+	Grass UMETA(DisplayName = "Grass"),
+	Fire UMETA(DisplayName = "Fire"),
+	Water UMETA(DisplayName = "Water")
 };
 
 UCLASS()
@@ -34,12 +35,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	// Target¿ª ¿˙¿Â
-	UFUNCTION(BlueprintCallable)
-	void FindTarget();
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	class AEnemy* Target;
+	UPROPERTY(EditDefaultsOnly)
+	class ATrainer* OwnedTrainer;
 
 	///// status /////
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
@@ -49,7 +46,10 @@ public:
 	Type pokemonType;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	int pokemonHealth;
+	int pokemonMaxHealth;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	int pokemonCurHealth;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float pokemonAttack;
@@ -62,14 +62,15 @@ public:
 
 	///// Skill /////
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	class USkill* skillfirst;
+	class USkill* firstSkill;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	class USkill* skillsecond;
+	class USkill* secondSkill;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	class USkill* skillthird;
+	class USkill* thirdSkill;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	class USkill* skillfourth;
+	class USkill* fourthSkill;
+
 };

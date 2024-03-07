@@ -9,12 +9,24 @@
 /**
  * 
  */
+
+DECLARE_DELEGATE_OneParam(FStringDelegate, FString);
+
+
 UCLASS()
 class POKEMONCD_API UWidgetSkill : public UUserWidget
 {
 	GENERATED_BODY()
 
 public:
+	virtual void NativeConstruct() override;
+
+	/*UPROPERTY(EditDefaultsOnly)
+	class APlayerController* pc;*/
+
+	UPROPERTY(EditDefaultsOnly)
+	class ATrainer* trainer;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UButton* firstSkill;
 
@@ -38,4 +50,19 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UTextBlock* fourthSkillName;
+
+	void SetSkillName(APokemon* Pokemon);
+
+	UFUNCTION()
+	void ClickFirstSkill();
+
+	UFUNCTION()
+	void ClickSecondSkill();
+
+	UFUNCTION()
+	void ClickThirdSkill();
+
+	UFUNCTION()
+	void ClickFourthSkill();
+
 };
