@@ -5,6 +5,7 @@
 
 #include "MonsterBall.h"
 #include "Pokemon.h"
+#include "TrainerAnimInstance.h"
 #include "WidgetSkill.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
@@ -61,7 +62,6 @@ void ATrainer::BeginPlay()
 	GetWorldTimerManager().SetTimer(timerHandle, [this]() {
 			// 포켓몬을 소환한다
 			SpawnPokemon(firstPokemon);
-			AttachBall();
 			// 상대 트레이너를 찾는다
 			FindOpponentTrainer();
 		}, 1.f, false);
@@ -72,7 +72,8 @@ void ATrainer::AttachBall()
 	auto mesh = MonsterBall->GetComponentByClass<UStaticMeshComponent>();
 	mesh->SetSimulatePhysics(false);
 	mesh->AttachToComponent(handComp, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("PokeBallPoint"));
-	isAttachBall = true;
+	auto anim = Cast<UTrainerAnimInstance>(TrainerSkelMeshComp->GetAnimInstance());
+	anim->PlayThrowMontage();
 }
 
 void ATrainer::DetachBall()
@@ -82,8 +83,10 @@ void ATrainer::DetachBall()
 	mesh->SetSimulatePhysics(true);
 	mesh->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
 	MonsterBall->Destroy();
-	SpawnPokemon(firstPokemon);
-	isAttachBall = false;
+
+	FTransform ThrowingTransfrom = ThrowingPosition->GetComponentTransform();
+	MonsterBall = GetWorld()->SpawnActor<AMonsterBall>(MonsterBallFactory, ThrowingTransfrom);
+	MonsterBall->SetActorRelativeScale3D(FVector(0.1f));
 }
 
 // Called every frame
@@ -127,9 +130,9 @@ void ATrainer::SpawnPokemon(APokemon* pokemon)
 
 	// 몬스터볼 생성
 	MonsterBall = GetWorld()->SpawnActor<AMonsterBall>(MonsterBallFactory, ThrowingTransfrom);
-	MonsterBall->SetActorRelativeScale3D(FVector(0.1f));
+	AttachBall();
+	MonsterBall->SetActorRelativeScale3D(FVector(1.f));
 	if (MonsterBall == nullptr || pokemon == nullptr) return;
-
 	// 1초 후 포켓몬 소환
 	FTimerHandle timerHandle;
 	GetWorldTimerManager().SetTimer(timerHandle, [this, pokemon]() {

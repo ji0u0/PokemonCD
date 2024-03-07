@@ -19,19 +19,22 @@ void UTrainerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	if(nullptr == trainer) return;
 
-	isHasBall = trainer->isAttachBall ;
+	isHasBall = trainer->isAttachBall;
 	
+}
+
+void UTrainerAnimInstance::PlayThrowMontage()
+{
+	if(nullptr == throwMontage) return;
+	Montage_Play(throwMontage);
 }
 
 void UTrainerAnimInstance::AnimNotify_ThrowBall()
 {
-	if(isHasBall)
-	{
-		trainer->DetachBall();
-	}
+	trainer->DetachBall();
 }
 
-void UTrainerAnimInstance::AnimNotify_EndThrowBall()
+/*void UTrainerAnimInstance::AnimNotify_EndThrowBall()
 {
 	isHasBall = false;
-}
+}*/

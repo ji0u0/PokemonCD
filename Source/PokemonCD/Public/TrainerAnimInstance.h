@@ -23,9 +23,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	bool isHasBall;
 
+	UPROPERTY(EditDefaultsOnly)
+	class UAnimMontage* throwMontage;
+
+	void PlayThrowMontage();
+
 	UFUNCTION()
 	void AnimNotify_ThrowBall();
 
-	UFUNCTION()
-	void AnimNotify_EndThrowBall();
+	/*UFUNCTION()
+	void AnimNotify_EndThrowBall();*/
 };
