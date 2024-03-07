@@ -40,7 +40,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UArrowComponent* ThrowingPosition;
 
-<<<<<<< HEAD
+
 	/// <summary>
 	/// 노은채
 	/// 트레이너 메시 추가
@@ -53,13 +53,12 @@ public:
 	/// </summary>
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	class UStaticMeshComponent* BallComp;
-=======
+
 	// 상대방
 	UPROPERTY(EditDefaultsOnly)
 	class ATrainer* oppoTrainer;
 
 	void FindOpponentTrainer();
->>>>>>> 028733565900bd80799c24058db36fe845426ec4
 
 	// 소유 포켓몬
 	UPROPERTY(EditDefaultsOnly)
