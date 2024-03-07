@@ -6,6 +6,9 @@
 #include "GameFramework/Pawn.h"
 #include "Trainer.generated.h"
 
+
+
+
 UCLASS()
 class POKEMONCD_API ATrainer : public APawn
 {
@@ -75,13 +78,13 @@ public:
 	UFUNCTION()
 	void CreateWidget();
 
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class UMainWidget> mainWidgetFactory;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UWidgetMain* mainWidget;
 
-	UPROPERTY(BlueprintReadWrite)
-	class UMainWidget* mainWidget;
-
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UWidgetSkill* skillWidget;
+
+
+
 
 };

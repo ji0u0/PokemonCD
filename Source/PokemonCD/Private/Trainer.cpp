@@ -5,6 +5,7 @@
 
 #include "MonsterBall.h"
 #include "Pokemon.h"
+#include "WidgetSkill.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -101,10 +102,14 @@ void ATrainer::SpawnPokemon(APokemon* pokemon)
 		// 몬스터볼
 		FTransform MonsterBallTransform = MonsterBall->GetActorTransform();
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SpawnParticle, MonsterBallTransform.GetLocation());
+
+		// 포켓몬 소환(?)
 		pokemon->SetActorLocation(MonsterBallTransform.GetLocation());
 		MonsterBall->Destroy();
+
 		// currentPokemon
 		currentPokemon = pokemon;
+		skillWidget->SetSkillName(currentPokemon);
 		}, 1.0f, false);
 }
 

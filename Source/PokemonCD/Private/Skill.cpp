@@ -3,7 +3,9 @@
 
 #include "Skill.h"
 
+#include "Pokemon.h"
 #include "Trainer.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
 USkill::USkill()
@@ -21,16 +23,5 @@ void USkill::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+
 }
-
-
-// Called every frame
-void USkill::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
-}
-

@@ -9,6 +9,10 @@
 /**
  * 
  */
+
+DECLARE_DELEGATE_OneParam(FStringDelegate, FString);
+
+
 UCLASS()
 class POKEMONCD_API UWidgetSkill : public UUserWidget
 {
@@ -47,7 +51,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UTextBlock* fourthSkillName;
 
-	void SetSkillName(FString first, FString second, FString third, FString fourth);
+	void SetSkillName(APokemon* Pokemon);
 
 	UFUNCTION()
 	void ClickFirstSkill();
@@ -60,4 +64,5 @@ public:
 
 	UFUNCTION()
 	void ClickFourthSkill();
+
 };

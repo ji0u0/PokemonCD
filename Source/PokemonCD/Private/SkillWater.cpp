@@ -5,8 +5,12 @@
 
 #include "Pokemon.h"
 #include "Trainer.h"
+#include "WidgetSkill.h"
+#include "Components/WidgetComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
+
+#include "GameFramework/PlayerController.h"
 
 USkillWater::USkillWater()
 {
@@ -39,14 +43,23 @@ void USkillWater::SpawnParticle(AActor* target)
 
 void USkillWater::DestroyParticle()
 {
-	if (ParticleComp != nullptr)
+	//my trainer local인지 확인
+	// if (MyTrainer->skillWidget && MyTrainer->GetController()->IsLocalController())
+	APokemon* pokemon = Cast<APokemon>(GetOwner());
+
+	if(pokemon)
 	{
-		// ParticleComp->DestroyComponent();
+		pokemon->OwnedTrainer->skillWidget->SetVisibility(ESlateVisibility::Visible);
 	}
+	/*if (MyTrainer->skillWidget && MyTrainer->GetController()->IsLocalController())
+	{
+		MyTrainer->skillWidget->SetVisibility(ESlateVisibility::Visible);
+	}*/
 }
 
 void USkillWater::CameraShake()
 {
+	// 안됨...
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 	if(PlayerController)
 	{
@@ -57,7 +70,8 @@ void USkillWater::CameraShake()
 			FVector ShakeOffset = FVector(10.f, 0.f, 0.f);
 
 			// 카메라의 위치를 변경하여 흔들림을 시뮬레이션합니다.
-			CameraManager->PlayWorldCameraShake(GetWorld(), UCameraShakeBase::StaticClass(), );
+			/*CameraManager->PlayWorldCameraShake(GetWorld(), UCameraShakeBase::StaticClass(), GetOwner()->GetActorLocation(),
+			0.f, 1000.f, false);*/
 		}
 	}
 }
@@ -66,14 +80,11 @@ void USkillWater::Attack(ATrainer* trainer)
 {
 	APokemon* target = trainer->currentPokemon;
 
-	UE_LOG(LogTemp, Warning, TEXT("Attack"));
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, "Attack");
-
 	if(trainer != nullptr)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan,trainer->GetActorLabel(true));
 		SpawnParticle(trainer);
-		DestroyParticle();
 	}
 	else
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, "oppo trainer == null");

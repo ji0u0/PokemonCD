@@ -22,9 +22,21 @@ void UWidgetChoosePokemon::CompleteUI()
 	trainer = GetWorld()->SpawnActor<ATrainer>(trainerFactory, trainerLoc, trainerRot);
 
 	// trainer -> pokemon »ý¼º
-	trainer->firstPokemon = GetWorld()->SpawnActor<APokemon>(firstFactory, firstLoc, FRotator::ZeroRotator);
-	trainer->secondPokemon = GetWorld()->SpawnActor<APokemon>(secondFactory, secondLoc, FRotator::ZeroRotator);
+	if(firstFactory)
+	{
+		trainer->firstPokemon = GetWorld()->SpawnActor<APokemon>(firstFactory, firstLoc, FRotator::ZeroRotator);
+		trainer->firstPokemon->OwnedTrainer = trainer;
+	}
+	if (secondFactory)
+	{
+		trainer->secondPokemon = GetWorld()->SpawnActor<APokemon>(secondFactory, secondLoc, FRotator::ZeroRotator);
+		trainer->secondPokemon->OwnedTrainer = trainer;
+	}
+	if (thirdFactory)
+	{
 	trainer->thirdPokemon = GetWorld()->SpawnActor<APokemon>(thirdFactory, thirdLoc, FRotator::ZeroRotator);
+	trainer->thirdPokemon->OwnedTrainer = trainer;
+	}
 
 	// Possess Player Controller
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
