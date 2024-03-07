@@ -7,6 +7,11 @@
 #include "Skill.generated.h"
 
 
+
+
+
+class ATrainer;
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class POKEMONCD_API USkill : public UActorComponent
 {
@@ -20,8 +25,11 @@ public:
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	UPROPERTY(EditDefaultsOnly)
+	FString skillName = "Default";
 
-		
+	virtual void Attack(ATrainer* trainer) {}
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class ATrainer* MyTrainer;
 };

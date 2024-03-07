@@ -6,6 +6,9 @@
 #include "GameFramework/Pawn.h"
 #include "Trainer.generated.h"
 
+
+
+
 UCLASS()
 class POKEMONCD_API ATrainer : public APawn
 {
@@ -37,6 +40,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UArrowComponent* ThrowingPosition;
 
+<<<<<<< HEAD
 	/// <summary>
 	/// 노은채
 	/// 트레이너 메시 추가
@@ -49,6 +53,13 @@ public:
 	/// </summary>
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	class UStaticMeshComponent* BallComp;
+=======
+	// 상대방
+	UPROPERTY(EditDefaultsOnly)
+	class ATrainer* oppoTrainer;
+
+	void FindOpponentTrainer();
+>>>>>>> 028733565900bd80799c24058db36fe845426ec4
 
 	// 소유 포켓몬
 	UPROPERTY(EditDefaultsOnly)
@@ -82,13 +93,13 @@ public:
 	UFUNCTION()
 	void CreateWidget();
 
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class UMainWidget> mainWidgetFactory;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UWidgetMain* mainWidget;
 
-	UPROPERTY(BlueprintReadWrite)
-	class UMainWidget* mainWidget;
-
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UWidgetSkill* skillWidget;
+
+
+
 
 };

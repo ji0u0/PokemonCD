@@ -3,7 +3,6 @@
 
 #include "MainWidget.h"
 
-#include "SkillWidget.h"
 #include "StatusWidget.h"
 #include "Components/CanvasPanel.h"
 #include "Components/CanvasPanelSlot.h"
@@ -24,12 +23,4 @@ void UMainWidget::NativeConstruct()
 	oppoStatusWidget = CreateWidget<UStatusWidget>(GetWorld(), statusWidgetFactory);
 	UCanvasPanelSlot* OpponentStatusSlot = OpponentStatus->AddChildToCanvas(oppoStatusWidget);
 	OpponentStatusSlot->SetSize(FVector2D(360, 240));
-	
-	// Skill Box 추가
-	for(int i = 0; i < 4; i++) {
-		skillWidget = CreateWidget<USkillWidget>(GetWorld(), skillWidgetFactory);
-		skillWidget->InitValue(this, i, "스킬 입력");
-		UVerticalBoxSlot* SkillBoxSlot = SkillBox->AddChildToVerticalBox(skillWidget);
-		SkillBoxSlot->SetSize(FSlateChildSize (ESlateSizeRule::Type::Fill));
-	}
 }
