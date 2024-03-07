@@ -3,6 +3,8 @@
 
 #include "TestGameMode.h"
 
+#include "GameFramework/GameStateBase.h"
+#include "GameFramework/PlayerState.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -15,40 +17,30 @@ void ATestGameMode::BeginPlay()
 {
     Super::BeginPlay();
 
+    UE_LOG(LogTemp, Warning, TEXT("BeginPlay"))
+
+    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+    {
+        APlayerController* PlayerController = It->Get();
+        if (PlayerController)
+        {
+            UE_LOG(LogTemp, Warning, TEXT("PlayerController logged in: %s"), *PlayerController->GetName());
+        }
+    }
+
+	UE_LOG(LogTemp, Warning, TEXT("BeginPlay finished"));
+
     SpawnPlayerCharacter();
 }
 
-
-void ATestGameMode::SpawnPlayerCharacter()
+void ATestGameMode::PostLogin(APlayerController* NewPlayer)
 {
-    //Spawn Authority and Autonomous Character
-    FActorSpawnParameters SpawnParams;
-    SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-    SpawnParams.bNoFail = true;
+    Super::PostLogin(NewPlayer);
 
-    ATestLobyPlayer* Authority = GetWorld()->SpawnActor<ATestLobyPlayer>(LobbyPlayerTemplate, AuthorityTransform, SpawnParams);
+    UE_LOG(LogTemp, Warning, TEXT("PostLogin "));
+    UE_LOG(LogTemp, Warning, TEXT("%s logged in "), *NewPlayer->GetName());
 
-    //if(Authority){UE_LOG(LogTemp, Warning, TEXT("%s"), Authority != nullptr ? TEXT("spawn") : TEXT("no spawn"))}
-
-    ATestLobyPlayer* Autonomous = GetWorld()->SpawnActor<ATestLobyPlayer>(LobbyPlayerTemplate, AutonomousProxyTransform, SpawnParams);
-
-    //if (Autonomous) { UE_LOG(LogTemp, Warning, TEXT("%s"), Autonomous != nullptr ? TEXT("spawn") : TEXT("no spawn")) }
-
-    //Possess each Character
-
-    if (Authority->GetLocalRole() == ROLE_Authority)
-    {
-        APlayerController* HostController = GetWorld()->GetFirstPlayerController();
-        HostController->Possess(Authority);
-    }
-    else if (Autonomous->GetLocalRole() == ROLE_AutonomousProxy)
-    {
-        APlayerController* ClientController = GetWorld()->GetGameInstance()->GetFirstLocalPlayerController();
-        if (ClientController)
-        {
-            ClientController->Possess(Autonomous);
-        }
-    }
+    PossessPlayerCharacter(NewPlayer);
 }
 
 void ATestGameMode::SetValue()
@@ -63,11 +55,33 @@ void ATestGameMode::SetValue()
     AuthorityTransform.SetScale3D(PlayerScale);
 
     AutonomousProxySpawnLoc = FVector(1000, 0, 0);
-    AutonomousProxySpawnRotate = FQuat(0, 0, 0, 1);
+    AutonomousProxySpawnRotate = FQuat(0, 0, 180, 1);
 
 
     AutonomousProxyTransform.SetLocation(AutonomousProxySpawnLoc);
     AutonomousProxyTransform.SetRotation(AutonomousProxySpawnRotate);
     AutonomousProxyTransform.SetScale3D(PlayerScale);
+
 }
 
+
+
+void ATestGameMode::SpawnPlayerCharacter()
+{
+    //Spawn Authority and Autonomous Character
+    FActorSpawnParameters SpawnParams;
+    SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+    SpawnParams.bNoFail = true;
+
+    Authority = GetWorld()->SpawnActor<ATestLobyPlayer>(LobbyPlayerTemplate, AuthorityTransform, SpawnParams);
+
+
+    Autonomous = GetWorld()->SpawnActor<ATestLobyPlayer>(LobbyPlayerTemplate, AutonomousProxyTransform, SpawnParams);
+    
+}
+
+void ATestGameMode::PossessPlayerCharacter(APlayerController* NewPlayer)
+{
+    GetWorld()->GetFirstPlayerController()->Possess(Authority);
+    NewPlayer->Possess(Autonomous);
+}
