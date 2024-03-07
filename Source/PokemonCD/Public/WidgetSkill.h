@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Pokemon.h"
+#include "PokemonGameMode.h"
 #include "Blueprint/UserWidget.h"
 #include "WidgetSkill.generated.h"
 
@@ -10,6 +12,7 @@
  * 
  */
 
+class APokemon;
 DECLARE_DELEGATE_OneParam(FStringDelegate, FString);
 
 
@@ -24,8 +27,13 @@ public:
 	/*UPROPERTY(EditDefaultsOnly)
 	class APlayerController* pc;*/
 
+	class APokemonGameMode* PokemonGameMode;
+
 	UPROPERTY(EditDefaultsOnly)
 	class ATrainer* trainer;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+	class UButton* SwapButton;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UButton* firstSkill;
@@ -54,7 +62,13 @@ public:
 	void SetSkillName(APokemon* Pokemon);
 
 	UFUNCTION()
+	void ClickSwapButton();
+
+	UFUNCTION()
 	void ClickFirstSkill();
+
+	UFUNCTION(Client, Reliable)
+	void InputSkill();
 
 	UFUNCTION()
 	void ClickSecondSkill();
@@ -64,5 +78,6 @@ public:
 
 	UFUNCTION()
 	void ClickFourthSkill();
+
 
 };

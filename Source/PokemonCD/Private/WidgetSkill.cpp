@@ -12,7 +12,12 @@
 void UWidgetSkill::NativeConstruct()
 {
 	Super::NativeConstruct();
+<<<<<<< HEAD
+	
+=======
 
+	SwapButton->OnClicked.AddDynamic(this, &UWidgetSkill::ClickSwapButton);
+>>>>>>> fa035a90e707ee172ff735b93fe320fab9d14587
 	firstSkill->OnClicked.AddDynamic(this, &UWidgetSkill::ClickFirstSkill);
 	secondSkill->OnClicked.AddDynamic(this, &UWidgetSkill::ClickSecondSkill);
 	thirdSkill->OnClicked.AddDynamic(this, &UWidgetSkill::ClickThirdSkill);
@@ -24,15 +29,47 @@ void UWidgetSkill::NativeConstruct()
 		
 	else UE_LOG(LogTemp, Warning, TEXT("No Controller"));
 
+	//PokemonGameMode = GetWorld()->GetAuthGameMode<APokemonGameMode>();
+
 }
 
 void UWidgetSkill::SetSkillName(APokemon* Pokemon)
 {
-	firstSkillName->SetText(FText::FromString(Pokemon->firstSkill->skillName));
-	if(Pokemon->secondSkill == nullptr)	return;
-	secondSkillName->SetText(FText::FromString(Pokemon->secondSkill->skillName));
-	thirdSkillName->SetText(FText::FromString(Pokemon->thirdSkill->skillName));
-	fourthSkillName->SetText(FText::FromString(Pokemon->fourthSkill->skillName));
+	if(Pokemon->firstSkill)
+	{
+		firstSkillName->SetText(FText::FromString(Pokemon->firstSkill->skillName));
+	}
+	if(Pokemon->secondSkill)
+	{
+		secondSkillName->SetText(FText::FromString(Pokemon->secondSkill->skillName));
+	}
+	if(Pokemon->thirdSkill)
+	{
+		thirdSkillName->SetText(FText::FromString(Pokemon->thirdSkill->skillName));
+	}
+	if(Pokemon->fourthSkill)
+	{
+		fourthSkillName->SetText(FText::FromString(Pokemon->fourthSkill->skillName));
+	}
+}
+
+void UWidgetSkill::ClickSwapButton()
+{
+	trainer->currentPokemon->Destroy();
+
+	FTimerHandle timerHandle;
+	trainer->GetWorldTimerManager().SetTimer(timerHandle, [this]() {
+			trainer->SpawnPokemon(trainer->currentPokemon);
+		}, 1.f, false);
+}
+
+void UWidgetSkill::InputSkill_Implementation()
+{
+	if(trainer->HasAuthority())
+		PokemonGameMode->AuthoritySelectSkill = true;
+
+	else
+		PokemonGameMode->AutonomousSelectSkill = true;
 }
 
 void UWidgetSkill::ClickFirstSkill()
@@ -40,13 +77,16 @@ void UWidgetSkill::ClickFirstSkill()
 	this->SetVisibility(ESlateVisibility::Hidden);
 	trainer->currentPokemon->firstSkill->Attack(trainer->oppoTrainer);
 	// SetVisibility(ESlateVisibility::Visible); 필요함
+	InputSkill_Implementation();
 }
+
 
 void UWidgetSkill::ClickSecondSkill()
 {
 	this->SetVisibility(ESlateVisibility::Hidden);
 	trainer->currentPokemon->secondSkill->Attack(trainer->oppoTrainer);
 	// SetVisibility(ESlateVisibility::Visible); 필요함
+	InputSkill_Implementation();
 }
 
 void UWidgetSkill::ClickThirdSkill()
@@ -54,6 +94,7 @@ void UWidgetSkill::ClickThirdSkill()
 	this->SetVisibility(ESlateVisibility::Hidden);
 	trainer->currentPokemon->thirdSkill->Attack(trainer->oppoTrainer);
 	// SetVisibility(ESlateVisibility::Visible); 필요함
+	InputSkill_Implementation();
 }
 
 void UWidgetSkill::ClickFourthSkill()
@@ -61,4 +102,5 @@ void UWidgetSkill::ClickFourthSkill()
 	this->SetVisibility(ESlateVisibility::Hidden);
 	trainer->currentPokemon->fourthSkill->Attack(trainer->oppoTrainer);
 	// SetVisibility(ESlateVisibility::Visible); 필요함
+	InputSkill_Implementation();
 }

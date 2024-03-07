@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PokemonGameMode.h"
+#include "WidgetChoosePokemon.h"
 #include "GameFramework/Pawn.h"
 #include "Trainer.generated.h"
 
@@ -30,6 +32,23 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
+
+	UPROPERTY()
+	class APokemonGameMode* GameMode;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UWidgetChoosePokemon> PokemonTemplate;
+
+	UPROPERTY()
+	class UWidgetChoosePokemon* PokemonChoose;
+
+	UFUNCTION()
+	void ChoosePokemonWidgetCreate();
+
+	UFUNCTION()
+	void CompleteChoose();
+
+
 	// Components
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* BoxComponent;
@@ -47,12 +66,23 @@ public:
 	/// </summary>
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	class USkeletalMeshComponent* TrainerSkelMeshComp;
+
 	/// <summary>
 	/// 노은채
-	/// 몬스터볼 메시 추가
+	/// 트레이너 핸드 소켓 추가 및 ball 추가
 	/// </summary>
-	/*UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	class USceneComponet* BallComp;*/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	class USceneComponent* handComp;
+
+	void AttachBall();
+	void DetachBall();
+
+	/// <summary>
+	/// 노은채
+	/// 애니메이션 조건
+	/// </summary>
+	UPROPERTY(EditDefaultsOnly)
+	bool isAttachBall;
 
 	// 상대방
 	UPROPERTY(EditDefaultsOnly)
@@ -86,19 +116,16 @@ public:
 	// spawn pokemon
 	void SpawnPokemon(APokemon* pokemon);
 
-	FVector pokemonLoc = FVector(-40.f, 830.f, 150.f);
+	//FVector pokemonLoc = FVector(-40.f, 830.f, 150.f);
 
-	///// Widget /////
-	UFUNCTION()
-	void CreateWidget();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UWidgetMain* mainWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UWidgetSkill* skillWidget;
+<<<<<<< HEAD
+=======
 
-
-
-
+>>>>>>> fa035a90e707ee172ff735b93fe320fab9d14587
 };
