@@ -28,14 +28,27 @@ public:
 
 public:
 	// Components
-	UPROPERTY(EditAnywhere)
+	/*UPROPERTY(EditAnywhere)
 	class UBoxComponent* BoxComponent;
 
 	UPROPERTY(EditAnywhere)
-	class UStaticMeshComponent* MeshComponent;
+	class UStaticMeshComponent* MeshComponent;*/
 
 	UPROPERTY(EditAnywhere)
 	class UArrowComponent* ThrowingPosition;
+
+	/// <summary>
+	/// 노은채
+	/// 트레이너 메시 추가
+	/// </summary>
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	class USkeletalMeshComponent* TrainerSkelMeshComp;
+	/// <summary>
+	/// 노은채
+	/// 몬스터볼 메시 추가
+	/// </summary>
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	class UStaticMeshComponent* BallComp;
 
 	// 소유 포켓몬
 	UPROPERTY(EditDefaultsOnly)

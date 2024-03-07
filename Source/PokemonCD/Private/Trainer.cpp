@@ -16,20 +16,42 @@ ATrainer::ATrainer()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	// Box Collision
+	/*// Box Collision
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
-	SetRootComponent(BoxComponent);
+	SetRootComponent(BoxComponent);*/
 
-	// Mesh Component
+	/*// Mesh Component
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
 	MeshComponent->SetupAttachment(RootComponent);
 	MeshComponent->SetRelativeLocation(FVector(0, 0, 70));
-	MeshComponent->SetRelativeScale3D(FVector(0.5, 0.5, 2.0));
+	MeshComponent->SetRelativeScale3D(FVector(0.5, 0.5, 2.0));*/
 
 	// Arrow Component - Throwing Position
 	ThrowingPosition = CreateDefaultSubobject<UArrowComponent>(TEXT("ThrowingPosition"));
 	ThrowingPosition->SetupAttachment(RootComponent);
 	ThrowingPosition->SetRelativeLocation(FVector(50, 0, 130));
+
+	TrainerSkelMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComp"));
+	TrainerSkelMeshComp->SetupAttachment(RootComponent);
+	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/NEC/Model/TrainerMan_ver1/TrainerMan.TrainerMan'"));
+	if(tempMesh.Succeeded())
+	{
+		TrainerSkelMeshComp->SetSkeletalMesh(tempMesh.Object);
+		TrainerSkelMeshComp->SetRelativeLocationAndRotation
+		(
+			FVector(0, 0, -80),
+			FRotator(0, -90, 0)
+		);
+		TrainerSkelMeshComp->SetRelativeScale3D(FVector(0.3f));
+	}
+
+	/*BallComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BallComp"));
+	BallComp->SetupAttachment(TrainerSkelMeshComp);
+	ConstructorHelpers::FObjectFinder<UStaticMesh> tempBallMesh(TEXT("/Script/Engine.StaticMesh'/Game/NEC/Model/PokeBall/NormalB/StaticMesh_NormalBall.StaticMesh_NormalBall'"));
+	if(tempBallMesh.Succeeded())
+	{
+		BallComp.setsk
+	}*/
 }
 
 // Called when the game starts or when spawned
