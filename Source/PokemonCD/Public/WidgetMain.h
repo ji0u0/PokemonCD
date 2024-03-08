@@ -17,6 +17,9 @@ class POKEMONCD_API UWidgetMain : public UUserWidget
 public:
 	virtual void NativeConstruct() override;
 
+	UPROPERTY(EditDefaultsOnly)
+	class ATrainer* trainer;
+
 	// Bind Widget
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UCanvasPanel* MyStatusPanel;
