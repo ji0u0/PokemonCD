@@ -7,13 +7,6 @@
 #include "PokemonGameMode.generated.h"
 
 
-
-enum class EGameState 
-{
-	SELECTED_POKEMON,
-	SELECT_SKILL,
-	BATTLE_PHASE
-};
 /**
  * 
  */
@@ -38,12 +31,7 @@ public :
 	TArray<APlayerController*> ControllerArray;
 
 	
-
-
-	bool AuthoritySelectPokemon = false;
-	bool AutonomousSelectPokemon = false;
-	bool AuthoritySelectSkill = false;
-	bool AutonomousSelectSkill = false;
+	
 
 	//<<<<<<< Updated upstream
 	UPROPERTY(EditDefaultsOnly)
@@ -60,7 +48,7 @@ public :
 
 	int32 tmp = 0;
 private:
-	EGameState State;
+	
 
 	void SpawnPlayerCharacter();
 	void SetValue();
@@ -68,12 +56,6 @@ private:
 	void PossessPlayerCharacter(APlayerController* NewPlayer);
 	void CheckPlayerLogin();
 
-
-	void SelectedPokemon();
-	void SelectSkill();
-	void BattlePhase();
-
-	void SetState(EGameState Next);
 
 	FTransform AuthorityTransform;
 	FTransform AutonomousProxyTransform;

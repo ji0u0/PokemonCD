@@ -23,20 +23,14 @@ void APokemonGameMode::StartPlay()
 void APokemonGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	//SpawnPlayerCharacter();
-	//CheckPlayerLogin();
+	
 }
 
 void APokemonGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	switch (State)
-	{
-	case EGameState::SELECTED_POKEMON:	SelectedPokemon();
-	case EGameState::SELECT_SKILL:		SelectSkill();
-	case EGameState::BATTLE_PHASE:		BattlePhase();
-	}
+	
 }
 
 void APokemonGameMode::PostLogin(APlayerController* NewPlayer)
@@ -45,10 +39,10 @@ void APokemonGameMode::PostLogin(APlayerController* NewPlayer)
 
 	PossessPlayerCharacter(NewPlayer);
 	UE_LOG(LogTemp, Warning, TEXT(" APokemonGameMode::PostLogin - %s logged in "), *NewPlayer->GetName());
-	
+
 
 	//PossessPlayerCharacter(NewPlayer);
-	SetState(EGameState::SELECTED_POKEMON);
+	
 
 }
 
@@ -115,7 +109,7 @@ void APokemonGameMode::PossessPlayerCharacter(APlayerController* NewPlayer)
 		UE_LOG(LogTemp, Warning, TEXT("%s Spawned Autonomous"), *Autonomous->GetName());
 	}
 
-	if(NewPlayer->HasAuthority() && NewPlayer->IsLocalPlayerController())
+	if (NewPlayer->HasAuthority() && NewPlayer->IsLocalPlayerController())
 	{
 		NewPlayer->Possess(Authority);
 		UE_LOG(LogTemp, Warning, TEXT("%s I Possess Authority"), *NewPlayer->GetName());
@@ -144,29 +138,6 @@ void APokemonGameMode::CheckPlayerLogin()
 	UE_LOG(LogTemp, Warning, TEXT("BeginPlay finished"));
 }
 
-void APokemonGameMode::SelectedPokemon()
-{
-	if (AuthoritySelectPokemon && AutonomousSelectPokemon)
-		SetState(EGameState::SELECT_SKILL);
-}
 
-void APokemonGameMode::SelectSkill()
-{
-	if (AuthoritySelectSkill && AutonomousSelectSkill)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("State SelectSkill"));
-		SetState(EGameState::BATTLE_PHASE);
-	}
-}
-
-void APokemonGameMode::BattlePhase()
-{
-
-}
-
-void APokemonGameMode::SetState(EGameState Next)
-{
-	State = Next;
-}
 
 
