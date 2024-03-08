@@ -26,11 +26,14 @@ public:
 
 	// Status Widget
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class UUserWidget> statusWidgetFactory;
+	TSubclassOf<class UWidgetStatus> statusWidgetFactory;
 
 	UPROPERTY(BlueprintReadOnly)
 	class UWidgetStatus* myStatus;
 
 	UPROPERTY(BlueprintReadOnly)
 	class UWidgetStatus* oppoStatus;
+
+	UFUNCTION()
+	void SetMyStatus(APokemon* pokemon);
 };
