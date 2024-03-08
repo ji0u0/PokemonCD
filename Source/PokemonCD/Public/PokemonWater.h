@@ -24,6 +24,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* MeshComponent;
 
+	UPROPERTY(EditAnywhere)
+	class USkeletalMeshComponent* SkelMeshComp;
+
 	// Skills
 	UPROPERTY(BlueprintReadWrite)
 	class USkillWater* waterSkill;

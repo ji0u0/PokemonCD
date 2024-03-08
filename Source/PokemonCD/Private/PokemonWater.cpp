@@ -18,6 +18,15 @@ APokemonWater::APokemonWater()
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
 	MeshComponent->SetupAttachment(RootComponent);
 
+	SkelMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComp"));
+	SkelMeshComp->SetupAttachment(RootComponent);
+	/*SkelMeshComp->SetRelativeLocationAndRotation
+	(
+		FVector(0, 0, 25),
+		FRotator(0, -90, 0)
+	);
+	SkelMeshComp->SetRelativeScale3D(FVector(0.1f));*/
+
 	// Skill Components
 	waterSkill = CreateDefaultSubobject<USkillWater>(TEXT("WaterSkill"));
 	firstSkill = waterSkill;
