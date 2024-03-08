@@ -24,6 +24,7 @@ void APokemon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	timeDeltaTime += DeltaTime;
 }
 
 // Called to bind functionality to input

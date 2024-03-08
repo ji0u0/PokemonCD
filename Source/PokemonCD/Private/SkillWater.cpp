@@ -15,7 +15,7 @@
 USkillWater::USkillWater()
 {
 	skillName = "Water Skill";
-	static ConstructorHelpers::FObjectFinder<UParticleSystem> ParticleSystem(TEXT("/Game/FXVarietyPack/Particles/P_ky_laser01"));
+	static ConstructorHelpers::FObjectFinder<UParticleSystem> ParticleSystem(TEXT("/Game/FXVarietyPack/Particles/P_ky_waterBallHit"));
 
 	// 파티클 시스템이 로드되었는지 확인 후 설정
 	if (ParticleSystem.Succeeded())
@@ -36,8 +36,20 @@ void USkillWater::SpawnParticle(AActor* target)
 
 	// Enemy의 Location을 가져와 그 위치에 파티클 스폰
 	ParticleComp = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SkillParticle, target->GetActorLocation());
-	
-	// 5초 후에 파티클을 지우도록 설정
+	/*myLoc = GetOwner()->GetActorLocation();
+	oppoLoc = target->GetActorLocation();
+	FTimerHandle timerHandle;
+	alpha = 0.f;
+	while (alpha <= 1.0f)
+	{
+		GetOwner()->GetWorldTimerManager().SetTimer(timerHandle, FTimerDelegate::CreateLambda([this]() {
+			FVector loc = FMath::Lerp(myLoc, oppoLoc, alpha);
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SkillParticle, loc);
+			alpha += 0.1f;
+			}), alpha, false);
+	}*/
+
+	// 5초 후에 skillWidget을 보이게 설정
 	GetOwner()->GetWorldTimerManager().SetTimer(SkillTimer, this, &USkillWater::DestroyParticle, TimeToDestroy, false);
 }
 
