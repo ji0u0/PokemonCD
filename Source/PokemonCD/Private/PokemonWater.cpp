@@ -42,10 +42,11 @@ APokemonWater::APokemonWater()
 void APokemonWater::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	AttackingAnim();
 }
 
 void APokemonWater::AttackingAnim()
 {
-	/*auto anim = Cast<UScorBunnyAnimInstance>(getmesh);
-	anim->PlayCheeringMontage();*/
+	auto anim = Cast<UScorBunnyAnimInstance>(SkelMeshComp->GetAnimInstance());
+	anim->PlayScorBunnyMontage();
 }
