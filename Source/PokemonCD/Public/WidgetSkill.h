@@ -72,4 +72,6 @@ public:
 	UFUNCTION()
 	void ClickFourthSkill();
 
+	//애니메이션(응원) 실행
+	void ClickTOPlayAnim();
 };

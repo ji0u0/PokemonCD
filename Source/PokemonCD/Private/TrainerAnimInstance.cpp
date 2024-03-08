@@ -29,6 +29,12 @@ void UTrainerAnimInstance::PlayThrowMontage()
 	Montage_Play(throwMontage);
 }
 
+void UTrainerAnimInstance::PlayCheeringMontage()
+{
+	if(nullptr == CheeringMontage) return;
+	Montage_Play(CheeringMontage);
+}
+
 void UTrainerAnimInstance::AnimNotify_ThrowBall()
 {
 	trainer->DetachBall();

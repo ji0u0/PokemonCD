@@ -58,6 +58,7 @@ void ATrainer::BeginPlay()
 {
 	Super::BeginPlay();
 
+
 	// 1초 후 띄우고
 	FTimerHandle timerHandle;
 	GetWorldTimerManager().SetTimer(timerHandle, [this]() {
