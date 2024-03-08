@@ -2,21 +2,20 @@
 
 
 #include "Trainer.h"
-
 #include "MonsterBall.h"
 #include "Pokemon.h"
 #include "TrainerAnimInstance.h"
-#include "WidgetMain.h"
 #include "WidgetSkill.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "WidgetChoosePokemon.h"
 
 
 // Sets default values
 ATrainer::ATrainer()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Box Collision
@@ -36,6 +35,21 @@ ATrainer::ATrainer()
 
 	TrainerSkelMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComp"));
 	TrainerSkelMeshComp->SetupAttachment(RootComponent);
+	TrainerSkelMeshComp->SetRelativeRotation
+	(
+		/*FVector(0, 0, -80),*/
+		FRotator(0, -90, 0)
+	);
+	TrainerSkelMeshComp->SetRelativeScale3D(FVector(0.3f));
+
+	/*BallComp = CreateDefaultSubobject<USceneComponent>(TEXT("BallComp"));
+	BallComp->SetupAttachment(GetMesh);
+	ConstructorHelpers::FObjectFinder<UStaticMesh> tempBallMesh(TEXT("/Script/Engine.StaticMesh'/Game/NEC/Model/PokeBall/NormalB/StaticMesh_NormalBall.StaticMesh_NormalBall'"));
+	if(tempBallMesh.Succeeded())
+	{
+		;
+	}*/
+
 	TrainerSkelMeshComp->SetRelativeLocationAndRotation
 		(
 			FVector(0, 0, 25),
@@ -50,6 +64,7 @@ ATrainer::ATrainer()
 		FRotator(180, -90., 0));
 	handComp->SetRelativeScale3D(FVector(0.3f));
 }
+
 // Called when the game starts or when spawned
 /**
  * 
@@ -57,17 +72,26 @@ ATrainer::ATrainer()
 void ATrainer::BeginPlay()
 {
 	Super::BeginPlay();
+	bReplicates = true;
+	GameMode = GetWorld()->GetAuthGameMode<APokemonGameMode>();
+	
 
 
-	// 1초 후 띄우고
-	FTimerHandle timerHandle;
-	GetWorldTimerManager().SetTimer(timerHandle, [this]() {
-			// 포켓몬을 소환한다
-			SpawnPokemon(firstPokemon);
-			// 상대 트레이너를 찾는다
-			FindOpponentTrainer();
-		}, 1.f, false);
 
+	//HasAuthority() ? PossesController() : ClientPossess_Implementation();
+	PossesController();
+	ClientPossess();
+	
+	//// 1초 후 띄우고
+	//FTimerHandle timerHandle;
+	//GetWorldTimerManager().SetTimer(timerHandle, [this]() {
+	//	// 포켓몬을 소환한다
+	//	SpawnPokemon(firstPokemon);
+	//	// 상대 트레이너를 찾는다
+	//	FindOpponentTrainer();
+	//	}, 1.f, false);
+
+	ChoosePokemonWidgetCreate();
 }
 void ATrainer::AttachBall()
 {
@@ -95,6 +119,12 @@ void ATrainer::DetachBall()
 void ATrainer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (GetController() == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s:controller null"), *this->GetName())
+			return;
+	}
 }
 
 // Called to bind functionality to input
@@ -103,6 +133,49 @@ void ATrainer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
+
+void ATrainer::ChoosePokemonWidgetCreate()
+{
+	PokemonChoose = CreateWidget<UWidgetChoosePokemon>(GetWorld(), PokemonTemplate);
+	PokemonChoose->AddToViewport(0);
+	PokemonChoose->trainer = this;
+}
+
+void ATrainer::CompleteChoose()
+{
+	if (GetController() == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("controller null"))
+			return;
+	}
+	//if (this->GetController()->HasAuthority())
+	//{
+	//	GameMode->AuthoritySelectPokemon = true;
+	//}
+	//else
+	//{
+	//	GameMode->AutonomousSelectPokemon = true;
+	//}
+}
+
+void ATrainer::PossesController()
+{
+	
+
+}
+
+void ATrainer::ClientPossess_Implementation()
+{
+	
+}
+
+
+//void ATrainer::CompleteChoose_Implementation()
+//{
+//	
+//
+//}
+
 void ATrainer::FindOpponentTrainer()
 {
 	// 서버에서 상대 트레이너를 찾는다... 로 변경 요망
@@ -149,27 +222,18 @@ void ATrainer::SpawnPokemon(APokemon* pokemon)
 		// currentPokemon
 		currentPokemon = pokemon;
 		skillWidget->SetSkillName(currentPokemon);
-		mainWidget->SetMyStatus(currentPokemon);
 		}, 2.0f, false);
 }
 
-void ATrainer::CreateWidget()
-{
-	// Main Widget 생성 및 표시
-	/*mainWidget = CreateWidget<UMainWidget>(GetWorld(), mainWidgetFactory);
 
-	if (mainWidget != nullptr)
-	{
-		mainWidget->AddToViewport();
-	}*/
-}
+
 
 /*
 void ATrainer::ThrowingMonsterBall()
 {
 	// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("Walking"));
 	FTransform ThrowingTransfrom = ThrowingPosition->GetComponentTransform();
-	
+
 	MonsterBall = GetWorld()->SpawnActor<AMonsterBall>(MonsterBallFactory, ThrowingTransfrom);
 
 	GetWorldTimerManager().SetTimer(MonsterBallTimer, this, &ATrainer::SpawnPokemon, SpawnDelayTime, false);

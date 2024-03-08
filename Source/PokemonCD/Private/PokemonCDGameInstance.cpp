@@ -38,7 +38,7 @@ void UPokemonCDGameInstance::ServerTravel()
 	if (World)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, FString::Printf(TEXT("ServerTravel ")));
-		World->ServerTravel("/Game/Maps/LV_TestMap");
+		World->ServerTravel("/Game/Maps/LV_ToTal");
 	}
 }
 

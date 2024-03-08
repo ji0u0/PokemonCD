@@ -20,10 +20,7 @@ class POKEMONCD_API ATestGameMode : public AGameMode
 	
 public:
 
-	void SpawnPlayerCharacter();
-	void SetValue();
-
-	void PossessPlayerCharacter(APlayerController* NewPlayer);
+	
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class ATestLobyPlayer> LobbyPlayerTemplate;
@@ -34,6 +31,13 @@ public:
 	TArray<APlayerController*> ControllerArray;
 
 protected:
+
+	void SpawnPlayerCharacter();
+	void SetValue();
+
+	void PossessPlayerCharacter(APlayerController* NewPlayer);
+	void CheckPlayerLogin();
+
 	FTransform AuthorityTransform;
 	FTransform AutonomousProxyTransform;
 

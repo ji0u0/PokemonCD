@@ -3,7 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PokemonGameMode.h"
+#include "WidgetChoosePokemon.h"
 #include "GameFramework/Pawn.h"
+#include "AutonomousPlayerController.h"
 #include "Trainer.generated.h"
 
 
@@ -30,6 +33,32 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
+
+	UPROPERTY()
+	class APokemonGameMode* GameMode;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UWidgetChoosePokemon> PokemonTemplate;
+
+	UPROPERTY()
+	class UWidgetChoosePokemon* PokemonChoose;
+
+	UFUNCTION()
+	void ChoosePokemonWidgetCreate();
+
+	UFUNCTION()
+	void CompleteChoose();
+
+	void PossesController();
+
+	UFUNCTION(Server,Reliable)
+	void ClientPossess();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TSubclassOf<class AAutonomousPlayerController> ControllerTemplate;
+
+	int32 PlayerIndex;
+
 	// Components
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* BoxComponent;
@@ -97,16 +126,16 @@ public:
 	// spawn pokemon
 	void SpawnPokemon(APokemon* pokemon);
 
-	FVector pokemonLoc = FVector(-40.f, 830.f, 150.f);
+	//FVector pokemonLoc = FVector(-40.f, 830.f, 150.f);
 
-	///// Widget /////
-	UFUNCTION()
-	void CreateWidget();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UWidgetMain* mainWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UWidgetSkill* skillWidget;
+//<<<<<<< HEAD
+//=======
 
+//>>>>>>> fa035a90e707ee172ff735b93fe320fab9d14587
 };

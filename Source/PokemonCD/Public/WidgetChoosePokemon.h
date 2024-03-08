@@ -14,8 +14,10 @@ class POKEMONCD_API UWidgetChoosePokemon : public UUserWidget
 {
 	GENERATED_BODY()
 
-public:
 	virtual void NativeConstruct() override;
+public:
+
+	
 
 	// Bind Widget
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
@@ -27,9 +29,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
 	class UButton* Button_Sobble;
 
-	// Trainer
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<class ATrainer> trainerFactory;
+	//// Trainer
+	//UPROPERTY(EditAnywhere)
+	//TSubclassOf<class ATrainer> trainerFactory;
 
 	UPROPERTY(EditDefaultsOnly)
 	class ATrainer* trainer;
@@ -47,6 +49,9 @@ public:
 
 	UFUNCTION()
 	void ChooseSobble();
+
+	UFUNCTION()
+	void SelectedPokemon();
 
 	// Pokemon Factory
 	UPROPERTY(EditAnywhere)

@@ -17,19 +17,7 @@ void ATestGameMode::BeginPlay()
 {
     Super::BeginPlay();
 
-    UE_LOG(LogTemp, Warning, TEXT("BeginPlay"))
-
-    for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
-    {
-        APlayerController* PlayerController = It->Get();
-        if (PlayerController)
-        {
-            UE_LOG(LogTemp, Warning, TEXT("PlayerController logged in: %s"), *PlayerController->GetName());
-        }
-    }
-
-	UE_LOG(LogTemp, Warning, TEXT("BeginPlay finished"));
-
+    CheckPlayerLogin();
     SpawnPlayerCharacter();
 }
 
@@ -84,4 +72,20 @@ void ATestGameMode::PossessPlayerCharacter(APlayerController* NewPlayer)
 {
     GetWorld()->GetFirstPlayerController()->Possess(Authority);
     NewPlayer->Possess(Autonomous);
+}
+
+void ATestGameMode::CheckPlayerLogin()
+{
+    UE_LOG(LogTemp, Warning, TEXT("BeginPlay"))
+
+        for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+        {
+            APlayerController* PlayerController = It->Get();
+            if (PlayerController)
+            {
+                UE_LOG(LogTemp, Warning, TEXT("PlayerController logged in: %s"), *PlayerController->GetName());
+            }
+        }
+
+    UE_LOG(LogTemp, Warning, TEXT("BeginPlay finished"));
 }

@@ -2,7 +2,7 @@
 
 
 #include "WidgetChoosePokemon.h"
-
+#include "PokemonGameMode.h"
 #include "Trainer.h"
 #include "PokemonWater.h"
 #include "Components/Button.h"
@@ -16,34 +16,17 @@ void UWidgetChoosePokemon::NativeConstruct()
 	completeButton->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::CompleteUI);
 }
 
-void UWidgetChoosePokemon::CompleteUI()
+
+void UWidgetChoosePokemon::ChooseSobble()
 {
-	// trainer 积己
-	trainer = GetWorld()->SpawnActor<ATrainer>(trainerFactory, trainerLoc, trainerRot);
+	if (firstFactory == nullptr)		firstFactory = sobbleFactory;
+	else if (secondFactory == nullptr)	secondFactory = sobbleFactory;
+	else if (thirdFactory == nullptr)	thirdFactory = sobbleFactory;
+}
 
-	// trainer -> pokemon 积己
-	if(firstFactory)
-	{
-		trainer->firstPokemon = GetWorld()->SpawnActor<APokemon>(firstFactory, firstLoc, FRotator::ZeroRotator);
-		trainer->firstPokemon->OwnedTrainer = trainer;
-	}
-	if (secondFactory)
-	{
-		trainer->secondPokemon = GetWorld()->SpawnActor<APokemon>(secondFactory, secondLoc, FRotator::ZeroRotator);
-		trainer->secondPokemon->OwnedTrainer = trainer;
-	}
-	if (thirdFactory)
-	{
-	trainer->thirdPokemon = GetWorld()->SpawnActor<APokemon>(thirdFactory, thirdLoc, FRotator::ZeroRotator);
-	trainer->thirdPokemon->OwnedTrainer = trainer;
-	}
+void UWidgetChoosePokemon::SelectedPokemon()
+{
 
-	// Possess Player Controller
-	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-	PlayerController->Possess(trainer);
-
-	// 困连 (肯傈) 昏力
-	this->RemoveFromParent();
 }
 
 void UWidgetChoosePokemon::UndoSelect()
@@ -53,9 +36,39 @@ void UWidgetChoosePokemon::UndoSelect()
 	else if (firstFactory != nullptr)	firstFactory = nullptr;
 }
 
-void UWidgetChoosePokemon::ChooseSobble()
+void UWidgetChoosePokemon::CompleteUI()
 {
-	if (firstFactory == nullptr)		firstFactory = sobbleFactory;
-	else if (secondFactory == nullptr)	secondFactory = sobbleFactory;
-	else if (thirdFactory == nullptr)	thirdFactory = sobbleFactory;
+	// trainer 积己
+	//trainer = GetWorld()->SpawnActor<ATrainer>(trainerFactory, trainerLoc, trainerRot);
+
+	// trainer -> pokemon 积己
+	//if(firstFactory)
+	//{
+	//	trainer->firstPokemon = GetWorld()->SpawnActor<APokemon>(firstFactory, firstLoc, FRotator::ZeroRotator);
+	//	trainer->firstPokemon->OwnedTrainer = trainer;
+	//}
+	//if (secondFactory)
+	//{
+	//	trainer->secondPokemon = GetWorld()->SpawnActor<APokemon>(secondFactory, secondLoc, FRotator::ZeroRotator);
+	//	trainer->secondPokemon->OwnedTrainer = trainer;
+	//}
+	//if (thirdFactory)
+	//{
+	//trainer->thirdPokemon = GetWorld()->SpawnActor<APokemon>(thirdFactory, thirdLoc, FRotator::ZeroRotator);
+	//trainer->thirdPokemon->OwnedTrainer = trainer;
+	//}
+
+	//// Possess Player Controller
+	//APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	//PlayerController->Possess(trainer);
+
+	// 困连 (肯傈) 昏力
+	this->SetVisibility(ESlateVisibility::Hidden);
+	if(trainer==nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("trainer null"))
+		return;
+	}
+	trainer->CompleteChoose();
 }
+
