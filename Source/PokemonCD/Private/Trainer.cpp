@@ -138,7 +138,10 @@ void ATrainer::ChoosePokemonWidgetCreate()
 {
 	PokemonChoose = CreateWidget<UWidgetChoosePokemon>(GetWorld(), PokemonTemplate);
 	PokemonChoose->AddToViewport(0);
-	PokemonChoose->trainer = this;
+	if(PokemonChoose)
+	{
+		PokemonChoose->trainer = this;
+	}
 }
 
 void ATrainer::CompleteChoose()

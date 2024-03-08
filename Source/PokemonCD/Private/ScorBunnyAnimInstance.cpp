@@ -22,14 +22,20 @@ void UScorBunnyAnimInstance::NativeInitializeAnimation()
 	}
 	pokemon = Cast<APokemon>(GetOwningActor());
 	trainer = Cast<ATrainer>(pokemon->OwnedTrainer);
-	widgetSkill = Cast<UWidgetSkill>(trainer->skillWidget);
+	if(trainer)
+	{
+		widgetSkill = Cast<UWidgetSkill>(trainer->skillWidget);
+	}
 
-	isAttack = widgetSkill->isFirstAttack;
+	//isAttack = widgetSkill->isFirstAttack;
 }
 
 void UScorBunnyAnimInstance::PlayScorBunnyMontage()
 {
 	if(nullptr == scorBunnyMontage) return;
+
+	isAttack = widgetSkill->isFirstAttack;
+
 	if(isAttack)
 	{
 		Montage_Play(scorBunnyMontage);
