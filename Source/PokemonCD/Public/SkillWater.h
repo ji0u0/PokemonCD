@@ -36,5 +36,7 @@ public:
 
 	FTimerHandle SkillTimer;
 
-
+	FVector myLoc;
+	FVector oppoLoc;
+	float alpha;
 };

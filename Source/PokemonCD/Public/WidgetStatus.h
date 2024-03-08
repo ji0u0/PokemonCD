@@ -24,4 +24,20 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UHorizontalBox* PokeballBox;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UUserWidget> normalBallFactory;
+
+	UPROPERTY(BlueprintReadOnly)
+	class UUserWidget* normalBallImage;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UUserWidget> noneBallFactory;
+
+	UPROPERTY(BlueprintReadOnly)
+	class UUserWidget* noneBallImage;
+
+	void NativeConstruct() override;
+
+	void SetPokeballBox(ATrainer* trainer);
 };

@@ -6,13 +6,13 @@
 #include "Pokemon.h"
 #include "Skill.h"
 #include "Trainer.h"
+#include "TrainerAnimInstance.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 
 void UWidgetSkill::NativeConstruct()
 {
 	Super::NativeConstruct();
-	
 
 	SwapButton->OnClicked.AddDynamic(this, &UWidgetSkill::ClickSwapButton);
 	firstSkill->OnClicked.AddDynamic(this, &UWidgetSkill::ClickFirstSkill);
@@ -25,8 +25,6 @@ void UWidgetSkill::NativeConstruct()
 	if (PlayerController) trainer = Cast<ATrainer>(PlayerController->GetPawn());
 		
 	else UE_LOG(LogTemp, Warning, TEXT("No Controller"));
-
-	//PokemonGameMode = GetWorld()->GetAuthGameMode<APokemonGameMode>();
 
 }
 
@@ -60,44 +58,48 @@ void UWidgetSkill::ClickSwapButton()
 		}, 1.f, false);
 }
 
-void UWidgetSkill::InputSkill_Implementation()
-{
-	/*f(trainer->HasAuthority())
-		APokemonGameStateBase->AuthoritySelectSkill = true;
-
-	else
-		APokemonGameStateBase->AutonomousSelectSkill = true;*/
-}
-
 void UWidgetSkill::ClickFirstSkill()
 {
+	//몽타주 실행
+	ClickTOPlayAnim();
+
 	this->SetVisibility(ESlateVisibility::Hidden);
 	trainer->currentPokemon->firstSkill->Attack(trainer->oppoTrainer);
 	// SetVisibility(ESlateVisibility::Visible); 필요함
-	InputSkill_Implementation();
 }
-
 
 void UWidgetSkill::ClickSecondSkill()
 {
+	//몽타주 실행
+	ClickTOPlayAnim();
+
 	this->SetVisibility(ESlateVisibility::Hidden);
 	trainer->currentPokemon->secondSkill->Attack(trainer->oppoTrainer);
 	// SetVisibility(ESlateVisibility::Visible); 필요함
-	InputSkill_Implementation();
 }
 
 void UWidgetSkill::ClickThirdSkill()
 {
+	//몽타주 실행
+	ClickTOPlayAnim();
+
 	this->SetVisibility(ESlateVisibility::Hidden);
 	trainer->currentPokemon->thirdSkill->Attack(trainer->oppoTrainer);
 	// SetVisibility(ESlateVisibility::Visible); 필요함
-	InputSkill_Implementation();
 }
 
 void UWidgetSkill::ClickFourthSkill()
 {
+	//몽타주 실행
+	ClickTOPlayAnim();
+
 	this->SetVisibility(ESlateVisibility::Hidden);
 	trainer->currentPokemon->fourthSkill->Attack(trainer->oppoTrainer);
 	// SetVisibility(ESlateVisibility::Visible); 필요함
-	InputSkill_Implementation();
+}
+
+void UWidgetSkill::ClickTOPlayAnim()
+{
+	auto anim = Cast<UTrainerAnimInstance>(trainer->TrainerSkelMeshComp->GetAnimInstance());
+	anim->PlayCheeringMontage();
 }

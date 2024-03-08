@@ -17,6 +17,9 @@ class POKEMONCD_API UWidgetMain : public UUserWidget
 public:
 	virtual void NativeConstruct() override;
 
+	UPROPERTY(EditDefaultsOnly)
+	class ATrainer* trainer;
+
 	// Bind Widget
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UCanvasPanel* MyStatusPanel;
@@ -26,11 +29,14 @@ public:
 
 	// Status Widget
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class UUserWidget> statusWidgetFactory;
+	TSubclassOf<class UWidgetStatus> statusWidgetFactory;
 
 	UPROPERTY(BlueprintReadOnly)
 	class UWidgetStatus* myStatus;
 
 	UPROPERTY(BlueprintReadOnly)
 	class UWidgetStatus* oppoStatus;
+
+	UFUNCTION()
+	void SetMyStatus(APokemon* pokemon);
 };

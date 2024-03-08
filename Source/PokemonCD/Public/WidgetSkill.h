@@ -3,8 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Pokemon.h"
-#include "PokemonGameMode.h"
 #include "Blueprint/UserWidget.h"
 #include "WidgetSkill.generated.h"
 
@@ -26,8 +24,6 @@ public:
 
 	/*UPROPERTY(EditDefaultsOnly)
 	class APlayerController* pc;*/
-
-	class APokemonGameMode* PokemonGameMode;
 
 	UPROPERTY(EditDefaultsOnly)
 	class ATrainer* trainer;
@@ -67,9 +63,6 @@ public:
 	UFUNCTION()
 	void ClickFirstSkill();
 
-	UFUNCTION(Client, Reliable)
-	void InputSkill();
-
 	UFUNCTION()
 	void ClickSecondSkill();
 
@@ -79,5 +72,6 @@ public:
 	UFUNCTION()
 	void ClickFourthSkill();
 
-
+	//애니메이션(응원) 실행
+	void ClickTOPlayAnim();
 };

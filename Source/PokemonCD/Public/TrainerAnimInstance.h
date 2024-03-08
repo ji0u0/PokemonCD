@@ -26,7 +26,11 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	class UAnimMontage* throwMontage;
 
+	UPROPERTY(EditDefaultsOnly)
+	class UAnimMontage* CheeringMontage;
+
 	void PlayThrowMontage();
+	void PlayCheeringMontage();
 
 	UFUNCTION()
 	void AnimNotify_ThrowBall();
