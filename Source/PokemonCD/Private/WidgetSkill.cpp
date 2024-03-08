@@ -60,8 +60,9 @@ void UWidgetSkill::ClickSwapButton()
 
 void UWidgetSkill::ClickFirstSkill()
 {
+	isFirstAttack = true;
 	//根鸥林 角青
-	ClickTOPlayAnim();
+	ClickTOPlayAnimTrainer();
 
 	this->SetVisibility(ESlateVisibility::Hidden);
 	trainer->currentPokemon->firstSkill->Attack(trainer->oppoTrainer);
@@ -71,7 +72,7 @@ void UWidgetSkill::ClickFirstSkill()
 void UWidgetSkill::ClickSecondSkill()
 {
 	//根鸥林 角青
-	ClickTOPlayAnim();
+	ClickTOPlayAnimTrainer();
 
 	this->SetVisibility(ESlateVisibility::Hidden);
 	trainer->currentPokemon->secondSkill->Attack(trainer->oppoTrainer);
@@ -81,7 +82,7 @@ void UWidgetSkill::ClickSecondSkill()
 void UWidgetSkill::ClickThirdSkill()
 {
 	//根鸥林 角青
-	ClickTOPlayAnim();
+	ClickTOPlayAnimTrainer();
 
 	this->SetVisibility(ESlateVisibility::Hidden);
 	trainer->currentPokemon->thirdSkill->Attack(trainer->oppoTrainer);
@@ -91,14 +92,14 @@ void UWidgetSkill::ClickThirdSkill()
 void UWidgetSkill::ClickFourthSkill()
 {
 	//根鸥林 角青
-	ClickTOPlayAnim();
+	ClickTOPlayAnimTrainer();
 
 	this->SetVisibility(ESlateVisibility::Hidden);
 	trainer->currentPokemon->fourthSkill->Attack(trainer->oppoTrainer);
 	// SetVisibility(ESlateVisibility::Visible); 鞘夸窃
 }
 
-void UWidgetSkill::ClickTOPlayAnim()
+void UWidgetSkill::ClickTOPlayAnimTrainer()
 {
 	auto anim = Cast<UTrainerAnimInstance>(trainer->TrainerSkelMeshComp->GetAnimInstance());
 	anim->PlayCheeringMontage();

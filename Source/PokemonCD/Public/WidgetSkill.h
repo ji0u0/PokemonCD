@@ -72,6 +72,9 @@ public:
 	UFUNCTION()
 	void ClickFourthSkill();
 
-	//애니메이션(응원) 실행
-	void ClickTOPlayAnim();
+	//애니메이션(응원) 실행 - 트레이너
+	void ClickTOPlayAnimTrainer();
+
+	UPROPERTY(EditDefaultsOnly)
+	bool isFirstAttack;
 };

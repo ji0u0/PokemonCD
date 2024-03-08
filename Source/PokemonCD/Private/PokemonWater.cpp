@@ -3,6 +3,7 @@
 
 #include "PokemonWater.h"
 
+#include "ScorBunnyAnimInstance.h"
 #include "SkillWater.h"
 #include "Components/BoxComponent.h"
 
@@ -36,4 +37,15 @@ APokemonWater::APokemonWater()
 	pokemonType = Type::Water;
 	pokemonMaxHealth = 150;
 	pokemonCurHealth = pokemonMaxHealth;
+}
+
+void APokemonWater::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+}
+
+void APokemonWater::AttackingAnim()
+{
+	/*auto anim = Cast<UScorBunnyAnimInstance>(getmesh);
+	anim->PlayCheeringMontage();*/
 }
