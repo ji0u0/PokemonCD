@@ -10,6 +10,14 @@
 #include "Trainer.generated.h"
 
 
+enum class EPokemonList
+{
+	Rabifoot,
+	Sobble,
+	Grookey,
+	None
+};
+
 
 
 UCLASS()
@@ -36,6 +44,9 @@ public:
 
 	UPROPERTY()
 	class APokemonGameMode* GameMode;
+
+	UPROPERTY()
+	class APokemonGameStateBase* GameState;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UWidgetChoosePokemon> PokemonTemplate;
@@ -101,17 +112,25 @@ public:
 	void FindOpponentTrainer();
 
 	// 소유 포켓몬
-	UPROPERTY(EditDefaultsOnly)
-	class APokemon* firstPokemon = nullptr;
+	/*UPROPERTY(EditDefaultsOnly)
+	class APokemon* firstPokemon = nullptr;*/
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class APokemonWater* FirstPokemon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class APokemonWater* SecondPokemon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class APokemonWater* ThirdPokemon;
 
 	UPROPERTY(EditDefaultsOnly)
-	class APokemon* secondPokemon = nullptr;
+	class APokemonWater* currentPokemon = nullptr;
 
-	UPROPERTY(EditDefaultsOnly)
-	class APokemon* thirdPokemon = nullptr;
 
-	UPROPERTY(EditDefaultsOnly)
-	class APokemon* currentPokemon = nullptr;
+	void SetCurrentPokemon(EPokemonList Enum);
+	// spawn pokemon
+	void SpawnPokemon();
 
 	// Monster Ball
 	UPROPERTY(EditAnywhere)
@@ -123,8 +142,6 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* SpawnParticle;
 
-	// spawn pokemon
-	void SpawnPokemon(APokemon* pokemon);
 
 	//FVector pokemonLoc = FVector(-40.f, 830.f, 150.f);
 

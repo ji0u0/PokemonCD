@@ -21,13 +21,20 @@ public:
 
 	// Bind Widget
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
+	class UButton* Button_Rabifoot;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
+	class UButton* Button_Sobble;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
+	class UButton* Button_Grookey;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
 	class UButton* completeButton;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
 	class UButton* undoButton;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
-	class UButton* Button_Sobble;
 
 	//// Trainer
 	//UPROPERTY(EditAnywhere)
@@ -48,7 +55,11 @@ public:
 	void UndoSelect();
 
 	UFUNCTION()
+	void ChooseRabifoot();
+	UFUNCTION()
 	void ChooseSobble();
+	UFUNCTION()
+	void ChooseGrookey();
 
 	UFUNCTION()
 	void SelectedPokemon();

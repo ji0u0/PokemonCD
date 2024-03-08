@@ -14,7 +14,7 @@ void APokemonGameStateBase::BeginPlay()
 	Super::BeginPlay();
 	SetState(EGameState::SELECTED_POKEMON);
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("SELECTED_POKEMON"));
-}
+} 
 
 
 void APokemonGameStateBase::Tick(float DeltaSeconds)

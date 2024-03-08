@@ -11,36 +11,46 @@ void UWidgetChoosePokemon::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	Button_Rabifoot->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::ChooseRabifoot);
 	Button_Sobble->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::ChooseSobble);
+	Button_Grookey->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::ChooseGrookey);
+
 	undoButton->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::UndoSelect);
 	completeButton->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::CompleteUI);
 }
 
 
+void UWidgetChoosePokemon::ChooseRabifoot()
+{
+	trainer->SetCurrentPokemon(EPokemonList::Rabifoot);
+}
+
 void UWidgetChoosePokemon::ChooseSobble()
 {
-	if (firstFactory == nullptr)		firstFactory = sobbleFactory;
-	else if (secondFactory == nullptr)	secondFactory = sobbleFactory;
-	else if (thirdFactory == nullptr)	thirdFactory = sobbleFactory;
+	trainer->SetCurrentPokemon(EPokemonList::Sobble);
+}
+
+void UWidgetChoosePokemon::ChooseGrookey()
+{
+	trainer->SetCurrentPokemon(EPokemonList::Grookey);
 }
 
 void UWidgetChoosePokemon::SelectedPokemon()
 {
-
+	trainer->SpawnPokemon();
 }
 
 void UWidgetChoosePokemon::UndoSelect()
 {
-	if (thirdFactory != nullptr)		thirdFactory = nullptr;
+	/*if (thirdFactory != nullptr)		thirdFactory = nullptr;
 	else if (secondFactory != nullptr)	secondFactory = nullptr;
-	else if (firstFactory != nullptr)	firstFactory = nullptr;
+	else if (firstFactory != nullptr)	firstFactory = nullptr;*/
+	trainer->currentPokemon = nullptr;
 }
+
 
 void UWidgetChoosePokemon::CompleteUI()
 {
-	// trainer 持失
-	//trainer = GetWorld()->SpawnActor<ATrainer>(trainerFactory, trainerLoc, trainerRot);
-
 	// trainer -> pokemon 持失
 	//if(firstFactory)
 	//{

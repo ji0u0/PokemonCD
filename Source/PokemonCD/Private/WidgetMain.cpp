@@ -27,14 +27,14 @@ void UWidgetMain::NativeConstruct()
 
 	// 내 Controller를 가져온다
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-	if (PlayerController) trainer = Cast<ATrainer>(PlayerController->GetPawn());
+	//if (PlayerController) trainer = Cast<ATrainer>(PlayerController->GetPawn());
 
-	else UE_LOG(LogTemp, Warning, TEXT("No Controller"));
+	//else UE_LOG(LogTemp, Warning, TEXT("No Controller"));
 }
 
 void UWidgetMain::SetMyStatus(APokemon* pokemon)
 {
 	myStatus->PokemonName->SetText(FText::FromString(pokemon->pokemonName));
 	myStatus->HealthBar->SetPercent(pokemon->pokemonCurHealth/pokemon->pokemonMaxHealth);
-	myStatus->SetPokeballBox(trainer);
+	//myStatus->SetPokeballBox(trainer);
 }

@@ -4,6 +4,7 @@
 #include "Trainer.h"
 #include "MonsterBall.h"
 #include "Pokemon.h"
+#include "PokemonGameStateBase.h"
 #include "TrainerAnimInstance.h"
 #include "WidgetSkill.h"
 #include "Components/ArrowComponent.h"
@@ -51,10 +52,10 @@ ATrainer::ATrainer()
 	}*/
 
 	TrainerSkelMeshComp->SetRelativeLocationAndRotation
-		(
-			FVector(0, 0, 25),
-			FRotator(0, -90, 0)
-		);
+	(
+		FVector(0, 0, 25),
+		FRotator(0, -90, 0)
+	);
 	TrainerSkelMeshComp->SetRelativeScale3D(FVector(0.1f));
 
 	handComp = CreateDefaultSubobject<USceneComponent>(TEXT("handComp"));
@@ -67,21 +68,21 @@ ATrainer::ATrainer()
 
 // Called when the game starts or when spawned
 /**
- * 
+ *
  */
 void ATrainer::BeginPlay()
 {
 	Super::BeginPlay();
 	bReplicates = true;
 	GameMode = GetWorld()->GetAuthGameMode<APokemonGameMode>();
-	
+
 
 
 
 	//HasAuthority() ? PossesController() : ClientPossess_Implementation();
 	PossesController();
 	ClientPossess();
-	
+
 	//// 1초 후 띄우고
 	//FTimerHandle timerHandle;
 	//GetWorldTimerManager().SetTimer(timerHandle, [this]() {
@@ -138,35 +139,38 @@ void ATrainer::ChoosePokemonWidgetCreate()
 {
 	PokemonChoose = CreateWidget<UWidgetChoosePokemon>(GetWorld(), PokemonTemplate);
 	PokemonChoose->AddToViewport(0);
+<<<<<<< Updated upstream
 	PokemonChoose->trainer = this;
+=======
+	if (PokemonChoose)
+	{
+		PokemonChoose->trainer = this;
+	}
+>>>>>>> Stashed changes
 }
 
 void ATrainer::CompleteChoose()
 {
-	if (GetController() == nullptr)
+	GameState = GetWorld()->GetGameState<APokemonGameStateBase>();
+	if (HasAuthority())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("controller null"))
-			return;
+		GameState->AuthoritySelectPokemon = true;
 	}
-	//if (this->GetController()->HasAuthority())
-	//{
-	//	GameMode->AuthoritySelectPokemon = true;
-	//}
-	//else
-	//{
-	//	GameMode->AutonomousSelectPokemon = true;
-	//}
+	else
+	{
+		GameState->AutonomousSelectPokemon = true;
+	}
 }
 
 void ATrainer::PossesController()
 {
-	
+
 
 }
 
 void ATrainer::ClientPossess_Implementation()
 {
-	
+
 }
 
 
@@ -199,7 +203,24 @@ void ATrainer::FindOpponentTrainer()
 	}
 }
 
-void ATrainer::SpawnPokemon(APokemon* pokemon)
+void ATrainer::SetCurrentPokemon(EPokemonList Enum)
+{
+	switch (Enum)
+	{
+	case EPokemonList::Rabifoot:
+		currentPokemon = FirstPokemon;
+	case EPokemonList::Sobble:
+		currentPokemon = SecondPokemon;
+	case EPokemonList::Grookey:
+		currentPokemon = ThirdPokemon;
+		break;
+	default:
+		break;
+	}
+	
+}
+
+void ATrainer::SpawnPokemon()
 {
 	FTransform ThrowingTransfrom = ThrowingPosition->GetComponentTransform();
 
@@ -207,20 +228,19 @@ void ATrainer::SpawnPokemon(APokemon* pokemon)
 	MonsterBall = GetWorld()->SpawnActor<AMonsterBall>(MonsterBallFactory, ThrowingTransfrom);
 	AttachBall();
 	MonsterBall->SetActorRelativeScale3D(FVector(1.f));
-	if (MonsterBall == nullptr || pokemon == nullptr) return;
+	if (MonsterBall == nullptr || currentPokemon == nullptr) return;
 	// 1초 후 포켓몬 소환
 	FTimerHandle timerHandle;
-	GetWorldTimerManager().SetTimer(timerHandle, [this, pokemon]() {
+	GetWorldTimerManager().SetTimer(timerHandle, [this]() {
 		// 몬스터볼
 		FTransform MonsterBallTransform = MonsterBall->GetActorTransform();
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SpawnParticle, MonsterBallTransform.GetLocation());
 
 		// 포켓몬 소환(?)
-		pokemon->SetActorLocation(MonsterBallTransform.GetLocation());
+		currentPokemon->SetActorLocation(MonsterBallTransform.GetLocation());
 		MonsterBall->Destroy();
 
 		// currentPokemon
-		currentPokemon = pokemon;
 		skillWidget->SetSkillName(currentPokemon);
 		}, 2.0f, false);
 }

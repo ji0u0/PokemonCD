@@ -50,12 +50,12 @@ void UWidgetSkill::SetSkillName(APokemon* Pokemon)
 
 void UWidgetSkill::ClickSwapButton()
 {
-	trainer->currentPokemon->Destroy();
+	/*trainer->currentPokemon->Destroy();
 
 	FTimerHandle timerHandle;
 	trainer->GetWorldTimerManager().SetTimer(timerHandle, [this]() {
 			trainer->SpawnPokemon(trainer->currentPokemon);
-		}, 1.f, false);
+		}, 1.f, false);*/
 }
 
 void UWidgetSkill::ClickFirstSkill()
@@ -66,6 +66,8 @@ void UWidgetSkill::ClickFirstSkill()
 	this->SetVisibility(ESlateVisibility::Hidden);
 	trainer->currentPokemon->firstSkill->Attack(trainer->oppoTrainer);
 	// SetVisibility(ESlateVisibility::Visible); ÇÊ¿äÇÔ
+
+	trainer->currentPokemon->firstSkill;
 }
 
 void UWidgetSkill::ClickSecondSkill()
