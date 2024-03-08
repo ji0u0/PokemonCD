@@ -62,11 +62,11 @@ void UWidgetSkill::ClickSwapButton()
 
 void UWidgetSkill::InputSkill_Implementation()
 {
-	if(trainer->HasAuthority())
-		PokemonGameMode->AuthoritySelectSkill = true;
+	/*f(trainer->HasAuthority())
+		APokemonGameStateBase->AuthoritySelectSkill = true;
 
 	else
-		PokemonGameMode->AutonomousSelectSkill = true;
+		APokemonGameStateBase->AutonomousSelectSkill = true;*/
 }
 
 void UWidgetSkill::ClickFirstSkill()
