@@ -35,7 +35,6 @@ ATrainer::ATrainer()
 
 	TrainerSkelMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComp"));
 	TrainerSkelMeshComp->SetupAttachment(RootComponent);
-<<<<<<< HEAD
 	TrainerSkelMeshComp->SetRelativeRotation
 	(
 		/*FVector(0, 0, -80),*/
@@ -51,9 +50,6 @@ ATrainer::ATrainer()
 		;
 	}*/
 
-}
-
-=======
 	TrainerSkelMeshComp->SetRelativeLocationAndRotation
 		(
 			FVector(0, 0, 25),
@@ -68,32 +64,34 @@ ATrainer::ATrainer()
 		FRotator(180, -90., 0));
 	handComp->SetRelativeScale3D(FVector(0.3f));
 }
+
 // Called when the game starts or when spawned
 /**
  * 
  */
->>>>>>> fa035a90e707ee172ff735b93fe320fab9d14587
 void ATrainer::BeginPlay()
 {
 	Super::BeginPlay();
-
-<<<<<<< HEAD
+	bReplicates = true;
 	GameMode = GetWorld()->GetAuthGameMode<APokemonGameMode>();
+	
 
-=======
->>>>>>> fa035a90e707ee172ff735b93fe320fab9d14587
-	// 1초 후 띄우고
-	FTimerHandle timerHandle;
-	GetWorldTimerManager().SetTimer(timerHandle, [this]() {
-		// 포켓몬을 소환한다
-		SpawnPokemon(firstPokemon);
-		// 상대 트레이너를 찾는다
-		FindOpponentTrainer();
-		}, 1.f, false);
 
-<<<<<<< HEAD
+
+	//HasAuthority() ? PossesController() : ClientPossess_Implementation();
+	PossesController();
+	ClientPossess();
+	
+	//// 1초 후 띄우고
+	//FTimerHandle timerHandle;
+	//GetWorldTimerManager().SetTimer(timerHandle, [this]() {
+	//	// 포켓몬을 소환한다
+	//	SpawnPokemon(firstPokemon);
+	//	// 상대 트레이너를 찾는다
+	//	FindOpponentTrainer();
+	//	}, 1.f, false);
+
 	ChoosePokemonWidgetCreate();
-=======
 }
 void ATrainer::AttachBall()
 {
@@ -115,22 +113,18 @@ void ATrainer::DetachBall()
 	FTransform ThrowingTransfrom = ThrowingPosition->GetComponentTransform();
 	MonsterBall = GetWorld()->SpawnActor<AMonsterBall>(MonsterBallFactory, ThrowingTransfrom);
 	MonsterBall->SetActorRelativeScale3D(FVector(0.1f));
->>>>>>> fa035a90e707ee172ff735b93fe320fab9d14587
 }
 
 // Called every frame
 void ATrainer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-<<<<<<< HEAD
 
 	if (GetController() == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s:controller null"), *this->GetName())
 			return;
 	}
-=======
->>>>>>> fa035a90e707ee172ff735b93fe320fab9d14587
 }
 
 // Called to bind functionality to input
@@ -139,7 +133,6 @@ void ATrainer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
-<<<<<<< HEAD
 
 void ATrainer::ChoosePokemonWidgetCreate()
 {
@@ -165,14 +158,24 @@ void ATrainer::CompleteChoose()
 	//}
 }
 
+void ATrainer::PossesController()
+{
+	
+
+}
+
+void ATrainer::ClientPossess_Implementation()
+{
+	
+}
+
+
 //void ATrainer::CompleteChoose_Implementation()
 //{
 //	
 //
 //}
 
-=======
->>>>>>> fa035a90e707ee172ff735b93fe320fab9d14587
 void ATrainer::FindOpponentTrainer()
 {
 	// 서버에서 상대 트레이너를 찾는다... 로 변경 요망

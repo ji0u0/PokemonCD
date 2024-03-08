@@ -15,11 +15,16 @@ APokemonGameMode::APokemonGameMode()
 	SetValue();
 }
 
+void APokemonGameMode::StartPlay()
+{
+	Super::StartPlay();
+}
+
 void APokemonGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	//CheckPlayerLogin();
 	//SpawnPlayerCharacter();
+	//CheckPlayerLogin();
 }
 
 void APokemonGameMode::Tick(float DeltaSeconds)
@@ -38,10 +43,11 @@ void APokemonGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
 
-
-	UE_LOG(LogTemp, Warning, TEXT(" APokemonGameMode::PostLogin - %s logged in "), *NewPlayer->GetName());
-
 	PossessPlayerCharacter(NewPlayer);
+	UE_LOG(LogTemp, Warning, TEXT(" APokemonGameMode::PostLogin - %s logged in "), *NewPlayer->GetName());
+	
+
+	//PossessPlayerCharacter(NewPlayer);
 	SetState(EGameState::SELECTED_POKEMON);
 
 }
@@ -53,9 +59,19 @@ void APokemonGameMode::SpawnPlayerCharacter()
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParams.bNoFail = true;
 
+
+
 	Authority = GetWorld()->SpawnActor<ATrainer>(PlayerTemplate, AuthorityTransform, SpawnParams);
+	if (Authority)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s Spawned Authority"), *Authority->GetName());
+	}
 
 	Autonomous = GetWorld()->SpawnActor<ATrainer>(PlayerTemplate, AutonomousProxyTransform, SpawnParams);
+	if (Autonomous)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s Spawned Autonomous"), *Autonomous->GetName());
+	}
 }
 
 void APokemonGameMode::SetValue()
@@ -80,45 +96,36 @@ void APokemonGameMode::SetValue()
 
 void APokemonGameMode::PossessPlayerCharacter(APlayerController* NewPlayer)
 {
-	//GetWorld()->GetFirstPlayerController()->Possess(Authority);
 
-	UE_LOG(LogTemp, Warning, TEXT("%s trying to possess"), *NewPlayer->GetName());
-
-	//Spawn Authority and Autonomous Character
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParams.bNoFail = true;
 
-	if(NewPlayer->HasAuthority() && NewPlayer->IsLocalController())
+
+
+	Authority = GetWorld()->SpawnActor<ATrainer>(PlayerTemplate, AuthorityTransform, SpawnParams);
+	if (Authority)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("%s Spawned Authority"), *Authority->GetName());
+	}
 
-		Authority = GetWorld()->SpawnActor<ATrainer>(PlayerTemplate, AuthorityTransform, SpawnParams);
+	Autonomous = GetWorld()->SpawnActor<ATrainer>(PlayerTemplate, AutonomousProxyTransform, SpawnParams);
+	if (Autonomous)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s Spawned Autonomous"), *Autonomous->GetName());
+	}
 
-		if(Authority)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s Spawned Authority"), *NewPlayer->GetName());
-		}
-
-		UE_LOG(LogTemp, Warning, TEXT("%s trying to possess Authority"), *NewPlayer->GetName());
-
+	if(NewPlayer->HasAuthority() && NewPlayer->IsLocalPlayerController())
+	{
 		NewPlayer->Possess(Authority);
-		
+		UE_LOG(LogTemp, Warning, TEXT("%s I Possess Authority"), *NewPlayer->GetName());
 	}
-	else {
-
-		Autonomous = GetWorld()->SpawnActor<ATrainer>(PlayerTemplate, AutonomousProxyTransform, SpawnParams);
-
-		if (Autonomous)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s Spawned Autonomous"), *NewPlayer->GetName());
-		}
-
-		UE_LOG(LogTemp, Warning, TEXT("%s trying to possess Autonomous"), *NewPlayer->GetName());
-
+	else if (NewPlayer->HasAuthority() && !NewPlayer->IsLocalPlayerController())
+	{
 		NewPlayer->Possess(Autonomous);
-		
+		UE_LOG(LogTemp, Warning, TEXT("%s I Possess Autonomous"), *NewPlayer->GetName());
 	}
-	
+
 }
 
 void APokemonGameMode::CheckPlayerLogin()

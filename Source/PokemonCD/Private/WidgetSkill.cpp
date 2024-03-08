@@ -12,12 +12,9 @@
 void UWidgetSkill::NativeConstruct()
 {
 	Super::NativeConstruct();
-<<<<<<< HEAD
 	
-=======
 
 	SwapButton->OnClicked.AddDynamic(this, &UWidgetSkill::ClickSwapButton);
->>>>>>> fa035a90e707ee172ff735b93fe320fab9d14587
 	firstSkill->OnClicked.AddDynamic(this, &UWidgetSkill::ClickFirstSkill);
 	secondSkill->OnClicked.AddDynamic(this, &UWidgetSkill::ClickSecondSkill);
 	thirdSkill->OnClicked.AddDynamic(this, &UWidgetSkill::ClickThirdSkill);

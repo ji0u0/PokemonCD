@@ -6,6 +6,7 @@
 #include "PokemonGameMode.h"
 #include "WidgetChoosePokemon.h"
 #include "GameFramework/Pawn.h"
+#include "AutonomousPlayerController.h"
 #include "Trainer.generated.h"
 
 
@@ -48,6 +49,15 @@ public:
 	UFUNCTION()
 	void CompleteChoose();
 
+	void PossesController();
+
+	UFUNCTION(Server,Reliable)
+	void ClientPossess();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TSubclassOf<class AAutonomousPlayerController> ControllerTemplate;
+
+	int32 PlayerIndex;
 
 	// Components
 	UPROPERTY(EditAnywhere)
@@ -124,8 +134,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UWidgetSkill* skillWidget;
-<<<<<<< HEAD
-=======
+//<<<<<<< HEAD
+//=======
 
->>>>>>> fa035a90e707ee172ff735b93fe320fab9d14587
+//>>>>>>> fa035a90e707ee172ff735b93fe320fab9d14587
 };

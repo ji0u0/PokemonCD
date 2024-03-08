@@ -22,6 +22,7 @@ class POKEMONCD_API APokemonGameMode : public AGameMode
 {
 	GENERATED_BODY()
 	APokemonGameMode();
+	virtual void StartPlay() override;
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void PostLogin(APlayerController* NewPlayer) override;
@@ -35,6 +36,9 @@ public :
 	ATrainer* Autonomous;
 
 	TArray<APlayerController*> ControllerArray;
+
+	
+
 
 	bool AuthoritySelectPokemon = false;
 	bool AutonomousSelectPokemon = false;
