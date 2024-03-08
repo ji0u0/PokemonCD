@@ -6,6 +6,7 @@
 #include "MonsterBall.h"
 #include "Pokemon.h"
 #include "TrainerAnimInstance.h"
+#include "WidgetMain.h"
 #include "WidgetSkill.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
@@ -147,6 +148,7 @@ void ATrainer::SpawnPokemon(APokemon* pokemon)
 		// currentPokemon
 		currentPokemon = pokemon;
 		skillWidget->SetSkillName(currentPokemon);
+		mainWidget->SetMyStatus(currentPokemon);
 		}, 2.0f, false);
 }
 
