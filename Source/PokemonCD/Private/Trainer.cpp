@@ -41,15 +41,6 @@ ATrainer::ATrainer()
 		FRotator(0, -90, 0)
 	);
 	TrainerSkelMeshComp->SetRelativeScale3D(FVector(0.3f));
-
-	/*BallComp = CreateDefaultSubobject<USceneComponent>(TEXT("BallComp"));
-	BallComp->SetupAttachment(GetMesh);
-	ConstructorHelpers::FObjectFinder<UStaticMesh> tempBallMesh(TEXT("/Script/Engine.StaticMesh'/Game/NEC/Model/PokeBall/NormalB/StaticMesh_NormalBall.StaticMesh_NormalBall'"));
-	if(tempBallMesh.Succeeded())
-	{
-		;
-	}*/
-
 	TrainerSkelMeshComp->SetRelativeLocationAndRotation
 		(
 			FVector(0, 0, 25),
