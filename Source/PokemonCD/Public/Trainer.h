@@ -10,16 +10,6 @@
 #include "Trainer.generated.h"
 
 
-enum class EPokemonList
-{
-	Rabifoot,
-	Sobble,
-	Grookey,
-	None
-};
-
-
-
 UCLASS()
 class POKEMONCD_API ATrainer : public APawn
 {
@@ -38,7 +28,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
 
@@ -46,7 +36,7 @@ public:
 	class APokemonGameMode* GameMode;
 
 	UPROPERTY()
-	class APokemonGameStateBase* GameState;
+	class APokemonGameState* GameState;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UWidgetChoosePokemon> PokemonTemplate;
@@ -59,11 +49,6 @@ public:
 
 	UFUNCTION()
 	void CompleteChoose();
-
-	void PossesController();
-
-	UFUNCTION(Server,Reliable)
-	void ClientPossess();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TSubclassOf<class AAutonomousPlayerController> ControllerTemplate;
@@ -116,20 +101,25 @@ public:
 	class APokemon* firstPokemon = nullptr;*/
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class APokemonWater* FirstPokemon;
+	TSubclassOf<class APokemonWater> FirstPokemon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class APokemonWater* SecondPokemon;
+	TSubclassOf<class APokemonWater> SecondPokemon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class APokemonWater* ThirdPokemon;
+	TSubclassOf<class APokemonWater> ThirdPokemon;
 
 	UPROPERTY(EditDefaultsOnly)
-	class APokemonWater* currentPokemon = nullptr;
+	class APokemonWater* SelectedPokemon;
 
+	void SpawnFirstPokemon();
+	void SpawnSecondPokemon();
+	void SpawnThirdPokemon();
 
-	void SetCurrentPokemon(EPokemonList Enum);
+	//int32 tmp;
+
 	// spawn pokemon
+	UFUNCTION()
 	void SpawnPokemon();
 
 	// Monster Ball

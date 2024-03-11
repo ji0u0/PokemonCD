@@ -22,17 +22,17 @@ void UWidgetChoosePokemon::NativeConstruct()
 
 void UWidgetChoosePokemon::ChooseRabifoot()
 {
-	trainer->SetCurrentPokemon(EPokemonList::Rabifoot);
+	trainer->SpawnFirstPokemon();
 }
 
 void UWidgetChoosePokemon::ChooseSobble()
 {
-	trainer->SetCurrentPokemon(EPokemonList::Sobble);
+	trainer->SpawnSecondPokemon();
 }
 
 void UWidgetChoosePokemon::ChooseGrookey()
 {
-	trainer->SetCurrentPokemon(EPokemonList::Grookey);
+	trainer->SpawnThirdPokemon();
 }
 
 void UWidgetChoosePokemon::SelectedPokemon()
@@ -45,7 +45,7 @@ void UWidgetChoosePokemon::UndoSelect()
 	/*if (thirdFactory != nullptr)		thirdFactory = nullptr;
 	else if (secondFactory != nullptr)	secondFactory = nullptr;
 	else if (firstFactory != nullptr)	firstFactory = nullptr;*/
-	trainer->currentPokemon = nullptr;
+	//trainer->currentPokemon = nullptr;
 }
 
 
@@ -79,6 +79,10 @@ void UWidgetChoosePokemon::CompleteUI()
 		UE_LOG(LogTemp, Warning, TEXT("trainer null"))
 		return;
 	}
+
 	trainer->CompleteChoose();
+
+	if(trainer != nullptr)
+		trainer->SpawnPokemon();
 }
 

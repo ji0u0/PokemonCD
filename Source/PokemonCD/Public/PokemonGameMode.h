@@ -49,13 +49,12 @@ public :
 	int32 tmp = 0;
 private:
 	
-
-	void SpawnPlayerCharacter();
 	void SetValue();
 
 	void PossessPlayerCharacter(APlayerController* NewPlayer);
 	void CheckPlayerLogin();
-
+	void SpawnAuthority(APlayerController* NewPlayer);
+	void SpawnAutonomous(APlayerController* NewPlayer);
 
 	FTransform AuthorityTransform;
 	FTransform AutonomousProxyTransform;

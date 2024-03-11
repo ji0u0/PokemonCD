@@ -90,7 +90,7 @@ void USkillWater::CameraShake()
 
 void USkillWater::Attack(ATrainer* trainer)
 {
-	APokemon* target = trainer->currentPokemon;
+	/*APokemon* target = trainer->currentPokemon;
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, "Attack");
 	if(trainer != nullptr)
@@ -99,5 +99,5 @@ void USkillWater::Attack(ATrainer* trainer)
 		SpawnParticle(trainer);
 	}
 	else
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, "oppo trainer == null");
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, "oppo trainer == null");*/
 }
