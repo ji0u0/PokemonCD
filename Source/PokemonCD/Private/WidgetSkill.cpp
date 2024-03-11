@@ -60,9 +60,9 @@ void UWidgetSkill::ClickSwapButton()
 
 void UWidgetSkill::ClickFirstSkill()
 {
-	isFirstAttack = true;
 	//¸ùÅ¸ÁÖ ½ÇÇà
 	ClickTOPlayAnimTrainer();
+	trainer->currentPokemon->PlayFirstSkillAnim();
 
 	this->SetVisibility(ESlateVisibility::Hidden);
 	trainer->currentPokemon->firstSkill->Attack(trainer->oppoTrainer);

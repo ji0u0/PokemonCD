@@ -33,3 +33,7 @@ void APokemon::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
+
+void APokemon::PlayFirstSkillAnim()
+{
+}

@@ -75,4 +75,5 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	class USkill* fourthSkill;
 
+	virtual void PlayFirstSkillAnim();
 };

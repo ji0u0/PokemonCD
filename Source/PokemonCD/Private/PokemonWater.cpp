@@ -50,3 +50,13 @@ void APokemonWater::AttackingAnim()
 	auto anim = Cast<UScorBunnyAnimInstance>(SkelMeshComp->GetAnimInstance());
 	anim->PlayScorBunnyMontage();
 }
+
+void APokemonWater::PlayFirstSkillAnim()
+{
+	Super::PlayFirstSkillAnim();
+	AttackingAnim();
+
+}
+
+
+

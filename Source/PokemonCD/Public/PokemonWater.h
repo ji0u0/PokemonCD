@@ -34,4 +34,6 @@ public:
 
 	//애니메이션
 	void AttackingAnim();
+
+	virtual void PlayFirstSkillAnim() override;
 };

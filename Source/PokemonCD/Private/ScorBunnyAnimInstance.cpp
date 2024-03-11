@@ -33,17 +33,9 @@ void UScorBunnyAnimInstance::NativeInitializeAnimation()
 void UScorBunnyAnimInstance::PlayScorBunnyMontage()
 {
 	if(nullptr == scorBunnyMontage) return;
-
-	isAttack = widgetSkill->isFirstAttack;
-
-	if(isAttack)
-	{
-		Montage_Play(scorBunnyMontage);
-	}
+	Montage_Play(scorBunnyMontage);
 }
 
 void UScorBunnyAnimInstance::AnimNotify_EndAttack()
 {
-	isAttack = false;
-	widgetSkill->isFirstAttack = isAttack;
 }
