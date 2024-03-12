@@ -10,9 +10,17 @@ UENUM(BlueprintType)
 enum class Type : uint8
 {
 	Normal UMETA(DisplayName = "Nrass"),
-	Grass UMETA(DisplayName = "Grass"),
+	Water UMETA(DisplayName = "Water"),
 	Fire UMETA(DisplayName = "Fire"),
-	Water UMETA(DisplayName = "Water")
+	Grass UMETA(DisplayName = "Grass")
+};
+
+UENUM(BlueprintType)
+enum class ESkill : uint8
+{
+	WaterGun UMETA(DisplayName = "WaterGun"),
+	Ember UMETA(DisplayName = "Ember"),
+	LeafStorm UMETA(DisplayName = "LeafStorm")
 };
 
 UCLASS()
@@ -37,7 +45,7 @@ public:
 
 	float timeDeltaTime;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	class ATrainer* OwnedTrainer;
 
 	///// status /////
@@ -74,6 +82,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	class USkill* fourthSkill;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void Skill(ESkill Skill);
 
 	virtual void PlayFirstSkillAnim();
 };
