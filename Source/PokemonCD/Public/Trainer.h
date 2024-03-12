@@ -9,6 +9,13 @@
 #include "AutonomousPlayerController.h"
 #include "Trainer.generated.h"
 
+UENUM()
+enum class EPokemonList : uint8
+{
+	RABIFOOT,
+	SOBBLE,
+	GROOKEY
+};
 
 UCLASS()
 class POKEMONCD_API ATrainer : public APawn
@@ -109,12 +116,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class APokemonWater> ThirdPokemon;
 
+	UPROPERTY()
+	class APokemonWater* CurrentPokemon;
+	
+	UPROPERTY(EditDefaultsOnly)
+	EPokemonList Pokemon;
+
+	void SetPokemon(EPokemonList Selected);
+
 	UPROPERTY(EditDefaultsOnly)
 	class APokemonWater* SelectedPokemon;
 
-	void SpawnFirstPokemon();
-	void SpawnSecondPokemon();
-	void SpawnThirdPokemon();
+	void SpawnFirstPokemon(FTransform SpawnTransform);
+	void SpawnSecondPokemon(FTransform SpawnTransform);
+	void SpawnThirdPokemon(FTransform SpawnTransform);
 
 	//int32 tmp;
 

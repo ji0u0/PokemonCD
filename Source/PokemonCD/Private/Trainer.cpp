@@ -168,7 +168,6 @@ void ATrainer::CompleteChoose()
 			GameState->AuthoritySelectPokemon = true;
 		else
 			GameState->AutonomousSelectPokemon = true;
-
 	}
 
 }
@@ -196,19 +195,24 @@ void ATrainer::FindOpponentTrainer()
 	}
 }
 
-void ATrainer::SpawnFirstPokemon()
+void ATrainer::SetPokemon(EPokemonList Selected)
 {
-	SelectedPokemon = Cast<APokemonWater>(FirstPokemon);
+	Pokemon = Selected;
 }
 
-void ATrainer::SpawnSecondPokemon()
+void ATrainer::SpawnFirstPokemon(FTransform SpawnTransform)
 {
-	SelectedPokemon = Cast<APokemonWater>(SecondPokemon);
+	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(FirstPokemon, SpawnTransform);
 }
 
-void ATrainer::SpawnThirdPokemon()
+void ATrainer::SpawnSecondPokemon(FTransform SpawnTransform)
 {
-	SelectedPokemon = Cast<APokemonWater>(ThirdPokemon);
+	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(SecondPokemon, SpawnTransform);
+}
+
+void ATrainer::SpawnThirdPokemon(FTransform SpawnTransform)
+{
+	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(ThirdPokemon, SpawnTransform);
 }
 
 
@@ -231,6 +235,19 @@ void ATrainer::SpawnPokemon()
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SpawnParticle, MonsterBallTransform.GetLocation());
 
 		// 포켓몬 소환(?)
+
+		switch (Pokemon)
+		{
+		case EPokemonList::RABIFOOT:	
+			SpawnFirstPokemon(MonsterBallTransform);
+			break;
+		case EPokemonList::SOBBLE:			
+			SpawnSecondPokemon(MonsterBallTransform);
+			break;
+		case EPokemonList::GROOKEY:		
+			SpawnThirdPokemon(MonsterBallTransform);
+			break;
+		}
 
 		MonsterBall->Destroy();
 

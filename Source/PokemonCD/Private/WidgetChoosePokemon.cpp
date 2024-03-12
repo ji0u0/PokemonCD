@@ -22,17 +22,17 @@ void UWidgetChoosePokemon::NativeConstruct()
 
 void UWidgetChoosePokemon::ChooseRabifoot()
 {
-	trainer->SpawnFirstPokemon();
+	trainer->SetPokemon(EPokemonList::RABIFOOT);
 }
 
 void UWidgetChoosePokemon::ChooseSobble()
 {
-	trainer->SpawnSecondPokemon();
+	trainer->SetPokemon(EPokemonList::SOBBLE);
 }
 
 void UWidgetChoosePokemon::ChooseGrookey()
 {
-	trainer->SpawnThirdPokemon();
+	trainer->SetPokemon(EPokemonList::GROOKEY);
 }
 
 void UWidgetChoosePokemon::SelectedPokemon()
