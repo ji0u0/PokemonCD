@@ -3,10 +3,12 @@
 
 #include "PokemonGameState.h"
 
+#include "Net/UnrealNetwork.h"
+
 
 APokemonGameState::APokemonGameState()
 {
-
+	bReplicates = true;
 }
 
 
@@ -14,7 +16,7 @@ void APokemonGameState::BeginPlay()
 {
 	Super::BeginPlay();
 	SetState(EGameState::SELECTED_POKEMON);
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("SELECTED_POKEMON"));
+	
 }
 
 
@@ -23,27 +25,31 @@ void APokemonGameState::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	switch (State)
+	/*switch (State)
 	{
-	case EGameState::SELECTED_POKEMON:	SelectedPokemon();
-	case EGameState::SELECT_SKILL:		SelectSkill();		break;
-	case EGameState::BATTLE_PHASE:		BattlePhase();		break;
-	}
+		case EGameState::SELECTED_POKEMON:	SelectedPokemon();
+		case EGameState::SELECT_SKILL:		SelectSkill();		break;
+		case EGameState::BATTLE_PHASE:		BattlePhase();		break;
+	}*/
+
+	
 }
 
 
 void APokemonGameState::SelectedPokemon()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("SELECTED_POKEMON"));
+
 	if (AuthoritySelectPokemon == true)
-		UE_LOG(LogTemp, Warning, TEXT("%s"), AuthoritySelectPokemon);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("AuthoritySelectPokemon : True"));
 
 
 	if (AutonomousSelectPokemon == true)
-		UE_LOG(LogTemp, Warning, TEXT("%s"), AutonomousSelectPokemon);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("AutonomousSelectPokemon : True"));
+
 
 	if (AuthoritySelectPokemon == true && AutonomousSelectPokemon == true)
 	{
-
 		SetState(EGameState::SELECT_SKILL);
 	}
 }
@@ -62,10 +68,24 @@ void APokemonGameState::SelectSkill()
 
 void APokemonGameState::BattlePhase()
 {
-	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("Is BattlePhase"));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("Is BattlePhase"));
+}
+
+void APokemonGameState::Test()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("AuthoritySelectPokemon : True"));
 }
 
 void APokemonGameState::SetState(EGameState Next)
 {
 	State = Next;
 }
+
+void APokemonGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(APokemonGameState, AuthoritySelectPokemon)
+	DOREPLIFETIME(APokemonGameState, AutonomousSelectPokemon)
+}
+

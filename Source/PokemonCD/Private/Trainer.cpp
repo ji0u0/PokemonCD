@@ -65,6 +65,11 @@ ATrainer::ATrainer()
 		FVector(-0.936682f, -80.906958f, 32.031394f),
 		FRotator(180, -90., 0));
 	handComp->SetRelativeScale3D(FVector(0.3f));
+
+	// SpawnParams로 스폰 조건 설정 -> 항상 스폰되도록
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	SpawnParams.bNoFail = true;
+	bReplicates = true;
 }
 
 // Called when the game starts or when spawned
@@ -74,11 +79,14 @@ ATrainer::ATrainer()
 void ATrainer::BeginPlay()
 {
 	Super::BeginPlay();
-	bReplicates = true;
-	GameMode = GetWorld()->GetAuthGameMode<APokemonGameMode>();
-
-
-
+	if (HasAuthority())
+	{
+		GameMode = GetWorld()->GetAuthGameMode<APokemonGameMode>();
+		GameState = GameMode->GetGameState<APokemonGameState>();
+	}
+	
+	
+	
 
 
 	//HasAuthority() ? PossesController() : ClientPossess_Implementation();APokemonWater* SpawnPokemon
@@ -121,11 +129,11 @@ void ATrainer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (GetController() == nullptr)
+	/*if (GetController() == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s:controller null"), *this->GetName())
 			return;
-	}
+	}*/
 }
 
 //// Called to bind functionality to input
@@ -149,27 +157,23 @@ void ATrainer::ChoosePokemonWidgetCreate()
 	//>>>>>>> Stashed changes
 }
 
-void ATrainer::CompleteChoose()
+void ATrainer::CompleteChoose_Implementation()
 {
-	/*GameState = GetWorld()->GetGameState<APokemonGameStateBase>();
-	if (HasAuthority())
-	{
-		GameState->AuthoritySelectPokemon = true;
-	}
-	else
-	{
-		GameState->AutonomousSelectPokemon = true;
-	}*/
 
-	GameState = GetWorld()->GetGameState<APokemonGameState>();
+	
 	if (GameState)
 	{
-		if (this->HasAuthority() && this->GetController()->IsLocalPlayerController())
+		auto pc = GetWorld()->GetFirstPlayerController();
+		if(pc->IsLocalPlayerController())
+		{
 			GameState->AuthoritySelectPokemon = true;
-		else
-			GameState->AutonomousSelectPokemon = true;
-	}
+		}
 
+		else
+		{
+			GameState->AutonomousSelectPokemon = true;
+		}
+	}
 }
 
 void ATrainer::FindOpponentTrainer()
@@ -202,22 +206,24 @@ void ATrainer::SetPokemon(EPokemonList Selected)
 
 void ATrainer::SpawnFirstPokemon(FTransform SpawnTransform)
 {
-	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(FirstPokemon, SpawnTransform);
+
+	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(FirstPokemon, SpawnTransform, SpawnParams);
 }
 
 void ATrainer::SpawnSecondPokemon(FTransform SpawnTransform)
 {
-	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(SecondPokemon, SpawnTransform);
+	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(SecondPokemon, SpawnTransform, SpawnParams);
 }
 
 void ATrainer::SpawnThirdPokemon(FTransform SpawnTransform)
 {
-	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(ThirdPokemon, SpawnTransform);
+	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(ThirdPokemon, SpawnTransform, SpawnParams);
 }
 
 
 void ATrainer::SpawnPokemon()
 {
+
 	FTransform ThrowingTransfrom = ThrowingPosition->GetComponentTransform();
 
 	// 몬스터볼 생성

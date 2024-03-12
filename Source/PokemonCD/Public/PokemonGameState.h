@@ -25,11 +25,16 @@ class POKEMONCD_API APokemonGameState : public AGameState
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void BeginPlay() override;
 public:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(Replicated)
 	bool AuthoritySelectPokemon = false;
-	UPROPERTY(EditAnywhere)
+
+	UPROPERTY(Replicated)
 	bool AutonomousSelectPokemon = false;
+
+	UPROPERTY(EditAnywhere, Replicated)
 	bool AuthoritySelectSkill = false;
+
+	UPROPERTY(EditAnywhere, Replicated)
 	bool AutonomousSelectSkill = false;
 
 	UFUNCTION()
@@ -37,8 +42,11 @@ public:
 
 	void SelectSkill();
 	void BattlePhase();
+	void Test();
 
 	EGameState State;
 
 	void SetState(EGameState Next);
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };

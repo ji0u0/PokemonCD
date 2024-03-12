@@ -54,7 +54,7 @@ public:
 	UFUNCTION()
 	void ChoosePokemonWidgetCreate();
 
-	UFUNCTION()
+	UFUNCTION(Server,Reliable)
 	void CompleteChoose();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
@@ -131,6 +131,7 @@ public:
 	void SpawnSecondPokemon(FTransform SpawnTransform);
 	void SpawnThirdPokemon(FTransform SpawnTransform);
 
+	FActorSpawnParameters SpawnParams;
 	//int32 tmp;
 
 	// spawn pokemon

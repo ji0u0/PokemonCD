@@ -77,17 +77,17 @@ void APokemonGameMode::PostLogin(APlayerController* NewPlayer)
 
 void APokemonGameMode::SetValue()
 {
-	PlayerScale = FVector(0.3, 0.3, 0.3);
+	PlayerScale = FVector(1.f);
 
-	AuthoritySpawnLoc = FVector(40, 1720, 20);
-	AuthoritySpawnRotate = FQuat(0, 0, 0, 1);
+	AuthoritySpawnLoc = FVector(40, 1720, 30);
+	AuthoritySpawnRotate = FQuat(0, 0, FMath::RadiansToDegrees(270), 1);
 
 	AuthorityTransform.SetLocation(AuthoritySpawnLoc);
 	AuthorityTransform.SetRotation(AuthoritySpawnRotate);
 	AuthorityTransform.SetScale3D(PlayerScale);
 
-	AutonomousProxySpawnLoc = FVector(40, -990, 20);
-	AutonomousProxySpawnRotate = FQuat(0, 0, 180, 1);
+	AutonomousProxySpawnLoc = FVector(40, -990, 30);
+	AutonomousProxySpawnRotate = FQuat(0, 0, 0, 1);
 
 
 	AutonomousProxyTransform.SetLocation(AutonomousProxySpawnLoc);
@@ -120,11 +120,13 @@ void APokemonGameMode::PossessPlayerCharacter(APlayerController* NewPlayer)
 	{
 		NewPlayer->Possess(Authority);
 		UE_LOG(LogTemp, Warning, TEXT("%s I Possess Authority"), *NewPlayer->GetName());
+		
 	}
 	else if (NewPlayer->HasAuthority() && !NewPlayer->IsLocalPlayerController())
 	{
 		NewPlayer->Possess(Autonomous);
 		UE_LOG(LogTemp, Warning, TEXT("%s I Possess Autonomous"), *NewPlayer->GetName());
+		
 	}
 
 }
@@ -158,6 +160,7 @@ void APokemonGameMode::SpawnAuthority(APlayerController* NewPlayer)
 	}
 
 	NewPlayer->Possess(Authority);
+	NewPlayer->SetRole(ROLE_Authority);
 	UE_LOG(LogTemp, Warning, TEXT("%s I Possess Authority"), *NewPlayer->GetName());
 }
 
@@ -174,6 +177,7 @@ void APokemonGameMode::SpawnAutonomous(APlayerController* NewPlayer)
 	}
 
 	NewPlayer->Possess(Autonomous);
+	NewPlayer->SetRole(ROLE_AutonomousProxy);
 	UE_LOG(LogTemp, Warning, TEXT("%s I Possess Autonomous"), *NewPlayer->GetName());
 }
 

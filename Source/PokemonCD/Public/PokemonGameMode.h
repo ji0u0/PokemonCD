@@ -56,14 +56,17 @@ private:
 	void SpawnAuthority(APlayerController* NewPlayer);
 	void SpawnAutonomous(APlayerController* NewPlayer);
 
+public:
 	FTransform AuthorityTransform;
 	FTransform AutonomousProxyTransform;
 
 
 	FVector AuthoritySpawnLoc;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FQuat AuthoritySpawnRotate;
 
 	FVector AutonomousProxySpawnLoc;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FQuat AutonomousProxySpawnRotate;
 
 	FVector PlayerScale;
