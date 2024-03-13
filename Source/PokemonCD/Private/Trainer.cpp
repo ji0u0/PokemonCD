@@ -85,6 +85,7 @@ void ATrainer::BeginPlay()
 		GameMode = GetWorld()->GetAuthGameMode<APokemonGameMode>();
 		GameState = GameMode->GetGameState<APokemonGameState>();
 	}
+	PossessedController = Cast<ATrainerPlayerController>(GetWorld()->GetFirstPlayerController());
 
 	//HasAuthority() ? PossesController() : ClientPossess_Implementation();APokemonWater* SpawnPokemon
 
@@ -266,15 +267,15 @@ void ATrainer::MultiSpawnPokemon_Implementation()
 
 		// 포켓몬 소환(?)
 
-		switch (Pokemon)
+		switch (PossessedController->Pokemon)
 		{
-		case EPokemonList::RABIFOOT:
+		case _EPokemonList::RABIFOOT:
 			SpawnFirstPokemon(MonsterBallTransform);
 			break;
-		case EPokemonList::SOBBLE:
+		case _EPokemonList::SOBBLE:
 			SpawnSecondPokemon(MonsterBallTransform);
 			break;
-		case EPokemonList::GROOKEY:
+		case _EPokemonList::GROOKEY:
 			SpawnThirdPokemon(MonsterBallTransform);
 			break;
 		}

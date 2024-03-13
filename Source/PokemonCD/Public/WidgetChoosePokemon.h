@@ -45,6 +45,9 @@ public:
 	class ATrainer* trainer;
 
 	UPROPERTY(EditDefaultsOnly)
+	class ATrainerPlayerController* _PlayerController;
+
+	UPROPERTY(EditDefaultsOnly)
 	FVector trainerLoc = FVector(40.f, 1720.f, 190.f);
 	FRotator trainerRot = FRotator(0.f, -90.f, 0.f);
 

@@ -6,6 +6,14 @@
 #include "GameFramework/PlayerController.h"
 #include "TrainerPlayerController.generated.h"
 
+
+UENUM()
+enum class _EPokemonList : uint8
+{
+	RABIFOOT,
+	SOBBLE,
+	GROOKEY
+};
 /**
  * 
  */
@@ -20,5 +28,10 @@ public:
 
 	UPROPERTY()
 	class UWidgetChoosePokemon* PokemonChoose;
+
+	UPROPERTY(EditDefaultsOnly)
+	_EPokemonList Pokemon;
+
+	void SetPokemon(_EPokemonList Selected);
 
 };

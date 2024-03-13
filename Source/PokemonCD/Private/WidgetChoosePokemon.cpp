@@ -5,6 +5,7 @@
 #include "PokemonGameMode.h"
 #include "Trainer.h"
 #include "PokemonWater.h"
+#include "TrainerPlayerController.h"
 #include "Components/Button.h"
 
 void UWidgetChoosePokemon::NativeConstruct()
@@ -19,22 +20,27 @@ void UWidgetChoosePokemon::NativeConstruct()
 	completeButton->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::CompleteUI);
 
 	trainer = Cast<ATrainer>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	_PlayerController = Cast<ATrainerPlayerController>(GetWorld()->GetFirstPlayerController());
+
 }
 
 
 void UWidgetChoosePokemon::ChooseRabifoot()
 {
-	trainer->SetPokemon(EPokemonList::RABIFOOT);
+	if (_PlayerController->IsLocalPlayerController())
+		_PlayerController->SetPokemon(_EPokemonList::RABIFOOT);
 }
 
 void UWidgetChoosePokemon::ChooseSobble()
 {
-	trainer->SetPokemon(EPokemonList::SOBBLE);
+	if (_PlayerController->IsLocalPlayerController())
+		_PlayerController->SetPokemon(_EPokemonList::SOBBLE);
 }
 
 void UWidgetChoosePokemon::ChooseGrookey()
 {
-	trainer->SetPokemon(EPokemonList::GROOKEY);
+	if (_PlayerController->IsLocalPlayerController())
+		_PlayerController->SetPokemon(_EPokemonList::GROOKEY);
 }
 
 void UWidgetChoosePokemon::SelectedPokemon()
@@ -76,10 +82,10 @@ void UWidgetChoosePokemon::CompleteUI()
 
 	// 위젯 (완전) 삭제
 	this->SetVisibility(ESlateVisibility::Hidden);
-	if(trainer==nullptr)
+	if (trainer == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("trainer null"))
-		return;
+			return;
 	}
 
 	trainer->CompleteChoose();

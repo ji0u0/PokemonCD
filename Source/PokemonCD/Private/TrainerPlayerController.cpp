@@ -3,3 +3,7 @@
 
 #include "TrainerPlayerController.h"
 
+void ATrainerPlayerController::SetPokemon(_EPokemonList Selected)
+{
+	Pokemon = Selected;
+}

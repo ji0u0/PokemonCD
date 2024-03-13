@@ -6,7 +6,6 @@
 #include "PokemonGameMode.h"
 #include "WidgetChoosePokemon.h"
 #include "GameFramework/Pawn.h"
-#include "AutonomousPlayerController.h"
 #include "Trainer.generated.h"
 
 UENUM()
@@ -57,8 +56,8 @@ public:
 	UFUNCTION(Server,Reliable)
 	void CompleteChoose();
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TSubclassOf<class AAutonomousPlayerController> ControllerTemplate;
+	UPROPERTY(EditDefaultsOnly)
+	class ATrainerPlayerController* PossessedController;
 
 	int32 PlayerIndex;
 
