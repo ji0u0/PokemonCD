@@ -28,10 +28,15 @@ public:
 	UPROPERTY()
 	class UWidgetSkill* widgetSkill;
 
+	//염버니 불타입공격(불꽃세례)
 	UPROPERTY(EditDefaultsOnly)
-	class UAnimMontage* scorBunnyMontage;
+	class UAnimMontage* scorbunnyTypeAttack;
+	void PlayScorbunnyTypeAttackMontage();
 
-	void PlayScorBunnyMontage();
+	//염버니 노말물리공격(몸통박치기)
+	UPROPERTY(EditDefaultsOnly)
+	class UAnimMontage* scorbunnyNomalAttack;
+	void PlayScorbunnyNomalAttackMontage();
 
 	UFUNCTION()
 	void AnimNotify_EndAttack();

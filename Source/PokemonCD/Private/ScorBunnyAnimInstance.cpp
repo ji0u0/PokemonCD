@@ -30,10 +30,16 @@ void UScorBunnyAnimInstance::NativeInitializeAnimation()
 	//isAttack = widgetSkill->isFirstAttack;
 }
 
-void UScorBunnyAnimInstance::PlayScorBunnyMontage()
+void UScorBunnyAnimInstance::PlayScorbunnyTypeAttackMontage()
 {
-	if(nullptr == scorBunnyMontage) return;
-	Montage_Play(scorBunnyMontage);
+	if(nullptr == scorbunnyTypeAttack) return;
+	Montage_Play(scorbunnyTypeAttack);
+}
+
+void UScorBunnyAnimInstance::PlayScorbunnyNomalAttackMontage()
+{
+	if(nullptr == scorbunnyNomalAttack) return;
+	Montage_Play(scorbunnyNomalAttack);
 }
 
 void UScorBunnyAnimInstance::AnimNotify_EndAttack()
