@@ -135,8 +135,11 @@ public:
 	//int32 tmp;
 
 	// spawn pokemon
-	UFUNCTION()
-	void SpawnPokemon();
+	UFUNCTION(Server, Reliable)
+	void ServerSpawnPokemon();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MultiSpawnPokemon();
 
 	// Monster Ball
 	UPROPERTY(EditAnywhere)

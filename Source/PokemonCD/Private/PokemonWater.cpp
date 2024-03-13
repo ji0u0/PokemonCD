@@ -10,6 +10,8 @@ APokemonWater::APokemonWater()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	bReplicates = true;
+
 	// Box Collision
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
 	SetRootComponent(BoxComponent);

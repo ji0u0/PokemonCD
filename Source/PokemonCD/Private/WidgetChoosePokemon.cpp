@@ -37,7 +37,7 @@ void UWidgetChoosePokemon::ChooseGrookey()
 
 void UWidgetChoosePokemon::SelectedPokemon()
 {
-	trainer->SpawnPokemon();
+	//trainer->SpawnPokemon();
 }
 
 void UWidgetChoosePokemon::UndoSelect()
@@ -82,7 +82,7 @@ void UWidgetChoosePokemon::CompleteUI()
 
 	trainer->CompleteChoose();
 
-	if(trainer != nullptr)
-		trainer->SpawnPokemon();
+	if (trainer != nullptr)
+		trainer->ServerSpawnPokemon();
 }
 

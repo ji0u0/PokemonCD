@@ -134,6 +134,22 @@ void ATrainer::Tick(float DeltaTime)
 		UE_LOG(LogTemp, Warning, TEXT("%s:controller null"), *this->GetName())
 			return;
 	}*/
+
+	// 오너가 있는가?
+	FString owner = GetOwner() ? GetOwner()->GetName() : TEXT("No Owner");
+	// NetConnection이 있는가?
+	FString conn = GetNetConnection() ? TEXT("Valid") : TEXT("Invalid");
+	// LocalRole
+	FString localRole = UEnum::GetValueAsString<ENetRole>(GetLocalRole());
+	// RemoteRole
+	FString remoteRole = UEnum::GetValueAsString<ENetRole>(GetRemoteRole());
+
+	FString nameController = GetWorld()->GetFirstPlayerController()->GetName();
+
+	FString str = FString::Printf(TEXT("Owner : %s\nConnection : %s\nlocalRole : %s\nremoteRole : %s\nController : %s"), *owner, *conn, *localRole, *remoteRole, *nameController);
+
+	FVector loc = GetActorLocation() + FVector(0, 0, 50);
+	DrawDebugString(GetWorld(), loc, str, nullptr, FColor::Yellow, 0, false, 0.75f);
 }
 
 //// Called to bind functionality to input
@@ -164,12 +180,12 @@ void ATrainer::CompleteChoose_Implementation()
 	if (GameState)
 	{
 		auto pc = GetWorld()->GetFirstPlayerController();
-		if(pc->IsLocalPlayerController())
+		if(pc->GetLocalRole() == ROLE_Authority)
 		{
 			GameState->AuthoritySelectPokemon = true;
 		}
 
-		else
+		else if(pc->GetLocalRole() == ROLE_AutonomousProxy)
 		{
 			GameState->AutonomousSelectPokemon = true;
 		}
@@ -220,10 +236,8 @@ void ATrainer::SpawnThirdPokemon(FTransform SpawnTransform)
 	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(ThirdPokemon, SpawnTransform, SpawnParams);
 }
 
-
-void ATrainer::SpawnPokemon()
+void ATrainer::MultiSpawnPokemon_Implementation()
 {
-
 	FTransform ThrowingTransfrom = ThrowingPosition->GetComponentTransform();
 
 	// 몬스터볼 생성
@@ -244,13 +258,13 @@ void ATrainer::SpawnPokemon()
 
 		switch (Pokemon)
 		{
-		case EPokemonList::RABIFOOT:	
+		case EPokemonList::RABIFOOT:
 			SpawnFirstPokemon(MonsterBallTransform);
 			break;
-		case EPokemonList::SOBBLE:			
+		case EPokemonList::SOBBLE:
 			SpawnSecondPokemon(MonsterBallTransform);
 			break;
-		case EPokemonList::GROOKEY:		
+		case EPokemonList::GROOKEY:
 			SpawnThirdPokemon(MonsterBallTransform);
 			break;
 		}
@@ -262,7 +276,10 @@ void ATrainer::SpawnPokemon()
 		}, 2.0f, false);
 }
 
-
+void ATrainer::ServerSpawnPokemon_Implementation()
+{
+	MultiSpawnPokemon();
+}
 
 
 /*
