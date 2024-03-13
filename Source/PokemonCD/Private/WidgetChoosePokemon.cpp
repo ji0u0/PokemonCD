@@ -17,6 +17,8 @@ void UWidgetChoosePokemon::NativeConstruct()
 
 	undoButton->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::UndoSelect);
 	completeButton->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::CompleteUI);
+
+	trainer = Cast<ATrainer>(GetWorld()->GetFirstPlayerController()->GetPawn());
 }
 
 

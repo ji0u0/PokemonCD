@@ -15,6 +15,7 @@ class POKEMONCD_API UWidgetChoosePokemon : public UUserWidget
 	GENERATED_BODY()
 
 	virtual void NativeConstruct() override;
+	
 public:
 
 	

@@ -90,6 +90,8 @@ public:
 	void AttachBall();
 	void DetachBall();
 
+	void SetSpawnTag();
+
 	/// <summary>
 	/// 노은채
 	/// 애니메이션 조건

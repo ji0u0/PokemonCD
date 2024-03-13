@@ -7,6 +7,7 @@
 #include "PokemonGameState.h"
 #include "PokemonWater.h"
 #include "TrainerAnimInstance.h"
+#include "TrainerPlayerController.h"
 #include "WidgetSkill.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
@@ -69,7 +70,7 @@ ATrainer::ATrainer()
 	// SpawnParams로 스폰 조건 설정 -> 항상 스폰되도록
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParams.bNoFail = true;
-	bReplicates = true;
+	//bReplicates = true;
 }
 
 // Called when the game starts or when spawned
@@ -84,10 +85,6 @@ void ATrainer::BeginPlay()
 		GameMode = GetWorld()->GetAuthGameMode<APokemonGameMode>();
 		GameState = GameMode->GetGameState<APokemonGameState>();
 	}
-	
-	
-	
-
 
 	//HasAuthority() ? PossesController() : ClientPossess_Implementation();APokemonWater* SpawnPokemon
 
@@ -100,6 +97,7 @@ void ATrainer::BeginPlay()
 	//	FindOpponentTrainer();
 	//	}, 1.f, false);
 
+	
 	ChoosePokemonWidgetCreate();
 }
 void ATrainer::AttachBall()
@@ -122,6 +120,14 @@ void ATrainer::DetachBall()
 	FTransform ThrowingTransfrom = ThrowingPosition->GetComponentTransform();
 	MonsterBall = GetWorld()->SpawnActor<AMonsterBall>(MonsterBallFactory, ThrowingTransfrom);
 	MonsterBall->SetActorRelativeScale3D(FVector(0.1f));
+}
+
+void ATrainer::SetSpawnTag()
+{
+	if (GetLocalRole() == ROLE_Authority)
+		Tags.AddUnique(TEXT("Authority"));
+	else
+		Tags.AddUnique(TEXT("Autonomous"));
 }
 
 // Called every frame
@@ -149,7 +155,7 @@ void ATrainer::Tick(float DeltaTime)
 	FString str = FString::Printf(TEXT("Owner : %s\nConnection : %s\nlocalRole : %s\nremoteRole : %s\nController : %s"), *owner, *conn, *localRole, *remoteRole, *nameController);
 
 	FVector loc = GetActorLocation() + FVector(0, 0, 50);
-	DrawDebugString(GetWorld(), loc, str, nullptr, FColor::Yellow, 0, false, 0.75f);
+	DrawDebugString(GetWorld(), loc, str, nullptr, FColor::Red, 0, false, 0.75f);
 }
 
 //// Called to bind functionality to input
@@ -161,15 +167,20 @@ void ATrainer::Tick(float DeltaTime)
 
 void ATrainer::ChoosePokemonWidgetCreate()
 {
-	PokemonChoose = CreateWidget<UWidgetChoosePokemon>(GetWorld(), PokemonTemplate);
-	PokemonChoose->AddToViewport(0);
-	//<<<<<<< Updated upstream
-	PokemonChoose->trainer = this;
-	//=======
-	if (PokemonChoose)
+	auto pc = Cast<ATrainerPlayerController>(Controller);
+
+	if(pc != nullptr)
 	{
-		PokemonChoose->trainer = this;
+		pc->PokemonChoose = CreateWidget<UWidgetChoosePokemon>(GetWorld(), pc->PokemonTemplate);
+		pc->PokemonChoose->AddToViewport(0);
 	}
+	//<<<<<<< Updated upstream
+	//pc->PokemonChoose->trainer = this;
+	////=======
+	//if (PokemonChoose)
+	//{
+	//	PokemonChoose->trainer = this;
+	//}
 	//>>>>>>> Stashed changes
 }
 
@@ -179,13 +190,12 @@ void ATrainer::CompleteChoose_Implementation()
 	
 	if (GameState)
 	{
-		auto pc = GetWorld()->GetFirstPlayerController();
-		if(pc->GetLocalRole() == ROLE_Authority)
+		if(GetLocalRole() == ROLE_Authority && GetRemoteRole() == ROLE_AutonomousProxy)
 		{
 			GameState->AuthoritySelectPokemon = true;
 		}
 
-		else if(pc->GetLocalRole() == ROLE_AutonomousProxy)
+		else if(GetLocalRole() == ROLE_AutonomousProxy && GetRemoteRole() == ROLE_AutonomousProxy)
 		{
 			GameState->AutonomousSelectPokemon = true;
 		}
@@ -278,7 +288,8 @@ void ATrainer::MultiSpawnPokemon_Implementation()
 
 void ATrainer::ServerSpawnPokemon_Implementation()
 {
-	MultiSpawnPokemon();
+	
+		MultiSpawnPokemon();
 }
 
 
