@@ -90,7 +90,6 @@ void UWidgetChoosePokemon::CompleteUI()
 
 	trainer->CompleteChoose();
 
-	if (trainer != nullptr)
-		trainer->ServerSpawnPokemon();
+	trainer->ServerSpawnPokemon();
 }
 

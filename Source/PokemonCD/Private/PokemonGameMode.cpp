@@ -160,7 +160,7 @@ void APokemonGameMode::SpawnAuthority(APlayerController* NewPlayer)
 	}
 
 	NewPlayer->Possess(Authority);
-	NewPlayer->SetRole(ROLE_Authority);
+	//NewPlayer->SetRole(ROLE_Authority);
 	UE_LOG(LogTemp, Warning, TEXT("%s I Possess Authority"), *NewPlayer->GetName());
 }
 
@@ -177,7 +177,7 @@ void APokemonGameMode::SpawnAutonomous(APlayerController* NewPlayer)
 	}
 
 	NewPlayer->Possess(Autonomous);
-	NewPlayer->SetRole(ROLE_AutonomousProxy);
+	//NewPlayer->SetRole(ROLE_AutonomousProxy);
 	UE_LOG(LogTemp, Warning, TEXT("%s I Possess Autonomous"), *NewPlayer->GetName());
 }
 

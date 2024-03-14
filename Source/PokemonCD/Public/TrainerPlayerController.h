@@ -34,4 +34,6 @@ public:
 
 	void SetPokemon(_EPokemonList Selected);
 
+	void UseSkill();
+
 };

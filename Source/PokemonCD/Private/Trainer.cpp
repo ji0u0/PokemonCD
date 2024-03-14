@@ -70,7 +70,7 @@ ATrainer::ATrainer()
 	// SpawnParams로 스폰 조건 설정 -> 항상 스폰되도록
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParams.bNoFail = true;
-	//bReplicates = true;
+	bReplicates = true;
 }
 
 // Called when the game starts or when spawned
@@ -85,7 +85,9 @@ void ATrainer::BeginPlay()
 		GameMode = GetWorld()->GetAuthGameMode<APokemonGameMode>();
 		GameState = GameMode->GetGameState<APokemonGameState>();
 	}
-	PossessedController = Cast<ATrainerPlayerController>(GetWorld()->GetFirstPlayerController());
+	PossessedController = Cast<ATrainerPlayerController>(GetController());
+	//PossessedController = Cast<ATrainerPlayerController>(GetWorld()->GetFirstLocalPlayerFromController());
+	
 
 	//HasAuthority() ? PossesController() : ClientPossess_Implementation();APokemonWater* SpawnPokemon
 
@@ -143,20 +145,22 @@ void ATrainer::Tick(float DeltaTime)
 	}*/
 
 	// 오너가 있는가?
-	FString owner = GetOwner() ? GetOwner()->GetName() : TEXT("No Owner");
-	// NetConnection이 있는가?
-	FString conn = GetNetConnection() ? TEXT("Valid") : TEXT("Invalid");
-	// LocalRole
-	FString localRole = UEnum::GetValueAsString<ENetRole>(GetLocalRole());
-	// RemoteRole
-	FString remoteRole = UEnum::GetValueAsString<ENetRole>(GetRemoteRole());
+	//FString owner = GetOwner() ? GetOwner()->GetName() : TEXT("No Owner");
+	//// NetConnection이 있는가?
+	//FString conn = GetNetConnection() ? TEXT("Valid") : TEXT("Invalid");
+	//// LocalRole
+	//FString localRole = UEnum::GetValueAsString<ENetRole>(GetLocalRole());
+	//// RemoteRole
+	//FString remoteRole = UEnum::GetValueAsString<ENetRole>(GetRemoteRole());
 
-	FString nameController = GetWorld()->GetFirstPlayerController()->GetName();
+	//FString nameController = GetWorld()->GetFirstPlayerController()->GetName();
 
-	FString str = FString::Printf(TEXT("Owner : %s\nConnection : %s\nlocalRole : %s\nremoteRole : %s\nController : %s"), *owner, *conn, *localRole, *remoteRole, *nameController);
+	//FString isPossessed = PossessedController ? TEXT("Possess") : TEXT("not Possess");
 
-	FVector loc = GetActorLocation() + FVector(0, 0, 50);
-	DrawDebugString(GetWorld(), loc, str, nullptr, FColor::Red, 0, false, 0.75f);
+	//FString str = FString::Printf(TEXT("Owner : %s\nConnection : %s\nlocalRole : %s\nremoteRole : %s\nController : %s\nisPossess : %s"), *owner, *conn, *localRole, *remoteRole, *nameController, *isPossessed);
+
+	//FVector loc = GetActorLocation() + FVector(0, 0, 50);
+	//DrawDebugString(GetWorld(), loc, str, nullptr, FColor::Red, 0, false, 0.75f);
 }
 
 //// Called to bind functionality to input
@@ -235,16 +239,19 @@ void ATrainer::SpawnFirstPokemon(FTransform SpawnTransform)
 {
 
 	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(FirstPokemon, SpawnTransform, SpawnParams);
+	MonsterBall->Destroy();
 }
 
 void ATrainer::SpawnSecondPokemon(FTransform SpawnTransform)
 {
 	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(SecondPokemon, SpawnTransform, SpawnParams);
+	MonsterBall->Destroy();
 }
 
 void ATrainer::SpawnThirdPokemon(FTransform SpawnTransform)
 {
 	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(ThirdPokemon, SpawnTransform, SpawnParams);
+	MonsterBall->Destroy();
 }
 
 void ATrainer::MultiSpawnPokemon_Implementation()
@@ -266,6 +273,9 @@ void ATrainer::MultiSpawnPokemon_Implementation()
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SpawnParticle, MonsterBallTransform.GetLocation());
 
 		// 포켓몬 소환(?)
+		if (PossessedController == nullptr)
+			return;
+		
 
 		switch (PossessedController->Pokemon)
 		{
@@ -289,7 +299,7 @@ void ATrainer::MultiSpawnPokemon_Implementation()
 
 void ATrainer::ServerSpawnPokemon_Implementation()
 {
-	
+
 		MultiSpawnPokemon();
 }
 
