@@ -37,13 +37,41 @@ public:
 	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
-
+	///// 게임 모드 & 게임 스테이트 /////
 	UPROPERTY()
 	class APokemonGameMode* GameMode;
 
 	UPROPERTY()
 	class APokemonGameState* GameState;
 
+
+	///// 컨트롤러 /////
+	UPROPERTY(EditDefaultsOnly)
+	class ATrainerPlayerController* PossessedController;
+
+	void SetSpawnTag();
+
+
+	///// Components /////
+	UPROPERTY(EditAnywhere)
+	class UBoxComponent* BoxComponent;
+
+	UPROPERTY(EditAnywhere)
+	class UStaticMeshComponent* MeshComponent;
+
+	UPROPERTY(EditAnywhere)
+	class UArrowComponent* ThrowingPosition;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	class USkeletalMeshComponent* TrainerSkelMeshComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	class USceneComponent* handComp;
+
+
+	///// 위젯 /////
+	
+	// Choose Widget
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UWidgetChoosePokemon> PokemonTemplate;
 
@@ -56,47 +84,21 @@ public:
 	UFUNCTION(Server,Reliable)
 	void CompleteChoose();
 
-	UPROPERTY(EditDefaultsOnly)
-	class ATrainerPlayerController* PossessedController;
+	// Main (status) Widget
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UWidgetMain* mainWidget;
 
-	int32 PlayerIndex;
+	UFUNCTION()
+	void MainWidgetCreate();
 
-	// Components
-	UPROPERTY(EditAnywhere)
-	class UBoxComponent* BoxComponent;
+	// Skill Widget
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UWidgetSkill* skillWidget;
 
-	UPROPERTY(EditAnywhere)
-	class UStaticMeshComponent* MeshComponent;
-
-	UPROPERTY(EditAnywhere)
-	class UArrowComponent* ThrowingPosition;
+	UFUNCTION()
+	void SkillWidgetCreate();
 
 
-	/// <summary>
-	/// 노은채
-	/// 트레이너 메시 추가
-	/// </summary>
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	class USkeletalMeshComponent* TrainerSkelMeshComp;
-
-	/// <summary>
-	/// 노은채
-	/// 트레이너 핸드 소켓 추가 및 ball 추가
-	/// </summary>
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	class USceneComponent* handComp;
-
-	void AttachBall();
-	void DetachBall();
-
-	void SetSpawnTag();
-
-	/// <summary>
-	/// 노은채
-	/// 애니메이션 조건
-	/// </summary>
-	UPROPERTY(EditDefaultsOnly)
-	bool isAttachBall;
 
 	// 상대방
 	UPROPERTY(EditDefaultsOnly)
@@ -104,10 +106,7 @@ public:
 
 	void FindOpponentTrainer();
 
-	// 소유 포켓몬
-	/*UPROPERTY(EditDefaultsOnly)
-	class APokemon* firstPokemon = nullptr;*/
-
+	///// 포켓몬 /////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class APokemonWater> FirstPokemon;
 
@@ -142,7 +141,7 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 	void MultiSpawnPokemon();
 
-	// Monster Ball
+	///// 몬스터볼 /////
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AMonsterBall> MonsterBallFactory;
 
@@ -152,17 +151,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* SpawnParticle;
 
+	void AttachBall();
+	void DetachBall();
 
-	//FVector pokemonLoc = FVector(-40.f, 830.f, 150.f);
-
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UWidgetMain* mainWidget;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UWidgetSkill* skillWidget;
-//<<<<<<< HEAD
-//=======
-
-//>>>>>>> fa035a90e707ee172ff735b93fe320fab9d14587
+	UPROPERTY()
+	bool isAttachBall;
 };

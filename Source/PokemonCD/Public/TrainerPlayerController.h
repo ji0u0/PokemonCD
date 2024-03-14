@@ -30,6 +30,19 @@ public:
 	class UWidgetChoosePokemon* PokemonChoose;
 
 	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UWidgetMain> MainWidgetTemplate;
+
+	UPROPERTY()
+	class UWidgetMain* MainWidget;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UWidgetSkill> SkillWidgetTemplate;
+
+	UPROPERTY()
+	class UWidgetSkill* SkillWidget;
+
+
+	UPROPERTY(EditDefaultsOnly)
 	_EPokemonList Pokemon;
 
 	void SetPokemon(_EPokemonList Selected);

@@ -13,6 +13,8 @@
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "WidgetChoosePokemon.h"
+#include "WidgetMain.h"
+#include "WidgetSkill.h"
 
 
 // Sets default values
@@ -80,16 +82,17 @@ ATrainer::ATrainer()
 void ATrainer::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// 서버라면 게임 모드를 가지고 와
 	if (HasAuthority())
 	{
 		GameMode = GetWorld()->GetAuthGameMode<APokemonGameMode>();
 		GameState = GameMode->GetGameState<APokemonGameState>();
 	}
+
+	// 컨트롤러
 	PossessedController = Cast<ATrainerPlayerController>(GetController());
 	//PossessedController = Cast<ATrainerPlayerController>(GetWorld()->GetFirstLocalPlayerFromController());
-	
-
-	//HasAuthority() ? PossesController() : ClientPossess_Implementation();APokemonWater* SpawnPokemon
 
 	//// 1초 후 띄우고
 	//FTimerHandle timerHandle;
@@ -100,7 +103,6 @@ void ATrainer::BeginPlay()
 	//	FindOpponentTrainer();
 	//	}, 1.f, false);
 
-	
 	ChoosePokemonWidgetCreate();
 }
 void ATrainer::AttachBall()
@@ -163,13 +165,6 @@ void ATrainer::Tick(float DeltaTime)
 	//DrawDebugString(GetWorld(), loc, str, nullptr, FColor::Red, 0, false, 0.75f);
 }
 
-//// Called to bind functionality to input
-//void ATrainer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-//{
-//	Super::SetupPlayerInputComponent(PlayerInputComponent);
-//
-//}
-
 void ATrainer::ChoosePokemonWidgetCreate()
 {
 	auto pc = Cast<ATrainerPlayerController>(Controller);
@@ -179,20 +174,28 @@ void ATrainer::ChoosePokemonWidgetCreate()
 		pc->PokemonChoose = CreateWidget<UWidgetChoosePokemon>(GetWorld(), pc->PokemonTemplate);
 		pc->PokemonChoose->AddToViewport(0);
 	}
-	//<<<<<<< Updated upstream
-	//pc->PokemonChoose->trainer = this;
-	////=======
-	//if (PokemonChoose)
-	//{
-	//	PokemonChoose->trainer = this;
-	//}
-	//>>>>>>> Stashed changes
+}
+
+void ATrainer::MainWidgetCreate()
+{
+	if(PossessedController)
+	{
+		PossessedController->MainWidget = CreateWidget<UWidgetMain>(GetWorld(), PossessedController->MainWidgetTemplate);
+		PossessedController->MainWidget->AddToViewport(0);
+	}
+}
+
+void ATrainer::SkillWidgetCreate()
+{
+	if (PossessedController)
+	{
+		PossessedController->SkillWidget = CreateWidget<UWidgetSkill>(GetWorld(), PossessedController->SkillWidgetTemplate);
+		PossessedController->MainWidget->AddToViewport(0);
+	}
 }
 
 void ATrainer::CompleteChoose_Implementation()
 {
-
-	
 	if (GameState)
 	{
 		if(GetLocalRole() == ROLE_Authority && GetRemoteRole() == ROLE_AutonomousProxy)
@@ -294,12 +297,11 @@ void ATrainer::MultiSpawnPokemon_Implementation()
 
 		// currentPokemon
 		//skillWidget->SetSkillName(currentPokemon);
-		}, 2.0f, false);
+		}, 1.25f, false);
 }
 
 void ATrainer::ServerSpawnPokemon_Implementation()
 {
-
 		MultiSpawnPokemon();
 }
 
