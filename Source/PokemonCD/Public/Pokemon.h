@@ -83,8 +83,28 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	class USkill* fourthSkill;
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION()
 	void Skill(ESkill Skill);
 
 	virtual void PlayFirstSkillAnim();
+
+	// Particle
+	UParticleSystem* ThrowParticle;
+
+	UParticleSystem* HitParticle;
+
+	FVector myLoc;
+
+	FVector oppoLoc;
+
+	FTimerHandle handle;
+
+	float alpha = 0.f;
+
+	// Camera Shake -> 포켓몬을 만들면 꼭 Factory를 채울 것
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UCameraShakeBase> WaterCameraShakeFactory;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UCameraShakeBase> GrassCameraShakeFactory;
 };

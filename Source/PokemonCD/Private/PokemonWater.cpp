@@ -39,6 +39,13 @@ APokemonWater::APokemonWater()
 	pokemonCurHealth = pokemonMaxHealth;
 }
 
+void APokemonWater::BeginPlay()
+{
+	Super::BeginPlay();
+
+	Skill(ESkill::LeafStorm);
+}
+
 void APokemonWater::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);

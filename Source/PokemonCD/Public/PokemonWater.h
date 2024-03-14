@@ -16,6 +16,9 @@ class POKEMONCD_API APokemonWater : public APokemon
 	
 public:
 	APokemonWater();
+
+	virtual void BeginPlay() override;
+	
 	virtual void Tick(float DeltaSeconds) override;
 
 	// Components
