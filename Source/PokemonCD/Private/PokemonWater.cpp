@@ -45,7 +45,6 @@ void APokemonWater::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Skill(ESkill::LeafStorm);
 }
 
 void APokemonWater::Tick(float DeltaSeconds)
@@ -57,7 +56,7 @@ void APokemonWater::Tick(float DeltaSeconds)
 void APokemonWater::AttackingAnim()
 {
 	auto anim = Cast<UScorBunnyAnimInstance>(SkelMeshComp->GetAnimInstance());
-	anim->PlayScorbunnyTypeAttackMontage();
+	// anim->PlayScorbunnyTypeAttackMontage();
 }
 
 void APokemonWater::PlayFirstSkillAnim()

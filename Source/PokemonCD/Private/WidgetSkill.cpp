@@ -61,7 +61,7 @@ void UWidgetSkill::ClickSwapButton()
 void UWidgetSkill::ClickFirstSkill()
 {
 	//몽타주 실행
-	ClickTOPlayAnim();
+	// ClickTOPlayAnim();
 
 	//this->SetVisibility(ESlateVisibility::Hidden);
 	//trainer->SpawnedPokemon->firstSkill->Attack(trainer->oppoTrainer);
@@ -100,8 +100,9 @@ void UWidgetSkill::ClickFourthSkill()
 	//// SetVisibility(ESlateVisibility::Visible); 필요함
 }
 
+/*
 void UWidgetSkill::ClickTOPlayAnim()
 {
-	auto anim = Cast<UTrainerAnimInstance>(trainer->TrainerSkelMeshComp->GetAnimInstance());
-	anim->PlayCheeringMontage();
-}
+	/*auto anim = Cast<UTrainerAnimInstance>(trainer->TrainerSkelMeshComp->GetAnimInstance());
+	anim->PlayCheeringMontage();#1#
+}*/
