@@ -39,5 +39,5 @@ public:
 
 	void NativeConstruct() override;
 
-	void SetPokeballBox(ATrainer* trainer);
+	//void SetPokeballBox(ATrainer* trainer);
 };

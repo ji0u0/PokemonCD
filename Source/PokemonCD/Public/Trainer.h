@@ -6,11 +6,15 @@
 #include "PokemonGameMode.h"
 #include "WidgetChoosePokemon.h"
 #include "GameFramework/Pawn.h"
-#include "AutonomousPlayerController.h"
 #include "Trainer.generated.h"
 
-
-
+UENUM()
+enum class EPokemonList : uint8
+{
+	RABIFOOT,
+	SOBBLE,
+	GROOKEY
+};
 
 UCLASS()
 class POKEMONCD_API ATrainer : public APawn
@@ -30,12 +34,15 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
 
 	UPROPERTY()
 	class APokemonGameMode* GameMode;
+
+	UPROPERTY()
+	class APokemonGameState* GameState;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UWidgetChoosePokemon> PokemonTemplate;
@@ -46,16 +53,11 @@ public:
 	UFUNCTION()
 	void ChoosePokemonWidgetCreate();
 
-	UFUNCTION()
+	UFUNCTION(Server,Reliable)
 	void CompleteChoose();
 
-	void PossesController();
-
-	UFUNCTION(Server,Reliable)
-	void ClientPossess();
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TSubclassOf<class AAutonomousPlayerController> ControllerTemplate;
+	UPROPERTY(EditDefaultsOnly)
+	class ATrainerPlayerController* PossessedController;
 
 	int32 PlayerIndex;
 
@@ -87,6 +89,8 @@ public:
 	void AttachBall();
 	void DetachBall();
 
+	void SetSpawnTag();
+
 	/// <summary>
 	/// 노은채
 	/// 애니메이션 조건
@@ -101,17 +105,42 @@ public:
 	void FindOpponentTrainer();
 
 	// 소유 포켓몬
+	/*UPROPERTY(EditDefaultsOnly)
+	class APokemon* firstPokemon = nullptr;*/
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class APokemonWater> FirstPokemon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class APokemonWater> SecondPokemon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class APokemonWater> ThirdPokemon;
+
+	UPROPERTY()
+	class APokemonWater* CurrentPokemon;
+	
 	UPROPERTY(EditDefaultsOnly)
-	class APokemon* firstPokemon = nullptr;
+	EPokemonList Pokemon;
+
+	void SetPokemon(EPokemonList Selected);
 
 	UPROPERTY(EditDefaultsOnly)
-	class APokemon* secondPokemon = nullptr;
+	class APokemonWater* SelectedPokemon;
 
-	UPROPERTY(EditDefaultsOnly)
-	class APokemon* thirdPokemon = nullptr;
+	void SpawnFirstPokemon(FTransform SpawnTransform);
+	void SpawnSecondPokemon(FTransform SpawnTransform);
+	void SpawnThirdPokemon(FTransform SpawnTransform);
 
-	UPROPERTY(EditDefaultsOnly)
-	class APokemon* currentPokemon = nullptr;
+	FActorSpawnParameters SpawnParams;
+	//int32 tmp;
+
+	// spawn pokemon
+	UFUNCTION(Server, Reliable)
+	void ServerSpawnPokemon();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MultiSpawnPokemon();
 
 	// Monster Ball
 	UPROPERTY(EditAnywhere)
@@ -123,8 +152,6 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* SpawnParticle;
 
-	// spawn pokemon
-	void SpawnPokemon(APokemon* pokemon);
 
 	//FVector pokemonLoc = FVector(-40.f, 830.f, 150.f);
 

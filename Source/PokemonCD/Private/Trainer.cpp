@@ -4,7 +4,10 @@
 #include "Trainer.h"
 #include "MonsterBall.h"
 #include "Pokemon.h"
+#include "PokemonGameState.h"
+#include "PokemonWater.h"
 #include "TrainerAnimInstance.h"
+#include "TrainerPlayerController.h"
 #include "WidgetSkill.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
@@ -41,11 +44,20 @@ ATrainer::ATrainer()
 		FRotator(0, -90, 0)
 	);
 	TrainerSkelMeshComp->SetRelativeScale3D(FVector(0.3f));
+
+	/*BallComp = CreateDefaultSubobject<USceneComponent>(TEXT("BallComp"));
+	BallComp->SetupAttachment(GetMesh);
+	ConstructorHelpers::FObjectFinder<UStaticMesh> tempBallMesh(TEXT("/Script/Engine.StaticMesh'/Game/NEC/Model/PokeBall/NormalB/StaticMesh_NormalBall.StaticMesh_NormalBall'"));
+	if(tempBallMesh.Succeeded())
+	{
+		;
+	}*/
+
 	TrainerSkelMeshComp->SetRelativeLocationAndRotation
-		(
-			FVector(0, 0, 25),
-			FRotator(0, -90, 0)
-		);
+	(
+		FVector(0, 0, 25),
+		FRotator(0, -90, 0)
+	);
 	TrainerSkelMeshComp->SetRelativeScale3D(FVector(0.1f));
 
 	handComp = CreateDefaultSubobject<USceneComponent>(TEXT("handComp"));
@@ -54,25 +66,31 @@ ATrainer::ATrainer()
 		FVector(-0.936682f, -80.906958f, 32.031394f),
 		FRotator(180, -90., 0));
 	handComp->SetRelativeScale3D(FVector(0.3f));
+
+	// SpawnParams로 스폰 조건 설정 -> 항상 스폰되도록
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	SpawnParams.bNoFail = true;
+	bReplicates = true;
 }
 
 // Called when the game starts or when spawned
 /**
- * 
+ *
  */
 void ATrainer::BeginPlay()
 {
 	Super::BeginPlay();
-	bReplicates = true;
-	GameMode = GetWorld()->GetAuthGameMode<APokemonGameMode>();
+	if (HasAuthority())
+	{
+		GameMode = GetWorld()->GetAuthGameMode<APokemonGameMode>();
+		GameState = GameMode->GetGameState<APokemonGameState>();
+	}
+	PossessedController = Cast<ATrainerPlayerController>(GetController());
+	//PossessedController = Cast<ATrainerPlayerController>(GetWorld()->GetFirstLocalPlayerFromController());
 	
 
+	//HasAuthority() ? PossesController() : ClientPossess_Implementation();APokemonWater* SpawnPokemon
 
-
-	//HasAuthority() ? PossesController() : ClientPossess_Implementation();
-	PossesController();
-	ClientPossess();
-	
 	//// 1초 후 띄우고
 	//FTimerHandle timerHandle;
 	//GetWorldTimerManager().SetTimer(timerHandle, [this]() {
@@ -82,6 +100,7 @@ void ATrainer::BeginPlay()
 	//	FindOpponentTrainer();
 	//	}, 1.f, false);
 
+	
 	ChoosePokemonWidgetCreate();
 }
 void ATrainer::AttachBall()
@@ -106,69 +125,87 @@ void ATrainer::DetachBall()
 	MonsterBall->SetActorRelativeScale3D(FVector(0.1f));
 }
 
+void ATrainer::SetSpawnTag()
+{
+	if (GetLocalRole() == ROLE_Authority)
+		Tags.AddUnique(TEXT("Authority"));
+	else
+		Tags.AddUnique(TEXT("Autonomous"));
+}
+
 // Called every frame
 void ATrainer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (GetController() == nullptr)
+	/*if (GetController() == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s:controller null"), *this->GetName())
 			return;
-	}
+	}*/
+
+	// 오너가 있는가?
+	//FString owner = GetOwner() ? GetOwner()->GetName() : TEXT("No Owner");
+	//// NetConnection이 있는가?
+	//FString conn = GetNetConnection() ? TEXT("Valid") : TEXT("Invalid");
+	//// LocalRole
+	//FString localRole = UEnum::GetValueAsString<ENetRole>(GetLocalRole());
+	//// RemoteRole
+	//FString remoteRole = UEnum::GetValueAsString<ENetRole>(GetRemoteRole());
+
+	//FString nameController = GetWorld()->GetFirstPlayerController()->GetName();
+
+	//FString isPossessed = PossessedController ? TEXT("Possess") : TEXT("not Possess");
+
+	//FString str = FString::Printf(TEXT("Owner : %s\nConnection : %s\nlocalRole : %s\nremoteRole : %s\nController : %s\nisPossess : %s"), *owner, *conn, *localRole, *remoteRole, *nameController, *isPossessed);
+
+	//FVector loc = GetActorLocation() + FVector(0, 0, 50);
+	//DrawDebugString(GetWorld(), loc, str, nullptr, FColor::Red, 0, false, 0.75f);
 }
 
-// Called to bind functionality to input
-void ATrainer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
+//// Called to bind functionality to input
+//void ATrainer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+//{
+//	Super::SetupPlayerInputComponent(PlayerInputComponent);
+//
+//}
 
 void ATrainer::ChoosePokemonWidgetCreate()
 {
-	PokemonChoose = CreateWidget<UWidgetChoosePokemon>(GetWorld(), PokemonTemplate);
-	PokemonChoose->AddToViewport(0);
-	if(PokemonChoose)
+	auto pc = Cast<ATrainerPlayerController>(Controller);
+
+	if(pc != nullptr)
 	{
-		PokemonChoose->trainer = this;
+		pc->PokemonChoose = CreateWidget<UWidgetChoosePokemon>(GetWorld(), pc->PokemonTemplate);
+		pc->PokemonChoose->AddToViewport(0);
+	}
+	//<<<<<<< Updated upstream
+	//pc->PokemonChoose->trainer = this;
+	////=======
+	//if (PokemonChoose)
+	//{
+	//	PokemonChoose->trainer = this;
+	//}
+	//>>>>>>> Stashed changes
+}
+
+void ATrainer::CompleteChoose_Implementation()
+{
+
+	
+	if (GameState)
+	{
+		if(GetLocalRole() == ROLE_Authority && GetRemoteRole() == ROLE_AutonomousProxy)
+		{
+			GameState->AuthoritySelectPokemon = true;
+		}
+
+		else if(GetLocalRole() == ROLE_AutonomousProxy && GetRemoteRole() == ROLE_AutonomousProxy)
+		{
+			GameState->AutonomousSelectPokemon = true;
+		}
 	}
 }
-
-void ATrainer::CompleteChoose()
-{
-	if (GetController() == nullptr)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("controller null"))
-			return;
-	}
-	//if (this->GetController()->HasAuthority())
-	//{
-	//	GameMode->AuthoritySelectPokemon = true;
-	//}
-	//else
-	//{
-	//	GameMode->AutonomousSelectPokemon = true;
-	//}
-}
-
-void ATrainer::PossesController()
-{
-	
-
-}
-
-void ATrainer::ClientPossess_Implementation()
-{
-	
-}
-
-
-//void ATrainer::CompleteChoose_Implementation()
-//{
-//	
-//
-//}
 
 void ATrainer::FindOpponentTrainer()
 {
@@ -193,7 +230,31 @@ void ATrainer::FindOpponentTrainer()
 	}
 }
 
-void ATrainer::SpawnPokemon(APokemon* pokemon)
+void ATrainer::SetPokemon(EPokemonList Selected)
+{
+	Pokemon = Selected;
+}
+
+void ATrainer::SpawnFirstPokemon(FTransform SpawnTransform)
+{
+
+	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(FirstPokemon, SpawnTransform, SpawnParams);
+	MonsterBall->Destroy();
+}
+
+void ATrainer::SpawnSecondPokemon(FTransform SpawnTransform)
+{
+	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(SecondPokemon, SpawnTransform, SpawnParams);
+	MonsterBall->Destroy();
+}
+
+void ATrainer::SpawnThirdPokemon(FTransform SpawnTransform)
+{
+	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(ThirdPokemon, SpawnTransform, SpawnParams);
+	MonsterBall->Destroy();
+}
+
+void ATrainer::MultiSpawnPokemon_Implementation()
 {
 	FTransform ThrowingTransfrom = ThrowingPosition->GetComponentTransform();
 
@@ -201,25 +262,46 @@ void ATrainer::SpawnPokemon(APokemon* pokemon)
 	MonsterBall = GetWorld()->SpawnActor<AMonsterBall>(MonsterBallFactory, ThrowingTransfrom);
 	AttachBall();
 	MonsterBall->SetActorRelativeScale3D(FVector(1.f));
-	if (MonsterBall == nullptr || pokemon == nullptr) return;
+	if (MonsterBall == nullptr) //|| currentPokemon == nullptr) 
+		return;
+
 	// 1초 후 포켓몬 소환
 	FTimerHandle timerHandle;
-	GetWorldTimerManager().SetTimer(timerHandle, [this, pokemon]() {
+	GetWorldTimerManager().SetTimer(timerHandle, [this]() {
 		// 몬스터볼
 		FTransform MonsterBallTransform = MonsterBall->GetActorTransform();
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SpawnParticle, MonsterBallTransform.GetLocation());
 
 		// 포켓몬 소환(?)
-		pokemon->SetActorLocation(MonsterBallTransform.GetLocation());
+		if (PossessedController == nullptr)
+			return;
+		
+
+		switch (PossessedController->Pokemon)
+		{
+		case _EPokemonList::RABIFOOT:
+			SpawnFirstPokemon(MonsterBallTransform);
+			break;
+		case _EPokemonList::SOBBLE:
+			SpawnSecondPokemon(MonsterBallTransform);
+			break;
+		case _EPokemonList::GROOKEY:
+			SpawnThirdPokemon(MonsterBallTransform);
+			break;
+		}
+
 		MonsterBall->Destroy();
 
 		// currentPokemon
-		currentPokemon = pokemon;
-		skillWidget->SetSkillName(currentPokemon);
+		//skillWidget->SetSkillName(currentPokemon);
 		}, 2.0f, false);
 }
 
+void ATrainer::ServerSpawnPokemon_Implementation()
+{
 
+		MultiSpawnPokemon();
+}
 
 
 /*

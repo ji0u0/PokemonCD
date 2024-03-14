@@ -15,19 +15,27 @@ class POKEMONCD_API UWidgetChoosePokemon : public UUserWidget
 	GENERATED_BODY()
 
 	virtual void NativeConstruct() override;
+	
 public:
 
 	
 
 	// Bind Widget
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
+	class UButton* Button_Rabifoot;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
+	class UButton* Button_Sobble;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
+	class UButton* Button_Grookey;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
 	class UButton* completeButton;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
 	class UButton* undoButton;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
-	class UButton* Button_Sobble;
 
 	//// Trainer
 	//UPROPERTY(EditAnywhere)
@@ -35,6 +43,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	class ATrainer* trainer;
+
+	UPROPERTY(EditDefaultsOnly)
+	class ATrainerPlayerController* _PlayerController;
 
 	UPROPERTY(EditDefaultsOnly)
 	FVector trainerLoc = FVector(40.f, 1720.f, 190.f);
@@ -48,7 +59,11 @@ public:
 	void UndoSelect();
 
 	UFUNCTION()
+	void ChooseRabifoot();
+	UFUNCTION()
 	void ChooseSobble();
+	UFUNCTION()
+	void ChooseGrookey();
 
 	UFUNCTION()
 	void SelectedPokemon();

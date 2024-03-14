@@ -50,56 +50,57 @@ void UWidgetSkill::SetSkillName(APokemon* Pokemon)
 
 void UWidgetSkill::ClickSwapButton()
 {
-	trainer->currentPokemon->Destroy();
+	/*trainer->currentPokemon->Destroy();
 
 	FTimerHandle timerHandle;
 	trainer->GetWorldTimerManager().SetTimer(timerHandle, [this]() {
 			trainer->SpawnPokemon(trainer->currentPokemon);
-		}, 1.f, false);
+		}, 1.f, false);*/
 }
 
 void UWidgetSkill::ClickFirstSkill()
 {
 	//몽타주 실행
-	ClickTOPlayAnimTrainer();
-	trainer->currentPokemon->PlayFirstSkillAnim();
+	ClickTOPlayAnim();
 
-	this->SetVisibility(ESlateVisibility::Hidden);
-	trainer->currentPokemon->firstSkill->Attack(trainer->oppoTrainer);
-	// SetVisibility(ESlateVisibility::Visible); 필요함
+	//this->SetVisibility(ESlateVisibility::Hidden);
+	//trainer->SpawnedPokemon->firstSkill->Attack(trainer->oppoTrainer);
+	//// SetVisibility(ESlateVisibility::Visible); 필요함
+
+	//trainer->currentPokemon->firstSkill;
 }
 
 void UWidgetSkill::ClickSecondSkill()
 {
-	//몽타주 실행
-	ClickTOPlayAnimTrainer();
+	////몽타주 실행
+	//ClickTOPlayAnim();
 
-	this->SetVisibility(ESlateVisibility::Hidden);
-	trainer->currentPokemon->secondSkill->Attack(trainer->oppoTrainer);
-	// SetVisibility(ESlateVisibility::Visible); 필요함
+	//this->SetVisibility(ESlateVisibility::Hidden);
+	//trainer->currentPokemon->secondSkill->Attack(trainer->oppoTrainer);
+	//// SetVisibility(ESlateVisibility::Visible); 필요함
 }
 
 void UWidgetSkill::ClickThirdSkill()
 {
-	//몽타주 실행
-	ClickTOPlayAnimTrainer();
+	////몽타주 실행
+	//ClickTOPlayAnim();
 
-	this->SetVisibility(ESlateVisibility::Hidden);
-	trainer->currentPokemon->thirdSkill->Attack(trainer->oppoTrainer);
-	// SetVisibility(ESlateVisibility::Visible); 필요함
+	//this->SetVisibility(ESlateVisibility::Hidden);
+	//trainer->currentPokemon->thirdSkill->Attack(trainer->oppoTrainer);
+	//// SetVisibility(ESlateVisibility::Visible); 필요함
 }
 
 void UWidgetSkill::ClickFourthSkill()
 {
-	//몽타주 실행
-	ClickTOPlayAnimTrainer();
+	////몽타주 실행
+	//ClickTOPlayAnim();
 
-	this->SetVisibility(ESlateVisibility::Hidden);
-	trainer->currentPokemon->fourthSkill->Attack(trainer->oppoTrainer);
-	// SetVisibility(ESlateVisibility::Visible); 필요함
+	//this->SetVisibility(ESlateVisibility::Hidden);
+	//trainer->currentPokemon->fourthSkill->Attack(trainer->oppoTrainer);
+	//// SetVisibility(ESlateVisibility::Visible); 필요함
 }
 
-void UWidgetSkill::ClickTOPlayAnimTrainer()
+void UWidgetSkill::ClickTOPlayAnim()
 {
 	auto anim = Cast<UTrainerAnimInstance>(trainer->TrainerSkelMeshComp->GetAnimInstance());
 	anim->PlayCheeringMontage();

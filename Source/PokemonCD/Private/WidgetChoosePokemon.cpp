@@ -5,42 +5,60 @@
 #include "PokemonGameMode.h"
 #include "Trainer.h"
 #include "PokemonWater.h"
+#include "TrainerPlayerController.h"
 #include "Components/Button.h"
 
 void UWidgetChoosePokemon::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	Button_Rabifoot->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::ChooseRabifoot);
 	Button_Sobble->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::ChooseSobble);
+	Button_Grookey->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::ChooseGrookey);
+
 	undoButton->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::UndoSelect);
 	completeButton->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::CompleteUI);
+
+	trainer = Cast<ATrainer>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	_PlayerController = Cast<ATrainerPlayerController>(GetWorld()->GetFirstPlayerController());
+
 }
 
 
+void UWidgetChoosePokemon::ChooseRabifoot()
+{
+	if (_PlayerController->IsLocalPlayerController())
+		_PlayerController->SetPokemon(_EPokemonList::RABIFOOT);
+}
+
 void UWidgetChoosePokemon::ChooseSobble()
 {
-	if (firstFactory == nullptr)		firstFactory = sobbleFactory;
-	else if (secondFactory == nullptr)	secondFactory = sobbleFactory;
-	else if (thirdFactory == nullptr)	thirdFactory = sobbleFactory;
+	if (_PlayerController->IsLocalPlayerController())
+		_PlayerController->SetPokemon(_EPokemonList::SOBBLE);
+}
+
+void UWidgetChoosePokemon::ChooseGrookey()
+{
+	if (_PlayerController->IsLocalPlayerController())
+		_PlayerController->SetPokemon(_EPokemonList::GROOKEY);
 }
 
 void UWidgetChoosePokemon::SelectedPokemon()
 {
-
+	//trainer->SpawnPokemon();
 }
 
 void UWidgetChoosePokemon::UndoSelect()
 {
-	if (thirdFactory != nullptr)		thirdFactory = nullptr;
+	/*if (thirdFactory != nullptr)		thirdFactory = nullptr;
 	else if (secondFactory != nullptr)	secondFactory = nullptr;
-	else if (firstFactory != nullptr)	firstFactory = nullptr;
+	else if (firstFactory != nullptr)	firstFactory = nullptr;*/
+	//trainer->currentPokemon = nullptr;
 }
+
 
 void UWidgetChoosePokemon::CompleteUI()
 {
-	// trainer 积己
-	//trainer = GetWorld()->SpawnActor<ATrainer>(trainerFactory, trainerLoc, trainerRot);
-
 	// trainer -> pokemon 积己
 	//if(firstFactory)
 	//{
@@ -64,11 +82,14 @@ void UWidgetChoosePokemon::CompleteUI()
 
 	// 困连 (肯傈) 昏力
 	this->SetVisibility(ESlateVisibility::Hidden);
-	if(trainer==nullptr)
+	if (trainer == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("trainer null"))
-		return;
+			return;
 	}
+
 	trainer->CompleteChoose();
+
+	trainer->ServerSpawnPokemon();
 }
 
