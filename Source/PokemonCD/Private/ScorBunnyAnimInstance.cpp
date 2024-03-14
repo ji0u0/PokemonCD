@@ -32,14 +32,16 @@ void UScorBunnyAnimInstance::NativeInitializeAnimation()
 
 void UScorBunnyAnimInstance::PlayScorbunnyTypeAttackMontage()
 {
-	if(nullptr == scorbunnyTypeAttack) return;
-	Montage_Play(scorbunnyTypeAttack);
+	playRate = 1;
+	if(nullptr == scorbunnyAttack) return;
+	Montage_Play(scorbunnyAttack, playRate);
 }
 
 void UScorBunnyAnimInstance::PlayScorbunnyNomalAttackMontage()
 {
-	if(nullptr == scorbunnyNomalAttack) return;
-	Montage_Play(scorbunnyNomalAttack);
+	playRate = 2;
+	if(nullptr == scorbunnyAttack) return;
+	Montage_Play(scorbunnyAttack, playRate);
 }
 
 void UScorBunnyAnimInstance::AnimNotify_EndAttack()

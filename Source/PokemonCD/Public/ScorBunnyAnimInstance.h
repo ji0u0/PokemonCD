@@ -30,13 +30,14 @@ public:
 
 	//염버니 불타입공격(불꽃세례)
 	UPROPERTY(EditDefaultsOnly)
-	class UAnimMontage* scorbunnyTypeAttack;
+	class UAnimMontage* scorbunnyAttack;
 	void PlayScorbunnyTypeAttackMontage();
 
 	//염버니 노말물리공격(몸통박치기)
-	UPROPERTY(EditDefaultsOnly)
-	class UAnimMontage* scorbunnyNomalAttack;
 	void PlayScorbunnyNomalAttackMontage();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float playRate;
 
 	UFUNCTION()
 	void AnimNotify_EndAttack();
