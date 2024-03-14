@@ -17,6 +17,10 @@ class POKEMONCD_API APokemonWater : public APokemon
 public:
 	APokemonWater();
 
+	virtual void BeginPlay() override;
+	
+	virtual void Tick(float DeltaSeconds) override;
+
 	// Components
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* BoxComponent;
@@ -30,4 +34,9 @@ public:
 	// Skills
 	UPROPERTY(BlueprintReadWrite)
 	class USkillWater* waterSkill;
+
+	//애니메이션
+	void AttackingAnim();
+
+	virtual void PlayFirstSkillAnim() override;
 };

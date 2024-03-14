@@ -3,6 +3,7 @@
 
 #include "PokemonWater.h"
 
+#include "ScorBunnyAnimInstance.h"
 #include "SkillWater.h"
 #include "Components/BoxComponent.h"
 
@@ -39,3 +40,32 @@ APokemonWater::APokemonWater()
 	pokemonMaxHealth = 150;
 	pokemonCurHealth = pokemonMaxHealth;
 }
+
+void APokemonWater::BeginPlay()
+{
+	Super::BeginPlay();
+
+	Skill(ESkill::LeafStorm);
+}
+
+void APokemonWater::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	AttackingAnim();
+}
+
+void APokemonWater::AttackingAnim()
+{
+	auto anim = Cast<UScorBunnyAnimInstance>(SkelMeshComp->GetAnimInstance());
+	anim->PlayScorbunnyTypeAttackMontage();
+}
+
+void APokemonWater::PlayFirstSkillAnim()
+{
+	Super::PlayFirstSkillAnim();
+	AttackingAnim();
+
+}
+
+
+
