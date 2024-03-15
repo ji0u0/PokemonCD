@@ -3,3 +3,9 @@
 
 #include "SobbleAnimInstance.h"
 
+void USobbleAnimInstance::PlaySobbleNomalAttackMontage()
+{
+	if(nullptr == sobbleAttack) return;
+	playRate = 0;
+	Montage_Play(sobbleAttack, playRate);
+}

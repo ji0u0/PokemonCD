@@ -13,5 +13,12 @@ UCLASS()
 class POKEMONCD_API USobbleAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
-	
+
+public:
+	UPROPERTY(EditDefaultsOnly)
+	class UAnimMontage* sobbleAttack;
+	void PlaySobbleNomalAttackMontage();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float playRate;
 };
