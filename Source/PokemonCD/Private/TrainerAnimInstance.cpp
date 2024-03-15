@@ -4,6 +4,7 @@
 #include "TrainerAnimInstance.h"
 
 #include "Trainer.h"
+#include "Net/UnrealNetwork.h"
 
 void UTrainerAnimInstance::NativeInitializeAnimation()
 {
@@ -25,19 +26,38 @@ void UTrainerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 void UTrainerAnimInstance::PlayThrowMontage()
 {
-	if(nullptr == throwMontage) return;
-	Montage_Play(throwMontage);
+	ServerTrainerMontage();
+	/*if(nullptr == throwMontage) return;
+	Montage_Play(throwMontage);*/
 }
 
 void UTrainerAnimInstance::PlayCheeringMontage()
 {
-	if(nullptr == CheeringMontage) return;
+	if (nullptr == CheeringMontage) return;
 	Montage_Play(CheeringMontage);
+	/*ServerTrainerMontage();*/
 }
 
 void UTrainerAnimInstance::AnimNotify_ThrowBall()
 {
 	trainer->DetachBall();
+}
+
+void UTrainerAnimInstance::MultiTrainerMontage_Implementation()
+{
+	if (nullptr == throwMontage) return;
+	Montage_Play(throwMontage);
+}
+
+void UTrainerAnimInstance::ServerTrainerMontage_Implementation()
+{
+	MultiTrainerMontage();
+}
+
+void UTrainerAnimInstance::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(UTrainerAnimInstance, throwMontage);
 }
 
 /*void UTrainerAnimInstance::AnimNotify_EndThrowBall()

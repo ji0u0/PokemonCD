@@ -4,3 +4,10 @@
 
 #include "CoreMinimal.h"
 
+UENUM(BlueprintType)
+enum class EPokemonList : uint8
+{
+	RABIFOOT,
+	SOBBLE,
+	GROOKEY
+};

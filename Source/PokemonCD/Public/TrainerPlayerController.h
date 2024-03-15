@@ -3,17 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PokemonCD.h"
 #include "GameFramework/PlayerController.h"
 #include "TrainerPlayerController.generated.h"
 
 
-UENUM()
-enum class _EPokemonList : uint8
-{
-	RABIFOOT,
-	SOBBLE,
-	GROOKEY
-};
 /**
  * 
  */
@@ -29,24 +23,13 @@ public:
 	UPROPERTY()
 	class UWidgetChoosePokemon* PokemonChoose;
 
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class UWidgetMain> MainWidgetTemplate;
+	UPROPERTY(Replicated, EditDefaultsOnly)
+	EPokemonList Pokemon = EPokemonList::GROOKEY;
 
-	UPROPERTY()
-	class UWidgetMain* MainWidget;
-
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class UWidgetSkill> SkillWidgetTemplate;
-
-	UPROPERTY()
-	class UWidgetSkill* SkillWidget;
-
-
-	UPROPERTY(EditDefaultsOnly)
-	_EPokemonList Pokemon;
-
-	void SetPokemon(_EPokemonList Selected);
+	void SetPokemon(EPokemonList Selected);
 
 	void UseSkill();
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 };

@@ -4,15 +4,20 @@
 #include "TrainerPlayerController.h"
 
 #include "Trainer.h"
+#include "Net/UnrealNetwork.h"
 
-void ATrainerPlayerController::SetPokemon(_EPokemonList Selected)
+void ATrainerPlayerController::SetPokemon(EPokemonList Selected)
 {
 	Pokemon = Selected;
 }
 
 void ATrainerPlayerController::UseSkill()
 {
-	auto MyPawn = GetPawn();
-	ATrainer* Trainer = Cast<ATrainer>(MyPawn);
-	Trainer->ServerSpawnPokemon();
+}
+
+void ATrainerPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ATrainerPlayerController, Pokemon);
 }

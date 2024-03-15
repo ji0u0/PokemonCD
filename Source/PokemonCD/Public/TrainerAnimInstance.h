@@ -35,6 +35,15 @@ public:
 	UFUNCTION()
 	void AnimNotify_ThrowBall();
 
+	//클라이언트는 서버에게 몽타주정보? 보냄
+	UFUNCTION(Server, Reliable)
+	void ServerTrainerMontage();
+	//서버는 클라이언트에게 몽타주 실행하라고 시킴
+	UFUNCTION(NetMulticast, Reliable)
+	void MultiTrainerMontage();
+
 	/*UFUNCTION()
 	void AnimNotify_EndThrowBall();*/
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };
