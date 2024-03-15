@@ -30,13 +30,14 @@ APokemonWater::APokemonWater()
 	);
 	SkelMeshComp->SetRelativeScale3D(FVector(0.1f));*/
 
-	// Skill Components
-	waterSkill = CreateDefaultSubobject<USkillWater>(TEXT("WaterSkill"));
-	firstSkill = waterSkill;
+	// Skill
+	firstSkill = ESkill::WaterAttack;
+	secondSkill = ESkill::FireAttack;
+	secondSkill = ESkill::GrassAttack;
 
 	// Set info
 	pokemonName = "Sobble";
-	pokemonType = Type::Water;
+	pokemonType = EType::Water;
 	pokemonMaxHealth = 150;
 	pokemonCurHealth = pokemonMaxHealth;
 }
@@ -50,7 +51,19 @@ void APokemonWater::BeginPlay()
 void APokemonWater::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	AttackingAnim();
+	
+}
+
+void APokemonWater::AttackingNormalAnim()
+{
+	auto anim = Cast<UScorBunnyAnimInstance>(SkelMeshComp->GetAnimInstance());
+	anim->PlayScorbunnyNomalAttackMontage();
+}
+
+void APokemonWater::AttackingTypeAnim()
+{
+	auto anim = Cast<UScorBunnyAnimInstance>(SkelMeshComp->GetAnimInstance());
+	anim->PlayScorbunnyTypeAttackMontage();
 }
 
 void APokemonWater::AttackingAnim()
@@ -62,9 +75,12 @@ void APokemonWater::AttackingAnim()
 void APokemonWater::PlayFirstSkillAnim()
 {
 	Super::PlayFirstSkillAnim();
-	AttackingAnim();
-
+	AttackingNormalAnim();
 }
 
-
+void APokemonWater::PlaySecondSkillAnim()
+{
+	Super::PlaySecondSkillAnim();
+	AttackingTypeAnim();
+}
 

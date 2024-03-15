@@ -7,7 +7,7 @@
 #include "Pokemon.generated.h"
 
 UENUM(BlueprintType)
-enum class Type : uint8
+enum class EType : uint8
 {
 	Normal UMETA(DisplayName = "Nrass"),
 	Water UMETA(DisplayName = "Water"),
@@ -18,9 +18,15 @@ enum class Type : uint8
 UENUM(BlueprintType)
 enum class ESkill : uint8
 {
-	WaterGun UMETA(DisplayName = "WaterGun"),
-	Ember UMETA(DisplayName = "Ember"),
-	LeafStorm UMETA(DisplayName = "LeafStorm")
+	Default UMETA(DisplayName = "No Skill"),
+	WaterAttack UMETA(DisplayName = "WaterGun"),
+	FireAttack UMETA(DisplayName = "Ember"),
+	GrassAttack UMETA(DisplayName = "LeafStorm"),
+	NormalAttack UMETA(DisplayName = "Tackle"),
+	NormalAttackDown UMETA(DisplayName = "Growl"),
+	NormalAttackUp UMETA(DisplayName = "Growl"),
+	NormalDefenseDown UMETA(DisplayName = "Growl"),
+	NormalDefenseUp UMETA(DisplayName = "Growl"),
 };
 
 UCLASS()
@@ -43,8 +49,6 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	float timeDeltaTime;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	class ATrainer* OwnedTrainer;
 
@@ -53,7 +57,7 @@ public:
 	FString pokemonName;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	Type pokemonType;
+	EType pokemonType;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	int pokemonMaxHealth;
@@ -71,22 +75,32 @@ public:
 	float pokemonSpeed;
 
 	///// Skill /////
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	class USkill* firstSkill;
+	UPROPERTY()
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	class USkill* secondSkill;
+	TArray<ESkill> pokemonSkill = {
+		ESkill::Default,
+		ESkill::Default,
+		ESkill::Default,
+		ESkill::Default
+	};
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	class USkill* thirdSkill;
+	UPROPERTY()
+	ESkill firstSkill = ESkill::Default;
+	UPROPERTY()
+	ESkill secondSkill = ESkill::Default;
+	UPROPERTY()
+	ESkill thirdSkill = ESkill::Default;
+	UPROPERTY()
+	ESkill fourthdSkill = ESkill::Default;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	class USkill* fourthSkill;
+	/*UFUNCTION()
+	FString SkillName(ESkill Skill);*/
 
 	UFUNCTION()
-	void Skill(ESkill Skill);
+	void SkillEffect(ESkill Skill);
 
-	virtual void PlayFirstSkillAnim();
+	virtual void PlayFirstSkillAnim() {};
+	virtual void PlaySecondSkillAnim() {};
 
 	// Particle
 	UParticleSystem* ThrowParticle;

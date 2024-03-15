@@ -24,8 +24,6 @@ void APokemon::BeginPlay()
 void APokemon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	timeDeltaTime += DeltaTime;
 }
 
 // Called to bind functionality to input
@@ -35,19 +33,30 @@ void APokemon::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void APokemon::Skill(ESkill Skill)
+/*FString APokemon::SkillName(ESkill Skill)
+{
+	switch (Skill)
+	{
+	case ESkill::WaterAttack:	return "¹°´ëÆ÷";
+	case ESkill::FireAttack:	return "ºÒ²É¼¼·Ê";
+	case ESkill::GrassAttack:	return "¸®ÇÁ½ºÅè";
+	default:					return "No Skill";
+	}
+}*/
+
+void APokemon::SkillEffect(ESkill Skill)
 {
 	myLoc = GetActorLocation();
-	oppoLoc = FVector(0.f); // ²À ¹Ù²ãÁà!!!!!!!!!!!!
+	oppoLoc = GetActorLocation() + GetActorForwardVector() * 1000;// ²À ¹Ù²ãÁà!!!!!!!!!!!!
 
 	switch (Skill)
 	{
-	case ESkill::WaterGun:
+	case ESkill::WaterAttack:
 		// ¹°´ëÆ÷ ÆÄÆ¼Å¬
 		ThrowParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_Waterthrower.P_Waterthrower"));
 		if (ThrowParticle)
 		{
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ThrowParticle, myLoc, GetActorUpVector().Rotation(), FVector(0.5f, 0.5f, 1.0f));
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ThrowParticle, myLoc, GetActorForwardVector().Rotation(), FVector(0.5f, 0.5f, 1.0f));
 			// 1ÃÊ µÚ¿¡ ½ÇÇà
 			GetWorldTimerManager().SetTimer(handle, [&]()
 			{
@@ -62,7 +71,7 @@ void APokemon::Skill(ESkill Skill)
 			}, 1.f, false);
 		}
 		break;
-	case ESkill::Ember:
+	case ESkill::FireAttack:
 		ThrowParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_waterBallHit.P_ky_waterBallHit"));
 		if (ThrowParticle)
 		{
@@ -71,7 +80,7 @@ void APokemon::Skill(ESkill Skill)
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("so sad"));
+			// UE_LOG(LogTemp, Warning, TEXT("so sad"));
 		}
 		GetWorldTimerManager().SetTimer(handle, [&]()
 		{
@@ -91,15 +100,11 @@ void APokemon::Skill(ESkill Skill)
 			}
 		}, 0.1f, true);
 		break;
-	case ESkill::LeafStorm:
+	case ESkill::GrassAttack:
 		HitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_storm.P_ky_storm"));
 		// Hit ÆÄÆ¼Å¬
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticle, oppoLoc);
 		// Camera Shake
 		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(GrassCameraShakeFactory);
 	}
-}
-
-void APokemon::PlayFirstSkillAnim()
-{
 }
