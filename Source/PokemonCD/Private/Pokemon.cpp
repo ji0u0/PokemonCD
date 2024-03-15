@@ -42,7 +42,7 @@ void APokemon::Skill(ESkill Skill)
 
 	switch (Skill)
 	{
-	case ESkill::WaterGun:
+	case ESkill::SkillWater:
 		// 물대포 파티클
 		ThrowParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_Waterthrower.P_Waterthrower"));
 		if (ThrowParticle)
@@ -62,7 +62,7 @@ void APokemon::Skill(ESkill Skill)
 			}, 1.f, false);
 		}
 		break;
-	case ESkill::Ember:
+	case ESkill::SkillFire:
 		ThrowParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_waterBallHit.P_ky_waterBallHit"));
 		if (ThrowParticle)
 		{
@@ -91,15 +91,11 @@ void APokemon::Skill(ESkill Skill)
 			}
 		}, 0.1f, true);
 		break;
-	case ESkill::LeafStorm:
+	case ESkill::SkillGrass:
 		HitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_storm.P_ky_storm"));
 		// Hit 파티클
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticle, oppoLoc);
 		// Camera Shake
 		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(GrassCameraShakeFactory);
 	}
-}
-
-void APokemon::PlayFirstSkillAnim()
-{
 }

@@ -36,7 +36,7 @@ public:
 	class USkillWater* waterSkill;
 
 	//애니메이션
-	void AttackingAnim();
+	// void AttackingAnim();
 
-	virtual void PlayFirstSkillAnim() override;
+	// virtual void PlayFirstSkillAnim() override;
 };

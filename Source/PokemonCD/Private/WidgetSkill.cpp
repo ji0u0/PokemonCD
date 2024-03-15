@@ -4,6 +4,7 @@
 #include "WidgetSkill.h"
 
 #include "Pokemon.h"
+#include "PokemonWater.h"
 #include "Skill.h"
 #include "Trainer.h"
 #include "TrainerAnimInstance.h"
@@ -30,7 +31,7 @@ void UWidgetSkill::NativeConstruct()
 
 void UWidgetSkill::SetSkillName(APokemon* Pokemon)
 {
-	if(Pokemon->firstSkill)
+	/*if(Pokemon->firstSkill)
 	{
 		firstSkillName->SetText(FText::FromString(Pokemon->firstSkill->skillName));
 	}
@@ -45,7 +46,7 @@ void UWidgetSkill::SetSkillName(APokemon* Pokemon)
 	if(Pokemon->fourthSkill)
 	{
 		fourthSkillName->SetText(FText::FromString(Pokemon->fourthSkill->skillName));
-	}
+	}*/
 }
 
 void UWidgetSkill::ClickSwapButton()
@@ -60,8 +61,9 @@ void UWidgetSkill::ClickSwapButton()
 
 void UWidgetSkill::ClickFirstSkill()
 {
+	trainer->CurrentPokemon->Skill(trainer->CurrentPokemon->firstSkill);
 	//根鸥林 角青
-	// ClickTOPlayAnim();
+	// trainer->CurrentPokemon->PlayFirstSkillAnim();
 
 	//this->SetVisibility(ESlateVisibility::Hidden);
 	//trainer->SpawnedPokemon->firstSkill->Attack(trainer->oppoTrainer);
@@ -72,8 +74,9 @@ void UWidgetSkill::ClickFirstSkill()
 
 void UWidgetSkill::ClickSecondSkill()
 {
+	trainer->CurrentPokemon->Skill(trainer->CurrentPokemon->secondSkill);
 	////根鸥林 角青
-	//ClickTOPlayAnim();
+	// trainer->CurrentPokemon->PlayFirstSkillAnim();
 
 	//this->SetVisibility(ESlateVisibility::Hidden);
 	//trainer->currentPokemon->secondSkill->Attack(trainer->oppoTrainer);
@@ -82,8 +85,9 @@ void UWidgetSkill::ClickSecondSkill()
 
 void UWidgetSkill::ClickThirdSkill()
 {
+	trainer->CurrentPokemon->Skill(trainer->CurrentPokemon->thirdSkill);
 	////根鸥林 角青
-	//ClickTOPlayAnim();
+	// trainer->CurrentPokemon->PlayFirstSkillAnim();
 
 	//this->SetVisibility(ESlateVisibility::Hidden);
 	//trainer->currentPokemon->thirdSkill->Attack(trainer->oppoTrainer);

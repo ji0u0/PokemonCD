@@ -3,12 +3,14 @@
 
 #include "PokemonGameState.h"
 
+#include "Trainer.h"
 #include "Net/UnrealNetwork.h"
 
 
 APokemonGameState::APokemonGameState()
 {
 	bReplicates = true;
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 
@@ -25,12 +27,12 @@ void APokemonGameState::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	/*switch (State)
+	switch (State)
 	{
 		case EGameState::SELECTED_POKEMON:	SelectedPokemon();
 		case EGameState::SELECT_SKILL:		SelectSkill();		break;
 		case EGameState::BATTLE_PHASE:		BattlePhase();		break;
-	}*/
+	}
 
 	
 }
@@ -48,9 +50,15 @@ void APokemonGameState::SelectedPokemon()
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("AutonomousSelectPokemon : True"));
 
 
-	if (AuthoritySelectPokemon == true && AutonomousSelectPokemon == true)
+	if (AuthoritySelectPokemon == true)
+	//if (AuthoritySelectPokemon == true && AutonomousSelectPokemon == true)
 	{
 		SetState(EGameState::SELECT_SKILL);
+		/*FTimerHandle handle;
+		GetWorldTimerManager().SetTimer(handle, []()
+		{
+			GetWorld()->GetFirstPlayerController()->GetPawn()
+		}, 3.f, false);*/
 	}
 }
 

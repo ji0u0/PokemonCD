@@ -18,9 +18,9 @@ enum class Type : uint8
 UENUM(BlueprintType)
 enum class ESkill : uint8
 {
-	WaterGun UMETA(DisplayName = "WaterGun"),
-	Ember UMETA(DisplayName = "Ember"),
-	LeafStorm UMETA(DisplayName = "LeafStorm")
+	SkillWater UMETA(DisplayName = "WaterGun"),
+	SkillFire UMETA(DisplayName = "Ember"),
+	SkillGrass UMETA(DisplayName = "LeafStorm")
 };
 
 UCLASS()
@@ -71,22 +71,15 @@ public:
 	float pokemonSpeed;
 
 	///// Skill /////
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	class USkill* firstSkill;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	class USkill* secondSkill;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	class USkill* thirdSkill;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	class USkill* fourthSkill;
+	ESkill firstSkill = ESkill::SkillWater;
+	ESkill secondSkill = ESkill::SkillFire;
+	ESkill thirdSkill = ESkill::SkillGrass;
+	ESkill fourthSkill = ESkill::SkillGrass;
 
 	UFUNCTION()
 	void Skill(ESkill Skill);
 
-	virtual void PlayFirstSkillAnim();
+	virtual void PlayFirstSkillAnim() {};
 
 	// Particle
 	UParticleSystem* ThrowParticle;

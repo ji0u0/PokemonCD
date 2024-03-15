@@ -48,6 +48,12 @@ public:
 	UFUNCTION()
 	void ChoosePokemonWidgetCreate();
 
+	UFUNCTION()
+	void MainWidgetCreate();
+
+	UFUNCTION()
+	void SkillWidgetCreate();
+
 	UFUNCTION(Server,Reliable)
 	void CompleteChoose();
 
