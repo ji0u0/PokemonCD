@@ -17,6 +17,10 @@ APokemonGameState::APokemonGameState()
 void APokemonGameState::BeginPlay()
 {
 	Super::BeginPlay();
+
+	pc = Cast<ATrainerPlayerController>(GetWorld()->GetFirstPlayerController());
+	pp = Cast<ATrainer>(pc->GetPawn());
+
 	SetState(EGameState::SELECTED_POKEMON);
 	
 }
@@ -54,11 +58,16 @@ void APokemonGameState::SelectedPokemon()
 	//if (AuthoritySelectPokemon == true && AutonomousSelectPokemon == true)
 	{
 		SetState(EGameState::SELECT_SKILL);
-		/*FTimerHandle handle;
-		GetWorldTimerManager().SetTimer(handle, []()
+		if (pp)
 		{
-			GetWorld()->GetFirstPlayerController()->GetPawn()
-		}, 3.f, false);*/
+			FTimerHandle handle;
+			GetWorldTimerManager().SetTimer(handle, [this]()
+				{
+					pp->SkillWidgetCreate();
+					if (pp->CurrentPokemon)
+						pp->skillWidget->SetSkillName(pp->CurrentPokemon);
+				}, 3.0f, false);
+		}
 	}
 }
 

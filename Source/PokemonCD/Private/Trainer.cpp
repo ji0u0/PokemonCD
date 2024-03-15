@@ -335,7 +335,7 @@ void ATrainer::tmp()
         MonsterBall->Destroy();
         // currentPokemon
         //skillWidget->SetSkillName(currentPokemon);
-        }, 2.0f, false);
+        }, 1.25f, false);
 }
 
 void ATrainer::MultiSpawnPokemon_Implementation(EPokemonList choosePokemon)
