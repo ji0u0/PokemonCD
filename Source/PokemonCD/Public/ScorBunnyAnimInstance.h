@@ -39,7 +39,4 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float playRate;
 
-	UFUNCTION()
-	void AnimNotify_EndAttack();
-
 };

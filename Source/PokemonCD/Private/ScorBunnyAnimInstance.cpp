@@ -43,7 +43,3 @@ void UScorBunnyAnimInstance::PlayScorbunnyNomalAttackMontage()
 	if(nullptr == scorbunnyAttack) return;
 	Montage_Play(scorbunnyAttack, playRate);
 }
-
-void UScorBunnyAnimInstance::AnimNotify_EndAttack()
-{
-}

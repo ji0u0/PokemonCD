@@ -63,7 +63,7 @@ void UWidgetSkill::ClickFirstSkill()
 {
 	trainer->CurrentPokemon->Skill(trainer->CurrentPokemon->firstSkill);
 	//根鸥林 角青
-	// trainer->CurrentPokemon->PlayFirstSkillAnim();
+	trainer->CurrentPokemon->PlayFirstSkillAnim();
 
 	//this->SetVisibility(ESlateVisibility::Hidden);
 	//trainer->SpawnedPokemon->firstSkill->Attack(trainer->oppoTrainer);
@@ -76,7 +76,7 @@ void UWidgetSkill::ClickSecondSkill()
 {
 	trainer->CurrentPokemon->Skill(trainer->CurrentPokemon->secondSkill);
 	////根鸥林 角青
-	// trainer->CurrentPokemon->PlayFirstSkillAnim();
+	trainer->CurrentPokemon->PlayFirstSkillAnim();
 
 	//this->SetVisibility(ESlateVisibility::Hidden);
 	//trainer->currentPokemon->secondSkill->Attack(trainer->oppoTrainer);
@@ -87,7 +87,7 @@ void UWidgetSkill::ClickThirdSkill()
 {
 	trainer->CurrentPokemon->Skill(trainer->CurrentPokemon->thirdSkill);
 	////根鸥林 角青
-	// trainer->CurrentPokemon->PlayFirstSkillAnim();
+	trainer->CurrentPokemon->PlayFirstSkillAnim();
 
 	//this->SetVisibility(ESlateVisibility::Hidden);
 	//trainer->currentPokemon->thirdSkill->Attack(trainer->oppoTrainer);

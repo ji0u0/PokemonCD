@@ -53,7 +53,7 @@ void APokemonWater::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 }
 
-/*void APokemonWater::AttackingAnim()
+void APokemonWater::AttackingAnim()
 {
 	auto anim = Cast<UScorBunnyAnimInstance>(SkelMeshComp->GetAnimInstance());
 	anim->PlayScorbunnyTypeAttackMontage();
@@ -64,7 +64,7 @@ void APokemonWater::PlayFirstSkillAnim()
 	Super::PlayFirstSkillAnim();
 	AttackingAnim();
 
-}*/
+}
 
 
 
