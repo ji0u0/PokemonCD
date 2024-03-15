@@ -7,7 +7,7 @@
 #include "Pokemon.generated.h"
 
 UENUM(BlueprintType)
-enum class EType : uint8
+enum class Type : uint8
 {
 	Normal UMETA(DisplayName = "Nrass"),
 	Water UMETA(DisplayName = "Water"),
@@ -18,15 +18,9 @@ enum class EType : uint8
 UENUM(BlueprintType)
 enum class ESkill : uint8
 {
-	Default UMETA(DisplayName = "No Skill"),
-	WaterAttack UMETA(DisplayName = "WaterGun"),
-	FireAttack UMETA(DisplayName = "Ember"),
-	GrassAttack UMETA(DisplayName = "LeafStorm"),
-	NormalAttack UMETA(DisplayName = "Tackle"),
-	NormalAttackDown UMETA(DisplayName = "Growl"),
-	NormalAttackUp UMETA(DisplayName = "Growl"),
-	NormalDefenseDown UMETA(DisplayName = "Growl"),
-	NormalDefenseUp UMETA(DisplayName = "Growl"),
+	SkillWater UMETA(DisplayName = "WaterGun"),
+	SkillFire UMETA(DisplayName = "Ember"),
+	SkillGrass UMETA(DisplayName = "LeafStorm")
 };
 
 UCLASS()
@@ -49,6 +43,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	float timeDeltaTime;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	class ATrainer* OwnedTrainer;
 
@@ -57,7 +53,7 @@ public:
 	FString pokemonName;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	EType pokemonType;
+	Type pokemonType;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	int pokemonMaxHealth;
@@ -75,32 +71,15 @@ public:
 	float pokemonSpeed;
 
 	///// Skill /////
-	UPROPERTY()
-
-	TArray<ESkill> pokemonSkill = {
-		ESkill::Default,
-		ESkill::Default,
-		ESkill::Default,
-		ESkill::Default
-	};
-
-	UPROPERTY()
-	ESkill firstSkill = ESkill::Default;
-	UPROPERTY()
-	ESkill secondSkill = ESkill::Default;
-	UPROPERTY()
-	ESkill thirdSkill = ESkill::Default;
-	UPROPERTY()
-	ESkill fourthdSkill = ESkill::Default;
-
-	/*UFUNCTION()
-	FString SkillName(ESkill Skill);*/
+	ESkill firstSkill = ESkill::SkillWater;
+	ESkill secondSkill = ESkill::SkillFire;
+	ESkill thirdSkill = ESkill::SkillGrass;
+	ESkill fourthSkill = ESkill::SkillGrass;
 
 	UFUNCTION()
-	void SkillEffect(ESkill Skill);
+	void Skill(ESkill Skill);
 
 	virtual void PlayFirstSkillAnim() {};
-	virtual void PlaySecondSkillAnim() {};
 
 	// Particle
 	UParticleSystem* ThrowParticle;

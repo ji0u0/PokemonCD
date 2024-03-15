@@ -23,6 +23,18 @@ public:
 	UPROPERTY()
 	class UWidgetChoosePokemon* PokemonChoose;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UWidgetMain> MainWidgetTemplate;
+
+	UPROPERTY()
+	class UWidgetMain* MainWidget;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UWidgetSkill> SkillWidgetTemplate;
+
+	UPROPERTY()
+	class UWidgetSkill* SkillWidget;
+
 	UPROPERTY(Replicated, EditDefaultsOnly)
 	EPokemonList Pokemon = EPokemonList::GROOKEY;
 

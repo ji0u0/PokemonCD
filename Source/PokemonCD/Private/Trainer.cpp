@@ -13,6 +13,8 @@
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "WidgetChoosePokemon.h"
+#include "WidgetMain.h"
+#include "WidgetSkill.h"
 
 
 // Sets default values
@@ -239,6 +241,24 @@ void ATrainer::CompleteChoose_Implementation()
     }
 }
 
+void ATrainer::MainWidgetCreate()
+{
+    if (PossessedController)
+    {
+        PossessedController->MainWidget = CreateWidget<UWidgetMain>(GetWorld(), PossessedController->MainWidgetTemplate);
+        PossessedController->MainWidget->AddToViewport(0);
+    }
+}
+
+void ATrainer::SkillWidgetCreate()
+{
+    if (PossessedController)
+    {
+        PossessedController->SkillWidget = CreateWidget<UWidgetSkill>(GetWorld(), PossessedController->SkillWidgetTemplate);
+        PossessedController->SkillWidget->AddToViewport(0);
+    }
+}
+
 void ATrainer::FindOpponentTrainer()
 {
     // 서버에서 상대 트레이너를 찾는다... 로 변경 요망
@@ -315,7 +335,7 @@ void ATrainer::tmp()
         MonsterBall->Destroy();
         // currentPokemon
         //skillWidget->SetSkillName(currentPokemon);
-        }, 2.0f, false);
+        }, 1.25f, false);
 }
 
 void ATrainer::MultiSpawnPokemon_Implementation(EPokemonList choosePokemon)
