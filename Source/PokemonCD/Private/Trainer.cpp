@@ -155,23 +155,23 @@ void ATrainer::Tick(float DeltaTime)
           return;
     }*/
 
-    //오너가 있는가?
-    FString owner = GetOwner() ? GetOwner()->GetName() : TEXT("No Owner");
-    // NetConnection이 있는가?
-    FString conn = GetNetConnection() ? TEXT("Valid") : TEXT("Invalid");
-    // LocalRole
-    FString localRole = UEnum::GetValueAsString<ENetRole>(GetLocalRole());
-    // RemoteRole
-    FString remoteRole = UEnum::GetValueAsString<ENetRole>(GetRemoteRole());
+    ////오너가 있는가?
+    //FString owner = GetOwner() ? GetOwner()->GetName() : TEXT("No Owner");
+    //// NetConnection이 있는가?
+    //FString conn = GetNetConnection() ? TEXT("Valid") : TEXT("Invalid");
+    //// LocalRole
+    //FString localRole = UEnum::GetValueAsString<ENetRole>(GetLocalRole());
+    //// RemoteRole
+    //FString remoteRole = UEnum::GetValueAsString<ENetRole>(GetRemoteRole());
 
-    FString nameController = GetWorld()->GetFirstPlayerController()->GetName();
+    //FString nameController = GetWorld()->GetFirstPlayerController()->GetName();
 
-    FString isPossessed = PossessedController ? TEXT("Possess") : TEXT("not Possess");
+    //FString isPossessed = PossessedController ? TEXT("Possess") : TEXT("not Possess");
 
-    FString str = FString::Printf(TEXT("Owner : %s\nConnection : %s\nlocalRole : %s\nremoteRole : %s\nController : %s\nisPossess : %s"), *owner, *conn, *localRole, *remoteRole, *nameController, *isPossessed);
+    //FString str = FString::Printf(TEXT("Owner : %s\nConnection : %s\nlocalRole : %s\nremoteRole : %s\nController : %s\nisPossess : %s"), *owner, *conn, *localRole, *remoteRole, *nameController, *isPossessed);
 
-    FVector loc = GetActorLocation() + FVector(0, 0, 50);
-    DrawDebugString(GetWorld(), loc, str, nullptr, FColor::Red, 0, false, 0.75f);
+    //FVector loc = GetActorLocation() + FVector(0, 0, 50);
+    //DrawDebugString(GetWorld(), loc, str, nullptr, FColor::Red, 0, false, 0.75f);
 }
 
 //// Called to bind functionality to input
@@ -271,21 +271,22 @@ void ATrainer::SpawnFirstPokemon(FTransform SpawnTransform)
 {
 
     CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(FirstPokemon, SpawnTransform, SpawnParams);
-    CurrentPokemon->SetActorRelativeRotation(FRotator(0, 0, this->GetActorRotation().Roll));
+    CurrentPokemon->SetActorRelativeRotation(FRotator(this->GetActorRotation()));
     //MonsterBall->Destroy();
 }
 
 void ATrainer::SpawnSecondPokemon(FTransform SpawnTransform)
 {
     CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(SecondPokemon, SpawnTransform, SpawnParams);
-    CurrentPokemon->SetActorRelativeRotation(FRotator(0, 0, this->GetActorRotation().Roll));
+    CurrentPokemon->SetActorRelativeRotation(FRotator(this->GetActorRotation()));
+    CurrentPokemon->SetActorRelativeScale3D(FVector(1.f));
     //MonsterBall->Destroy();
 }
 
 void ATrainer::SpawnThirdPokemon(FTransform SpawnTransform)
 {
     CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(ThirdPokemon, SpawnTransform, SpawnParams);
-    CurrentPokemon->SetActorRelativeRotation(FRotator(0, 0, this->GetActorRotation().Roll));
+    CurrentPokemon->SetActorRelativeRotation(FRotator(this->GetActorRotation()));
     //MonsterBall->Destroy();
 }
 
