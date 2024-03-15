@@ -25,6 +25,9 @@ class POKEMONCD_API APokemonGameState : public AGameState
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void BeginPlay() override;
 public:
+	class ATrainerPlayerController* pc;
+	class ATrainer* pp;
+
 	UPROPERTY(Replicated)
 	bool AuthoritySelectPokemon = false;
 

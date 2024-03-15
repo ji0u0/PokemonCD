@@ -117,7 +117,7 @@ public:
 	TSubclassOf<class APokemonWater> ThirdPokemon;
 
 	UPROPERTY()
-	class APokemonWater* CurrentPokemon;
+	class APokemon* CurrentPokemon;
 	
 	UPROPERTY(EditDefaultsOnly)
 	EPokemonList Pokemon;

@@ -3,11 +3,15 @@
 
 #include "PokemonGameState.h"
 
+#include "Trainer.h"
+#include "TrainerPlayerController.h"
+#include "WidgetSkill.h"
 #include "Net/UnrealNetwork.h"
 
 
 APokemonGameState::APokemonGameState()
 {
+	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
 }
 
@@ -15,8 +19,11 @@ APokemonGameState::APokemonGameState()
 void APokemonGameState::BeginPlay()
 {
 	Super::BeginPlay();
+
+	pc = Cast<ATrainerPlayerController>(GetWorld()->GetFirstPlayerController());
+	pp = Cast<ATrainer>(pc->GetPawn());
+
 	SetState(EGameState::SELECTED_POKEMON);
-	
 }
 
 
@@ -25,14 +32,12 @@ void APokemonGameState::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	/*switch (State)
+	switch (State)
 	{
-		case EGameState::SELECTED_POKEMON:	SelectedPokemon();
+		case EGameState::SELECTED_POKEMON:	SelectedPokemon();	break;
 		case EGameState::SELECT_SKILL:		SelectSkill();		break;
 		case EGameState::BATTLE_PHASE:		BattlePhase();		break;
-	}*/
-
-	
+	}
 }
 
 
@@ -47,10 +52,20 @@ void APokemonGameState::SelectedPokemon()
 	if (AutonomousSelectPokemon == true)
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("AutonomousSelectPokemon : True"));
 
-
-	if (AuthoritySelectPokemon == true && AutonomousSelectPokemon == true)
+	if (AuthoritySelectPokemon == true)
+	// if (AuthoritySelectPokemon == true && AutonomousSelectPokemon == true)
 	{
 		SetState(EGameState::SELECT_SKILL);
+		if (pp)
+		{
+			FTimerHandle handle;
+			GetWorldTimerManager().SetTimer(handle, [this]()
+			{
+				pp->SkillWidgetCreate();
+				if (pp->CurrentPokemon)
+					pp->skillWidget->SetSkillName(pp->CurrentPokemon);
+			}, 3.0f, false);
+		}
 	}
 }
 

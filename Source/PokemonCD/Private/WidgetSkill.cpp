@@ -28,24 +28,14 @@ void UWidgetSkill::NativeConstruct()
 
 }
 
-void UWidgetSkill::SetSkillName(APokemon* Pokemon)
+void UWidgetSkill::SetSkillName(APokemon* pokemon)
 {
-	if(Pokemon->firstSkill)
-	{
-		firstSkillName->SetText(FText::FromString(Pokemon->firstSkill->skillName));
-	}
-	if(Pokemon->secondSkill)
-	{
-		secondSkillName->SetText(FText::FromString(Pokemon->secondSkill->skillName));
-	}
-	if(Pokemon->thirdSkill)
-	{
-		thirdSkillName->SetText(FText::FromString(Pokemon->thirdSkill->skillName));
-	}
-	if(Pokemon->fourthSkill)
-	{
-		fourthSkillName->SetText(FText::FromString(Pokemon->fourthSkill->skillName));
-	}
+	/*UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("ESkill"), true);
+	firstSkillName->SetText(EnumPtr->GetDisplayNameTextByIndex(static_cast<int32>(pokemon->pokemonSkill[0])));
+	secondSkillName->SetText(EnumPtr->GetDisplayNameTextByIndex(static_cast<int32>(pokemon->pokemonSkill[1])));
+	thirdSkillName->SetText(EnumPtr->GetDisplayNameTextByIndex(static_cast<int32>(pokemon->pokemonSkill[2])));
+	fourthSkillName->SetText(EnumPtr->GetDisplayNameTextByIndex(static_cast<int32>(pokemon->pokemonSkill[3])));*/
+	// firstSkillName->SetText(pokemon->SkillName(pokemon->firstSkill);
 }
 
 void UWidgetSkill::ClickSwapButton()
@@ -60,20 +50,24 @@ void UWidgetSkill::ClickSwapButton()
 
 void UWidgetSkill::ClickFirstSkill()
 {
+	trainer->CurrentPokemon->SkillEffect(trainer->CurrentPokemon->firstSkill);
 	//根鸥林 角青
-	// ClickTOPlayAnim();
+	trainer->CurrentPokemon->PlayFirstSkillAnim();
 
 	//this->SetVisibility(ESlateVisibility::Hidden);
 	//trainer->SpawnedPokemon->firstSkill->Attack(trainer->oppoTrainer);
 	//// SetVisibility(ESlateVisibility::Visible); 鞘夸窃
 
 	//trainer->currentPokemon->firstSkill;
+
+	
 }
 
 void UWidgetSkill::ClickSecondSkill()
 {
+	trainer->CurrentPokemon->SkillEffect(trainer->CurrentPokemon->secondSkill);
 	////根鸥林 角青
-	//ClickTOPlayAnim();
+	trainer->CurrentPokemon->PlaySecondSkillAnim();
 
 	//this->SetVisibility(ESlateVisibility::Hidden);
 	//trainer->currentPokemon->secondSkill->Attack(trainer->oppoTrainer);
@@ -82,6 +76,7 @@ void UWidgetSkill::ClickSecondSkill()
 
 void UWidgetSkill::ClickThirdSkill()
 {
+	trainer->CurrentPokemon->SkillEffect(trainer->CurrentPokemon->thirdSkill);
 	////根鸥林 角青
 	//ClickTOPlayAnim();
 

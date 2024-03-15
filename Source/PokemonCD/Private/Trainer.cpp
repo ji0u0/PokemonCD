@@ -190,7 +190,7 @@ void ATrainer::SkillWidgetCreate()
 	if (PossessedController)
 	{
 		PossessedController->SkillWidget = CreateWidget<UWidgetSkill>(GetWorld(), PossessedController->SkillWidgetTemplate);
-		PossessedController->MainWidget->AddToViewport(0);
+		PossessedController->SkillWidget->AddToViewport(0);
 	}
 }
 
@@ -242,18 +242,21 @@ void ATrainer::SpawnFirstPokemon(FTransform SpawnTransform)
 {
 
 	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(FirstPokemon, SpawnTransform, SpawnParams);
+	CurrentPokemon->SetActorRotation(GetActorForwardVector().Rotation()+FRotator(0, 180, 0));
 	MonsterBall->Destroy();
 }
 
 void ATrainer::SpawnSecondPokemon(FTransform SpawnTransform)
 {
 	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(SecondPokemon, SpawnTransform, SpawnParams);
+	CurrentPokemon->SetActorRotation(GetActorForwardVector().Rotation() + FRotator(0, 180, 0));
 	MonsterBall->Destroy();
 }
 
 void ATrainer::SpawnThirdPokemon(FTransform SpawnTransform)
 {
 	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(ThirdPokemon, SpawnTransform, SpawnParams);
+	CurrentPokemon->SetActorRotation(GetActorForwardVector().Rotation() + FRotator(0, 180, 0));
 	MonsterBall->Destroy();
 }
 
