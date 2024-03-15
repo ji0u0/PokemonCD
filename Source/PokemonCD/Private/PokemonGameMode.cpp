@@ -37,15 +37,17 @@ void APokemonGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
 
-	if(NewPlayer->HasAuthority() && NewPlayer->IsLocalPlayerController())
+	if (NewPlayer->HasAuthority())
 	{
-		SpawnAuthority(NewPlayer);
+		if (NewPlayer->IsLocalPlayerController())
+		{
+			SpawnAuthority(NewPlayer);
+		}
+		else
+		{
+			SpawnAutonomous(NewPlayer);
+		}
 	}
-	else
-	{
-		SpawnAutonomous(NewPlayer);
-	}
-		
 
 	UE_LOG(LogTemp, Warning, TEXT(" APokemonGameMode::PostLogin - %s logged in "), *NewPlayer->GetName());
 

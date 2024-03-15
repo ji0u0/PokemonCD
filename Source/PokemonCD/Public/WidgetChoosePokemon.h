@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "TrainerPlayerController.h"
 #include "Blueprint/UserWidget.h"
 #include "WidgetChoosePokemon.generated.h"
 

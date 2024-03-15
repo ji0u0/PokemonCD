@@ -7,6 +7,8 @@
 #include "PokemonWater.h"
 #include "TrainerPlayerController.h"
 #include "Components/Button.h"
+#include "GameFramework/GameStateBase.h"
+#include "GameFramework/PlayerState.h"
 
 void UWidgetChoosePokemon::NativeConstruct()
 {
@@ -19,28 +21,27 @@ void UWidgetChoosePokemon::NativeConstruct()
 	undoButton->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::UndoSelect);
 	completeButton->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::CompleteUI);
 
-	trainer = Cast<ATrainer>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	_PlayerController = Cast<ATrainerPlayerController>(GetWorld()->GetFirstPlayerController());
+	//_PlayerController = Cast<ATrainerPlayerController>(GetWorld()->GetFirstPlayerController());
 
 }
 
 
 void UWidgetChoosePokemon::ChooseRabifoot()
 {
-	if (_PlayerController->IsLocalPlayerController())
-		_PlayerController->SetPokemon(_EPokemonList::RABIFOOT);
+	//if (_PlayerController->IsLocalPlayerController())
+	trainer->SetPokemon(EPokemonList::RABIFOOT);
 }
 
 void UWidgetChoosePokemon::ChooseSobble()
 {
-	if (_PlayerController->IsLocalPlayerController())
-		_PlayerController->SetPokemon(_EPokemonList::SOBBLE);
+	//if (_PlayerController->IsLocalPlayerController())
+	trainer->SetPokemon(EPokemonList::SOBBLE);
 }
 
 void UWidgetChoosePokemon::ChooseGrookey()
 {
-	if (_PlayerController->IsLocalPlayerController())
-		_PlayerController->SetPokemon(_EPokemonList::GROOKEY);
+	//if (_PlayerController->IsLocalPlayerController())
+	trainer->SetPokemon(EPokemonList::GROOKEY);
 }
 
 void UWidgetChoosePokemon::SelectedPokemon()
@@ -82,14 +83,33 @@ void UWidgetChoosePokemon::CompleteUI()
 
 	// 위젯 (완전) 삭제
 	this->SetVisibility(ESlateVisibility::Hidden);
+
 	if (trainer == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("trainer null"))
-			return;
+		UE_LOG(LogTemp, Warning, TEXT("trainer null"));
+		return;
 	}
 
 	trainer->CompleteChoose();
-
-	trainer->ServerSpawnPokemon();
+	auto pc = GetWorld()->GetFirstPlayerController();
+	FString localRole = UEnum::GetValueAsString(trainer->GetLocalRole());
+	if (pc && trainer->IsLocallyControlled())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ServerSpawnPokemon call!!,    LocalRole : %s, %d"), *localRole, _PlayerController->Pokemon);
+		if (trainer->HasAuthority())
+		{
+			trainer->MultiSpawnPokemon_Implementation(trainer->Pokemon);
+			UE_LOG(LogTemp, Warning, TEXT("Authority spwawn 1"));
+		}
+		else
+		{
+			trainer->MultiSpawnPokemon_Implementation(trainer->Pokemon);
+			UE_LOG(LogTemp, Warning, TEXT("Autonomous spawn 2"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ServerSpawnPokemon failed...,    LocalRole : %s"), *localRole);
+	}
 }
 

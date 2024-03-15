@@ -80,14 +80,23 @@ ATrainer::ATrainer()
 void ATrainer::BeginPlay()
 {
 	Super::BeginPlay();
+	PossessedController = Cast<ATrainerPlayerController>(Controller);
+	ChoosePokemonWidgetCreate();
+
+}
+
+void ATrainer::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
 	if (HasAuthority())
 	{
 		GameMode = GetWorld()->GetAuthGameMode<APokemonGameMode>();
 		GameState = GameMode->GetGameState<APokemonGameState>();
 	}
-	PossessedController = Cast<ATrainerPlayerController>(GetController());
+	PossessedController = Cast<ATrainerPlayerController>(NewController);
 	//PossessedController = Cast<ATrainerPlayerController>(GetWorld()->GetFirstLocalPlayerFromController());
-	
+
 
 	//HasAuthority() ? PossesController() : ClientPossess_Implementation();APokemonWater* SpawnPokemon
 
@@ -100,9 +109,11 @@ void ATrainer::BeginPlay()
 	//	FindOpponentTrainer();
 	//	}, 1.f, false);
 
-	
+
 	ChoosePokemonWidgetCreate();
+
 }
+
 void ATrainer::AttachBall()
 {
 	auto mesh = MonsterBall->GetComponentByClass<UStaticMeshComponent>();
@@ -144,23 +155,23 @@ void ATrainer::Tick(float DeltaTime)
 			return;
 	}*/
 
-	// 오너가 있는가?
-	//FString owner = GetOwner() ? GetOwner()->GetName() : TEXT("No Owner");
-	//// NetConnection이 있는가?
-	//FString conn = GetNetConnection() ? TEXT("Valid") : TEXT("Invalid");
-	//// LocalRole
-	//FString localRole = UEnum::GetValueAsString<ENetRole>(GetLocalRole());
-	//// RemoteRole
-	//FString remoteRole = UEnum::GetValueAsString<ENetRole>(GetRemoteRole());
+	//오너가 있는가?
+	FString owner = GetOwner() ? GetOwner()->GetName() : TEXT("No Owner");
+	// NetConnection이 있는가?
+	FString conn = GetNetConnection() ? TEXT("Valid") : TEXT("Invalid");
+	// LocalRole
+	FString localRole = UEnum::GetValueAsString<ENetRole>(GetLocalRole());
+	// RemoteRole
+	FString remoteRole = UEnum::GetValueAsString<ENetRole>(GetRemoteRole());
 
-	//FString nameController = GetWorld()->GetFirstPlayerController()->GetName();
+	FString nameController = GetWorld()->GetFirstPlayerController()->GetName();
 
-	//FString isPossessed = PossessedController ? TEXT("Possess") : TEXT("not Possess");
+	FString isPossessed = PossessedController ? TEXT("Possess") : TEXT("not Possess");
 
-	//FString str = FString::Printf(TEXT("Owner : %s\nConnection : %s\nlocalRole : %s\nremoteRole : %s\nController : %s\nisPossess : %s"), *owner, *conn, *localRole, *remoteRole, *nameController, *isPossessed);
+	FString str = FString::Printf(TEXT("Owner : %s\nConnection : %s\nlocalRole : %s\nremoteRole : %s\nController : %s\nisPossess : %s"), *owner, *conn, *localRole, *remoteRole, *nameController, *isPossessed);
 
-	//FVector loc = GetActorLocation() + FVector(0, 0, 50);
-	//DrawDebugString(GetWorld(), loc, str, nullptr, FColor::Red, 0, false, 0.75f);
+	FVector loc = GetActorLocation() + FVector(0, 0, 50);
+	DrawDebugString(GetWorld(), loc, str, nullptr, FColor::Red, 0, false, 0.75f);
 }
 
 //// Called to bind functionality to input
@@ -172,13 +183,33 @@ void ATrainer::Tick(float DeltaTime)
 
 void ATrainer::ChoosePokemonWidgetCreate()
 {
-	auto pc = Cast<ATrainerPlayerController>(Controller);
-
-	if(pc != nullptr)
+	if (nullptr == PossessedController )
 	{
-		pc->PokemonChoose = CreateWidget<UWidgetChoosePokemon>(GetWorld(), pc->PokemonTemplate);
-		pc->PokemonChoose->AddToViewport(0);
+		UE_LOG(LogTemp, Warning, TEXT("ChoosePokemonWidgetCreate  nullptr == PossessedController "));
+		return;
 	}
+
+	if ( IsLocallyControlled())
+	{
+		if (nullptr == PossessedController->PokemonChoose)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("ChoosePokemonWidgetCreate 생성 성공!!"));
+			PossessedController->PokemonChoose = CreateWidget<UWidgetChoosePokemon>(GetWorld(), PossessedController->PokemonTemplate);
+			PossessedController->PokemonChoose->AddToViewport(0);
+
+			PossessedController->PokemonChoose->trainer = this;
+			PossessedController->PokemonChoose->_PlayerController = PossessedController;
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("ChoosePokemonWidgetCreate nullptr == PossessedController->PokemonChoose"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ChoosePokemonWidgetCreate false == IsLocallyControlled()"));
+	}
+
 	//<<<<<<< Updated upstream
 	//pc->PokemonChoose->trainer = this;
 	////=======
@@ -192,15 +223,16 @@ void ATrainer::ChoosePokemonWidgetCreate()
 void ATrainer::CompleteChoose_Implementation()
 {
 
-	
+
 	if (GameState)
 	{
-		if(GetLocalRole() == ROLE_Authority && GetRemoteRole() == ROLE_AutonomousProxy)
+		//if(GetLocalRole() == ROLE_Authority && GetRemoteRole() == ROLE_AutonomousProxy)
+		if (HasAuthority())
 		{
 			GameState->AuthoritySelectPokemon = true;
 		}
-
-		else if(GetLocalRole() == ROLE_AutonomousProxy && GetRemoteRole() == ROLE_AutonomousProxy)
+		//else if(GetLocalRole() == ROLE_AutonomousProxy && GetRemoteRole() == ROLE_AutonomousProxy)
+		else
 		{
 			GameState->AutonomousSelectPokemon = true;
 		}
@@ -239,23 +271,37 @@ void ATrainer::SpawnFirstPokemon(FTransform SpawnTransform)
 {
 
 	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(FirstPokemon, SpawnTransform, SpawnParams);
-	MonsterBall->Destroy();
+	CurrentPokemon->SetActorRelativeRotation(FRotator(0, 0, this->GetActorRotation().Roll));
+	UE_LOG(LogTemp, Warning, TEXT("spawn first Pokemon"));
+	//MonsterBall->Destroy();
 }
 
 void ATrainer::SpawnSecondPokemon(FTransform SpawnTransform)
 {
 	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(SecondPokemon, SpawnTransform, SpawnParams);
-	MonsterBall->Destroy();
+	CurrentPokemon->SetActorRelativeRotation(FRotator(0, 0, this->GetActorRotation().Roll));
+	UE_LOG(LogTemp, Warning, TEXT("spawn second Pokemon"));
+	//MonsterBall->Destroy();
 }
 
 void ATrainer::SpawnThirdPokemon(FTransform SpawnTransform)
 {
 	CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(ThirdPokemon, SpawnTransform, SpawnParams);
-	MonsterBall->Destroy();
+	CurrentPokemon->SetActorRelativeRotation(FRotator(0, 0, this->GetActorRotation().Roll));
+	UE_LOG(LogTemp, Warning, TEXT("spawn third Pokemon"));
+	//MonsterBall->Destroy();
 }
 
-void ATrainer::MultiSpawnPokemon_Implementation()
+void ATrainer::MultiSpawnPokemon_Implementation(EPokemonList choosePokemon)
 {
+	ServerSpawnPokemon(choosePokemon);
+}
+
+void ATrainer::ServerSpawnPokemon_Implementation(EPokemonList choosePokemon)
+{
+
+	UE_LOG(LogTemp, Warning, TEXT("ServerSpawnPokemon_Implementation 1"));
+	//MultiSpawnPokemon();
 	FTransform ThrowingTransfrom = ThrowingPosition->GetComponentTransform();
 
 	// 몬스터볼 생성
@@ -267,40 +313,42 @@ void ATrainer::MultiSpawnPokemon_Implementation()
 
 	// 1초 후 포켓몬 소환
 	FTimerHandle timerHandle;
-	GetWorldTimerManager().SetTimer(timerHandle, [this]() {
+	GetWorldTimerManager().SetTimer(timerHandle, [&, choosePokemon] {
 		// 몬스터볼
+
 		FTransform MonsterBallTransform = MonsterBall->GetActorTransform();
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SpawnParticle, MonsterBallTransform.GetLocation());
 
 		// 포켓몬 소환(?)
-		if (PossessedController == nullptr)
-			return;
-		
-
-		switch (PossessedController->Pokemon)
+		if (Controller == nullptr)
 		{
-		case _EPokemonList::RABIFOOT:
+			return;
+		}
+		PossessedController = Cast<ATrainerPlayerController>(Controller);
+
+		/*if (PossessedController == nullptr)
+		{
+			return;
+		}*/
+		//FString sss = UEnum::GetValueAsString(spawnPokemonType);
+		
+		UE_LOG(LogTemp, Warning, TEXT("ServerSpawnPokemon_Implementation ChoosePokeMon ------> %d"), choosePokemon);
+		switch (choosePokemon)
+		{
+		case EPokemonList::RABIFOOT:
 			SpawnFirstPokemon(MonsterBallTransform);
 			break;
-		case _EPokemonList::SOBBLE:
+		case EPokemonList::SOBBLE:
 			SpawnSecondPokemon(MonsterBallTransform);
 			break;
-		case _EPokemonList::GROOKEY:
+		case EPokemonList::GROOKEY:
 			SpawnThirdPokemon(MonsterBallTransform);
 			break;
 		}
-
 		MonsterBall->Destroy();
-
 		// currentPokemon
 		//skillWidget->SetSkillName(currentPokemon);
 		}, 2.0f, false);
-}
-
-void ATrainer::ServerSpawnPokemon_Implementation()
-{
-
-		MultiSpawnPokemon();
 }
 
 

@@ -8,13 +8,6 @@
 #include "GameFramework/Pawn.h"
 #include "Trainer.generated.h"
 
-UENUM()
-enum class EPokemonList : uint8
-{
-	RABIFOOT,
-	SOBBLE,
-	GROOKEY
-};
 
 UCLASS()
 class POKEMONCD_API ATrainer : public APawn
@@ -28,6 +21,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	virtual void PossessedBy(AController* NewController) override;
 
 public:	
 	// Called every frame
@@ -137,10 +132,10 @@ public:
 
 	// spawn pokemon
 	UFUNCTION(Server, Reliable)
-	void ServerSpawnPokemon();
+	void ServerSpawnPokemon(EPokemonList choosePokemon);
 
 	UFUNCTION(NetMulticast, Reliable)
-	void MultiSpawnPokemon();
+	void MultiSpawnPokemon(EPokemonList choosePokemon);
 
 	// Monster Ball
 	UPROPERTY(EditAnywhere)
