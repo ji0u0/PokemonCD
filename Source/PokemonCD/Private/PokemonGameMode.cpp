@@ -81,14 +81,14 @@ void APokemonGameMode::SetValue()
 {
 	PlayerScale = FVector(1.f);
 
-	AuthoritySpawnLoc = FVector(40, 1720, 30);
+	AuthoritySpawnLoc = FVector(-60, 1000, 30);
 	AuthoritySpawnRotate = FQuat(0, 0, FMath::RadiansToDegrees(270), 1);
 
 	AuthorityTransform.SetLocation(AuthoritySpawnLoc);
 	AuthorityTransform.SetRotation(AuthoritySpawnRotate);
 	AuthorityTransform.SetScale3D(PlayerScale);
 
-	AutonomousProxySpawnLoc = FVector(40, -990, 30);
+	AutonomousProxySpawnLoc = FVector(-60, -270, 30);
 	AutonomousProxySpawnRotate = FQuat(0, 0, 0, 1);
 
 
