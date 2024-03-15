@@ -28,6 +28,9 @@ class POKEMONCD_API APokemonGameState : public AGameState
 	class ATrainerPlayerController* pc;
 	class ATrainer* pp;
 public:
+	class ATrainerPlayerController* pc;
+	class ATrainer* pp;
+
 	UPROPERTY(Replicated)
 	bool AuthoritySelectPokemon = false;
 
