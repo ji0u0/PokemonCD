@@ -137,6 +137,7 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 	void MultiSpawnPokemon(EPokemonList choosePokemon);
 
+	void tmp();
 	// Monster Ball
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AMonsterBall> MonsterBallFactory;

@@ -96,16 +96,22 @@ void UWidgetChoosePokemon::CompleteUI()
 	if (pc && trainer->IsLocallyControlled())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("ServerSpawnPokemon call!!,    LocalRole : %s, %d"), *localRole, _PlayerController->Pokemon);
+
+		//trainer->ServerSpawnPokemon(trainer->Pokemon);
+
+#pragma region Original
 		if (trainer->HasAuthority())
 		{
-			trainer->MultiSpawnPokemon_Implementation(trainer->Pokemon);
+			trainer->MultiSpawnPokemon(trainer->Pokemon);
 			UE_LOG(LogTemp, Warning, TEXT("Authority spwawn 1"));
 		}
 		else
 		{
-			trainer->MultiSpawnPokemon_Implementation(trainer->Pokemon);
+			trainer->tmp();
+			trainer->ServerSpawnPokemon(trainer->Pokemon);
 			UE_LOG(LogTemp, Warning, TEXT("Autonomous spawn 2"));
 		}
+#pragma endregion
 	}
 	else
 	{
