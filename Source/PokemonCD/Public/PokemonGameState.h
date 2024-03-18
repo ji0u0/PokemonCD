@@ -24,9 +24,6 @@ class POKEMONCD_API APokemonGameState : public AGameState
 	APokemonGameState();
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void BeginPlay() override;
-
-	class ATrainerPlayerController* pc;
-	class ATrainer* pp;
 public:
 	class ATrainerPlayerController* pc;
 	class ATrainer* pp;
