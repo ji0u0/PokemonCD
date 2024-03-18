@@ -30,7 +30,7 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	class USkeletalMeshComponent* SkelMeshComp;
-
+	 
 	// Skills
 	UPROPERTY(BlueprintReadWrite)
 	class USkillWater* waterSkill;
@@ -39,7 +39,7 @@ public:
 	void AttackingAnim();
 
 	virtual void PlayFirstSkillAnim() override;
-	virtual void PlaySecondSkillAnim() override;
+	// virtual void PlaySecondSkillAnim() override;
 
 	void AttackingNormalAnim();
 	void AttackingTypeAnim();
