@@ -11,7 +11,7 @@ void UScorBunnyAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
 
-	if(Cast<APokemon>(GetOwningActor()))
+	/*if(Cast<APokemon>(GetOwningActor()))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("cast"));
 	}
@@ -25,21 +25,13 @@ void UScorBunnyAnimInstance::NativeInitializeAnimation()
 	if(trainer)
 	{
 		widgetSkill = Cast<UWidgetSkill>(trainer->skillWidget);
-	}
+	}*/
 
 	//isAttack = widgetSkill->isFirstAttack;
 }
 
-void UScorBunnyAnimInstance::PlayScorbunnyTypeAttackMontage()
+void UScorBunnyAnimInstance::PlayScorbunnyAttackMontage(int32 playRate)
 {
-	playRate = 0;
-	if(nullptr == scorbunnyAttack) return;
-	Montage_Play(scorbunnyAttack, playRate);
-}
-
-void UScorBunnyAnimInstance::PlayScorbunnyNomalAttackMontage()
-{
-	playRate = 1;
-	if(nullptr == scorbunnyAttack) return;
+	if (nullptr == scorbunnyAttack) return;
 	Montage_Play(scorbunnyAttack, playRate);
 }

@@ -16,7 +16,7 @@ class POKEMONCD_API UScorBunnyAnimInstance : public UAnimInstance
 public:
 	virtual void NativeInitializeAnimation() override;
 
-	UPROPERTY()
+	/*UPROPERTY()
 	class APokemon* pokemon;
 
 	UPROPERTY()
@@ -26,17 +26,12 @@ public:
 	bool isAttack;
 
 	UPROPERTY()
-	class UWidgetSkill* widgetSkill;
+	class UWidgetSkill* widgetSkill;*/
+
 
 	//염버니 불타입공격(불꽃세례)
 	UPROPERTY(EditDefaultsOnly)
 	class UAnimMontage* scorbunnyAttack;
-	void PlayScorbunnyTypeAttackMontage();
-
-	//염버니 노말물리공격(몸통박치기)
-	void PlayScorbunnyNomalAttackMontage();
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	float playRate;
+	void PlayScorbunnyAttackMontage(int32 playRate);
 
 };

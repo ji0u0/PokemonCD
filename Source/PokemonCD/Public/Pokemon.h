@@ -71,15 +71,18 @@ public:
 	float pokemonSpeed;
 
 	///// Skill /////
-	ESkill firstSkill = ESkill::SkillWater;
-	ESkill secondSkill = ESkill::SkillFire;
-	ESkill thirdSkill = ESkill::SkillGrass;
-	ESkill fourthSkill = ESkill::SkillGrass;
+	ESkill firstSkill = ESkill::SkillWater;	//타입스킬
+	ESkill secondSkill = ESkill::SkillFire;	//노말물리스킬
+	ESkill thirdSkill = ESkill::SkillGrass;	//노말상태변환스킬1
+	ESkill fourthSkill = ESkill::SkillGrass;	//노말상태변환스킬2
 
 	UFUNCTION()
 	void Skill(ESkill Skill);
 
 	virtual void PlayFirstSkillAnim() {};
+	virtual void PlaySecondSkillAnim() {};
+	virtual void PlayThirdSkillAnim() {};
+	virtual void PlayFourthSkillAnim() {};
 
 	// Particle
 	UParticleSystem* ThrowParticle;
@@ -100,4 +103,8 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UCameraShakeBase> GrassCameraShakeFactory;
+
+
+	//--------------------------------포켓몬 공격력------------------------------
+	int32 AttackDamage(float power, APokemon* otherPokemon , int32 sameType, int32 typecompat1, int32 typecompat2);
 };

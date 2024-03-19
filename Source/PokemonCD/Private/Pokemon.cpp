@@ -99,3 +99,17 @@ void APokemon::Skill(ESkill Skill)
 		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(GrassCameraShakeFactory);
 	}
 }
+
+int32 APokemon::AttackDamage(float power, APokemon* otherPokemon, int32 sameType, int32 typecompat1, int32 typecompat2)
+{
+	int32 attackDamage;
+
+	//자속보정
+	//사용하는 기술의 타입과 사용하는 포켓몬의 타입이 일치하면 1.5를 대입.
+	float randomInt = FMath::RandRange(85, 100) / 255;
+
+	//(데미지 = (위력 × 공격 × (레벨 × [[급소]] × 2 ÷ 5 + 2 ) ÷ 방어 ÷ 50 + 2 ) × [[자속 보정]] × 타입상성1 × 타입상성2 × 랜덤수/255)
+	attackDamage = (power * pokemonAttack * (35 * 1 * 2 / 5 + 2) / otherPokemon->pokemonDefense / 50 + 2 ) * sameType * typecompat1 * typecompat2 * randomInt;
+
+	return attackDamage;
+}

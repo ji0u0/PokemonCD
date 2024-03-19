@@ -3,8 +3,8 @@
 
 #include "PokemonWater.h"
 
-#include "ScorBunnyAnimInstance.h"
 #include "SkillWater.h"
+#include "SobbleAnimInstance.h"
 #include "Components/BoxComponent.h"
 
 APokemonWater::APokemonWater()
@@ -23,12 +23,6 @@ APokemonWater::APokemonWater()
 
 	SkelMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComp"));
 	SkelMeshComp->SetupAttachment(RootComponent);
-	/*SkelMeshComp->SetRelativeLocationAndRotation
-	(
-		FVector(0, 0, 25),
-		FRotator(0, -90, 0)
-	);
-	SkelMeshComp->SetRelativeScale3D(FVector(0.1f));*/
 
 	// Skill Components
 	firstSkill = ESkill::SkillWater;
@@ -38,8 +32,11 @@ APokemonWater::APokemonWater()
 	// Set info
 	pokemonName = "Sobble";
 	pokemonType = Type::Water;
-	pokemonMaxHealth = 150;
+	pokemonMaxHealth = 70;
 	pokemonCurHealth = pokemonMaxHealth;
+	pokemonAttack = 85.f;
+	pokemonDefense = 65.f;
+	pokemonSpeed = 120.f;
 }
 
 void APokemonWater::BeginPlay()
@@ -53,18 +50,44 @@ void APokemonWater::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 }
 
-void APokemonWater::AttackingAnim()
+void APokemonWater::AttackingAnim(int32 index)
 {
-	auto anim = Cast<UScorBunnyAnimInstance>(SkelMeshComp->GetAnimInstance());
-	anim->PlayScorbunnyTypeAttackMontage();
+	//울머기 애니메이션
+	auto anim = Cast<USobbleAnimInstance>(SkelMeshComp->GetAnimInstance());
+	anim->PlaySobbleNomalAttackMontage(index);
 }
 
 void APokemonWater::PlayFirstSkillAnim()
 {
 	Super::PlayFirstSkillAnim();
-	AttackingAnim();
+	//타입스킬
+	AttackingAnim(0);
+}
 
+void APokemonWater::PlaySecondSkillAnim()
+{
+	Super::PlaySecondSkillAnim();
+	//노말물리스킬
+	AttackingAnim(1);
 }
 
 
+void APokemonWater::PlayThirdSkillAnim()
+{
+	Super::PlayThirdSkillAnim();
+	//노말상태변환스킬1
+	AttackingAnim(2);
+}
 
+void APokemonWater::PlayFourthSkillAnim()
+{
+	Super::PlayFourthSkillAnim();
+	//노말상태변환스킬2
+	AttackingAnim(3);
+}
+
+void APokemonWater::OnMyAttack()
+{
+	//공격하기
+	//AttackDamage();
+}

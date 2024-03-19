@@ -17,8 +17,8 @@ class POKEMONCD_API USobbleAnimInstance : public UAnimInstance
 public:
 	UPROPERTY(EditDefaultsOnly)
 	class UAnimMontage* sobbleAttack;
-	void PlaySobbleNomalAttackMontage();
+	void PlaySobbleNomalAttackMontage(int32 playRate);
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	float playRate;
+	/*UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float playRate;*/
 };

@@ -24,12 +24,4 @@ public:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
-	UPROPERTY(EditDefaultsOnly)
-	FString skillName = "Default";
-
-	virtual void Attack(ATrainer* trainer) {}
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class ATrainer* MyTrainer;
 };
