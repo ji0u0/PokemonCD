@@ -13,6 +13,7 @@ enum class EGameState
 	BATTLE_PHASE
 };
 
+DECLARE_DYNAMIC_DELEGATE(FPokemonChooseComplete);
 /**
  * 
  */
@@ -27,29 +28,33 @@ class POKEMONCD_API APokemonGameState : public AGameState
 
 public:
 	class ATrainerPlayerController* pc;
-	class ATrainer* pp;
 
 	UPROPERTY(Replicated)
-	bool AuthoritySelectPokemon = false;
+	bool bAuthoritySelectPokemon = false;
 
 	UPROPERTY(Replicated)
-	bool AutonomousSelectPokemon = false;
+	bool bAutonomousSelectPokemon = false;
 
-	UPROPERTY(EditAnywhere, Replicated)
+	UPROPERTY(EditAnywhere)
 	bool AuthoritySelectSkill = false;
 
-	UPROPERTY(EditAnywhere, Replicated)
+	UPROPERTY(EditAnywhere)
 	bool AutonomousSelectSkill = false;
 
+	// 포켓몬 선택
 	UFUNCTION()
 	void SelectedPokemon();
 
-	UFUNCTION()
 	void ShowSkillWidget();
 
+	// 스킬 선택
 	void SelectSkill();
 	void BattlePhase();
 	void Test();
+
+	FPokemonChooseComplete FOnMyPokemonChooseComplete;
+	UFUNCTION()
+	void SpawnEachPokemon();
 
 	EGameState State;
 

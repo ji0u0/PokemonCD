@@ -14,6 +14,7 @@ APokemonGameState::APokemonGameState()
 {
 	bReplicates = true;
 	PrimaryActorTick.bCanEverTick = true;
+	
 }
 
 
@@ -21,14 +22,15 @@ void APokemonGameState::BeginPlay()
 {
 	Super::BeginPlay();
 
-	pc = Cast<ATrainerPlayerController>(GetWorld()->GetFirstPlayerController());
-	UE_LOG(LogTemp, Warning, TEXT("pc: %d"), pc->GetPlayerState<APlayerState>()->GetPlayerId())
+	//pc = Cast<ATrainerPlayerController>(GetWorld()->GetFirstPlayerController());
+	//UE_LOG(LogTemp, Warning, TEXT("pc: %d"), pc->GetPlayerState<APlayerState>()->GetPlayerId())
 
 
-	pp = Cast<ATrainer>(pc->GetPawn());
+	//pp = Cast<ATrainer>(pc->GetPawn());
 
-	SetState(EGameState::SELECTED_POKEMON);
+
 	
+	SetState(EGameState::SELECTED_POKEMON);
 }
 
 
@@ -39,7 +41,7 @@ void APokemonGameState::Tick(float DeltaSeconds)
 
 	switch (State)
 	{
-		case EGameState::SELECTED_POKEMON:	SelectedPokemon();
+		case EGameState::SELECTED_POKEMON:	SelectedPokemon();	break;
 		case EGameState::SELECT_SKILL:		SelectSkill();		break;
 		case EGameState::BATTLE_PHASE:		BattlePhase();		break;
 	}
@@ -51,25 +53,15 @@ void APokemonGameState::Tick(float DeltaSeconds)
 void APokemonGameState::SelectedPokemon()
 {
 	// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("SELECTED_POKEMON"));
-
-	if (AuthoritySelectPokemon == true)
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("AuthoritySelectPokemon : True"));
-
-
-	if (AutonomousSelectPokemon == true)
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("AutonomousSelectPokemon : True"));
-
-
-	if (AuthoritySelectPokemon == true)
-	// if (AuthoritySelectPokemon == true && AutonomousSelectPokemon == true)
+	if(bAuthoritySelectPokemon == true && bAutonomousSelectPokemon == true)
 	{
 		SetState(EGameState::SELECT_SKILL);
-		if (pp)
+		if(FOnMyPokemonChooseComplete.IsBound())
 		{
-			FTimerHandle handle;
-			GetWorldTimerManager().SetTimer(handle, this, &APokemonGameState::ShowSkillWidget, 3.0f, false);
+			
 		}
 	}
+	
 }
 
 void APokemonGameState::ShowSkillWidget()
@@ -79,6 +71,7 @@ void APokemonGameState::ShowSkillWidget()
 
 void APokemonGameState::SelectSkill()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("StateChange : SelectSkill"));
 	if (AuthoritySelectSkill == true && AutonomousSelectSkill == true)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("SelectSkillComplete"));
@@ -98,6 +91,11 @@ void APokemonGameState::Test()
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("AuthoritySelectPokemon : True"));
 }
 
+void APokemonGameState::SpawnEachPokemon()
+{
+	
+}
+
 void APokemonGameState::SetState(EGameState Next)
 {
 	State = Next;
@@ -106,8 +104,10 @@ void APokemonGameState::SetState(EGameState Next)
 void APokemonGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME(APokemonGameState, AuthoritySelectPokemon)
-	DOREPLIFETIME(APokemonGameState, AutonomousSelectPokemon)
+	
+	DOREPLIFETIME(APokemonGameState, bAuthoritySelectPokemon)
+	DOREPLIFETIME(APokemonGameState, bAutonomousSelectPokemon)
 }
+
+
 
