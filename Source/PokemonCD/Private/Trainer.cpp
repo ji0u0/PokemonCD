@@ -14,6 +14,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "WidgetChoosePokemon.h"
 #include "WidgetMain.h"
+#include "WidgetSkill.h"
+#include "GameFramework/PlayerState.h"
 
 
 // Sets default values
@@ -111,7 +113,7 @@ void ATrainer::PossessedBy(AController* NewController)
     //   }, 1.f, false);
 
 
-    // ChoosePokemonWidgetCreate();
+    ChoosePokemonWidgetCreate();
 
 }
 
@@ -192,14 +194,14 @@ void ATrainer::ChoosePokemonWidgetCreate()
 
     if (IsLocallyControlled())
     {
-        if (nullptr == PossessedController->PokemonWidget)
+        if (nullptr == PossessedController->PokemonChoose)
         {
             UE_LOG(LogTemp, Warning, TEXT("ChoosePokemonWidgetCreate 생성 성공!!"));
-            PossessedController->PokemonWidget = CreateWidget<UWidgetChoosePokemon>(GetWorld(), PossessedController->PokemonTemplate);
-            PossessedController->PokemonWidget->AddToViewport(0);
+            PossessedController->PokemonChoose = CreateWidget<UWidgetChoosePokemon>(GetWorld(), PossessedController->PokemonTemplate);
+            PossessedController->PokemonChoose->AddToViewport(0);
 
-            PossessedController->PokemonWidget->trainer = this;
-            PossessedController->PokemonWidget->_PlayerController = PossessedController;
+            PossessedController->PokemonChoose->trainer = this;
+            PossessedController->PokemonChoose->_PlayerController = PossessedController;
         }
         else
         {
@@ -223,21 +225,17 @@ void ATrainer::ChoosePokemonWidgetCreate()
 
 void ATrainer::CompleteChoose_Implementation()
 {
-
-
-    if (GameState)
-    {
+        GameState = GetWorld()->GetAuthGameMode()->GetGameState<APokemonGameState>();
         //if(GetLocalRole() == ROLE_Authority && GetRemoteRole() == ROLE_AutonomousProxy)
-        if (HasAuthority())
+        if (Controller->HasAuthority())
         {
-            GameState->AuthoritySelectPokemon = true;
+            GameState->bAuthoritySelectPokemon = true;
         }
         //else if(GetLocalRole() == ROLE_AutonomousProxy && GetRemoteRole() == ROLE_AutonomousProxy)
         else
         {
-            GameState->AutonomousSelectPokemon = true;
+            GameState->bAutonomousSelectPokemon = true;
         }
-    }
 }
 
 void ATrainer::MainWidgetCreate()
@@ -262,19 +260,18 @@ void ATrainer::SkillWidgetCreate()
     }
 }
 
-void ATrainer::CompleteSelectSkill_Implementation()
+void ATrainer::AutonomousCompleteChoose_Implementation()
 {
-    if (GameState)
-    {
-        if (HasAuthority())
-        {
-            GameState->AuthoritySelectPokemon = true;
-        }
-        else
-        {
-            GameState->AutonomousSelectPokemon = true;
-        }
-    }
+    auto gs = GetWorld()->GetGameState<APokemonGameState>();
+    if(gs)
+        gs->bAutonomousSelectPokemon = true;
+}
+
+void ATrainer::AuthorityCompleteChoose_Implementation()
+{
+    auto gs = GetWorld()->GetGameState<APokemonGameState>();
+    if(gs)
+        gs->bAuthoritySelectPokemon = true;
 }
 
 void ATrainer::FindOpponentTrainer()
@@ -331,7 +328,6 @@ void ATrainer::SpawnThirdPokemon(FTransform SpawnTransform)
 void ATrainer::tmp()
 {
     UE_LOG(LogTemp, Warning, TEXT("ServerSpawnPokemon_Implementation 1"));
-    //MultiSpawnPokemon();
     FTransform ThrowingTransfrom = ThrowingPosition->GetComponentTransform();
 
     // 몬스터볼 생성
@@ -359,7 +355,6 @@ void ATrainer::tmp()
 void ATrainer::MultiSpawnPokemon_Implementation(EPokemonList choosePokemon)
 {
     UE_LOG(LogTemp, Warning, TEXT("ServerSpawnPokemon_Implementation 1"));
-    //MultiSpawnPokemon();
     FTransform ThrowingTransfrom = ThrowingPosition->GetComponentTransform();
 
     // 몬스터볼 생성
@@ -406,7 +401,7 @@ void ATrainer::MultiSpawnPokemon_Implementation(EPokemonList choosePokemon)
         MonsterBall->Destroy();
         // currentPokemon
         //skillWidget->SetSkillName(currentPokemon);
-        }, 2.0f, false);
+        }, 1.25f, false);
 
     //Original
 	//ServerSpawnPokemon_Implementation(choosePokemon);

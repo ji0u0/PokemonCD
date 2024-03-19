@@ -57,9 +57,12 @@ public:
 	UFUNCTION(Server,Reliable)
 	void CompleteChoose();
 
-	UFUNCTION(Server, Reliable)
-	void CompleteSelectSkill();
+	UFUNCTION(Server,Reliable)
+	void AuthorityCompleteChoose();
 
+	UFUNCTION(Server,Reliable)
+	void AutonomousCompleteChoose();
+	
 	UPROPERTY(EditDefaultsOnly)
 	class ATrainerPlayerController* PossessedController;
 
@@ -122,7 +125,7 @@ public:
 	TSubclassOf<class APokemonWater> ThirdPokemon;
 
 	UPROPERTY()
-	class APokemon* CurrentPokemon;
+	class APokemonWater* CurrentPokemon;
 	
 	UPROPERTY(EditDefaultsOnly)
 	EPokemonList Pokemon;
