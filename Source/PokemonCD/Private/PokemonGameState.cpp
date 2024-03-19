@@ -3,7 +3,10 @@
 
 #include "PokemonGameState.h"
 
+#include "PokemonWater.h"
 #include "Trainer.h"
+#include "WidgetSkill.h"
+#include "GameFramework/PlayerState.h"
 #include "Net/UnrealNetwork.h"
 
 
@@ -19,6 +22,9 @@ void APokemonGameState::BeginPlay()
 	Super::BeginPlay();
 
 	pc = Cast<ATrainerPlayerController>(GetWorld()->GetFirstPlayerController());
+	UE_LOG(LogTemp, Warning, TEXT("pc: %d"), pc->GetPlayerState<APlayerState>()->GetPlayerId())
+
+
 	pp = Cast<ATrainer>(pc->GetPawn());
 
 	SetState(EGameState::SELECTED_POKEMON);
@@ -44,7 +50,7 @@ void APokemonGameState::Tick(float DeltaSeconds)
 
 void APokemonGameState::SelectedPokemon()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("SELECTED_POKEMON"));
+	// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("SELECTED_POKEMON"));
 
 	if (AuthoritySelectPokemon == true)
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("AuthoritySelectPokemon : True"));
@@ -55,25 +61,24 @@ void APokemonGameState::SelectedPokemon()
 
 
 	if (AuthoritySelectPokemon == true)
-	//if (AuthoritySelectPokemon == true && AutonomousSelectPokemon == true)
+	// if (AuthoritySelectPokemon == true && AutonomousSelectPokemon == true)
 	{
 		SetState(EGameState::SELECT_SKILL);
 		if (pp)
 		{
 			FTimerHandle handle;
-			GetWorldTimerManager().SetTimer(handle, [this]()
-				{
-					pp->SkillWidgetCreate();
-					if (pp->CurrentPokemon)
-						pp->skillWidget->SetSkillName(pp->CurrentPokemon);
-				}, 3.0f, false);
+			GetWorldTimerManager().SetTimer(handle, this, &APokemonGameState::ShowSkillWidget, 3.0f, false);
 		}
 	}
 }
 
+void APokemonGameState::ShowSkillWidget()
+{
+	pp->SkillWidgetCreate();
+}
+
 void APokemonGameState::SelectSkill()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("SelectPokemonComplete"));
 	if (AuthoritySelectSkill == true && AutonomousSelectSkill == true)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("SelectSkillComplete"));

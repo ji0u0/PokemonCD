@@ -25,8 +25,6 @@ class POKEMONCD_API APokemonGameState : public AGameState
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void BeginPlay() override;
 
-	class ATrainerPlayerController* pc;
-	class ATrainer* pp;
 public:
 	class ATrainerPlayerController* pc;
 	class ATrainer* pp;
@@ -45,6 +43,9 @@ public:
 
 	UFUNCTION()
 	void SelectedPokemon();
+
+	UFUNCTION()
+	void ShowSkillWidget();
 
 	void SelectSkill();
 	void BattlePhase();

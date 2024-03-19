@@ -31,6 +31,10 @@ void UWidgetSkill::NativeConstruct()
 
 void UWidgetSkill::SetSkillName(APokemon* Pokemon)
 {
+	UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("ESkill"), true);
+	FText DisplayName = EnumPtr->GetDisplayNameTextByIndex(static_cast<int32>(Pokemon->firstSkill));
+	firstSkillName->SetText(DisplayName);
+
 	/*if(Pokemon->firstSkill)
 	{
 		firstSkillName->SetText(FText::FromString(Pokemon->firstSkill->skillName));

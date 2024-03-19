@@ -55,6 +55,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UTextBlock* fourthSkillName;
 
+	UFUNCTION()
 	void SetSkillName(APokemon* Pokemon);
 
 	UFUNCTION()

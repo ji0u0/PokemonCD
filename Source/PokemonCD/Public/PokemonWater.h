@@ -39,7 +39,7 @@ public:
 	void AttackingAnim();
 
 	virtual void PlayFirstSkillAnim() override;
-	virtual void PlaySecondSkillAnim() override;
+	// virtual void PlaySecondSkillAnim() override;
 
 	void AttackingNormalAnim();
 	void AttackingTypeAnim();

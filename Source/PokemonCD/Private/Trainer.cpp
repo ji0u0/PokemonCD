@@ -15,6 +15,7 @@
 #include "WidgetChoosePokemon.h"
 #include "WidgetMain.h"
 #include "WidgetSkill.h"
+#include "GameFramework/PlayerState.h"
 
 
 // Sets default values
@@ -255,7 +256,11 @@ void ATrainer::SkillWidgetCreate()
     if (PossessedController)
     {
         PossessedController->SkillWidget = CreateWidget<UWidgetSkill>(GetWorld(), PossessedController->SkillWidgetTemplate);
-        PossessedController->SkillWidget->AddToViewport(0);
+        if(PossessedController->SkillWidget)
+        {
+            PossessedController->SkillWidget->AddToViewport(0);
+            PossessedController->SkillWidget->SetSkillName(CurrentPokemon);
+        }
     }
 }
 
