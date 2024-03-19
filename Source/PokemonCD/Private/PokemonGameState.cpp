@@ -14,6 +14,7 @@ APokemonGameState::APokemonGameState()
 {
 	bReplicates = true;
 	PrimaryActorTick.bCanEverTick = true;
+	
 }
 
 
@@ -54,11 +55,11 @@ void APokemonGameState::SelectedPokemon()
 	// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("SELECTED_POKEMON"));
 	if(bAuthoritySelectPokemon == true && bAutonomousSelectPokemon == true)
 	{
-		if(OnSpawnPokemonDelegate.IsBound())
+		SetState(EGameState::SELECT_SKILL);
+		if(FOnMyPokemonChooseComplete.IsBound())
 		{
 			
 		}
-		SetState(EGameState::SELECT_SKILL);
 	}
 	
 }
@@ -88,6 +89,11 @@ void APokemonGameState::BattlePhase()
 void APokemonGameState::Test()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("AuthoritySelectPokemon : True"));
+}
+
+void APokemonGameState::SpawnEachPokemon()
+{
+	
 }
 
 void APokemonGameState::SetState(EGameState Next)

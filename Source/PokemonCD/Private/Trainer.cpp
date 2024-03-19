@@ -328,7 +328,6 @@ void ATrainer::SpawnThirdPokemon(FTransform SpawnTransform)
 void ATrainer::tmp()
 {
     UE_LOG(LogTemp, Warning, TEXT("ServerSpawnPokemon_Implementation 1"));
-    //MultiSpawnPokemon();
     FTransform ThrowingTransfrom = ThrowingPosition->GetComponentTransform();
 
     // 몬스터볼 생성
@@ -356,7 +355,6 @@ void ATrainer::tmp()
 void ATrainer::MultiSpawnPokemon_Implementation(EPokemonList choosePokemon)
 {
     UE_LOG(LogTemp, Warning, TEXT("ServerSpawnPokemon_Implementation 1"));
-    //MultiSpawnPokemon();
     FTransform ThrowingTransfrom = ThrowingPosition->GetComponentTransform();
 
     // 몬스터볼 생성

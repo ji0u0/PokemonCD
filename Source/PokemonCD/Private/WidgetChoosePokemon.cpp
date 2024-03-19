@@ -106,19 +106,15 @@ void UWidgetChoosePokemon::CompleteUI()
 #pragma region Original
 		if (trainer->HasAuthority())
 		{
-			//GameState = GetWorld()->GetAuthGameMode<APokemonGameMode>()->GetGameState<APokemonGameState>();
-			//if(GameState)
-				//GameState->AuthoritySelectPokemon = true;
 			trainer->AuthorityCompleteChoose();
-			//trainer->MultiSpawnPokemon(trainer->Pokemon);
+			trainer->MultiSpawnPokemon(trainer->Pokemon);
 			UE_LOG(LogTemp, Warning, TEXT("Authority spwawn 1"));
 		}
 		else
 		{
 			trainer->AutonomousCompleteChoose();
-			//GameState->AutonomousSelectPokemon = true;
-			//trainer->tmp();
-			//trainer->ServerSpawnPokemon(trainer->Pokemon);
+			trainer->tmp();
+			trainer->ServerSpawnPokemon(trainer->Pokemon);
 			UE_LOG(LogTemp, Warning, TEXT("Autonomous spawn 2"));
 		}
 #pragma endregion
