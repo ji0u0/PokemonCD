@@ -14,8 +14,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "WidgetChoosePokemon.h"
 #include "WidgetMain.h"
-#include "WidgetSkill.h"
-#include "GameFramework/PlayerState.h"
 
 
 // Sets default values
@@ -113,7 +111,7 @@ void ATrainer::PossessedBy(AController* NewController)
     //   }, 1.f, false);
 
 
-    ChoosePokemonWidgetCreate();
+    // ChoosePokemonWidgetCreate();
 
 }
 
@@ -194,14 +192,14 @@ void ATrainer::ChoosePokemonWidgetCreate()
 
     if (IsLocallyControlled())
     {
-        if (nullptr == PossessedController->PokemonChoose)
+        if (nullptr == PossessedController->PokemonWidget)
         {
             UE_LOG(LogTemp, Warning, TEXT("ChoosePokemonWidgetCreate 생성 성공!!"));
-            PossessedController->PokemonChoose = CreateWidget<UWidgetChoosePokemon>(GetWorld(), PossessedController->PokemonTemplate);
-            PossessedController->PokemonChoose->AddToViewport(0);
+            PossessedController->PokemonWidget = CreateWidget<UWidgetChoosePokemon>(GetWorld(), PossessedController->PokemonTemplate);
+            PossessedController->PokemonWidget->AddToViewport(0);
 
-            PossessedController->PokemonChoose->trainer = this;
-            PossessedController->PokemonChoose->_PlayerController = PossessedController;
+            PossessedController->PokemonWidget->trainer = this;
+            PossessedController->PokemonWidget->_PlayerController = PossessedController;
         }
         else
         {
@@ -260,6 +258,21 @@ void ATrainer::SkillWidgetCreate()
         {
             PossessedController->SkillWidget->AddToViewport(0);
             PossessedController->SkillWidget->SetSkillName(CurrentPokemon);
+        }
+    }
+}
+
+void ATrainer::CompleteSelectSkill_Implementation()
+{
+    if (GameState)
+    {
+        if (HasAuthority())
+        {
+            GameState->AuthoritySelectPokemon = true;
+        }
+        else
+        {
+            GameState->AutonomousSelectPokemon = true;
         }
     }
 }
