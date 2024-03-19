@@ -28,7 +28,6 @@ class POKEMONCD_API APokemonGameState : public AGameState
 
 public:
 	class ATrainerPlayerController* pc;
-	class ATrainer* pp;
 
 	UPROPERTY(Replicated)
 	bool bAuthoritySelectPokemon = false;
@@ -42,12 +41,13 @@ public:
 	UPROPERTY(EditAnywhere)
 	bool AutonomousSelectSkill = false;
 
+	// 포켓몬 선택
 	UFUNCTION()
 	void SelectedPokemon();
 
-	UFUNCTION()
 	void ShowSkillWidget();
 
+	// 스킬 선택
 	void SelectSkill();
 	void BattlePhase();
 	void Test();
