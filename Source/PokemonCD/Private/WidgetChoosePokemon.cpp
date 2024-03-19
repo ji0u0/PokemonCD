@@ -3,6 +3,7 @@
 
 #include "WidgetChoosePokemon.h"
 #include "PokemonGameMode.h"
+#include "PokemonGameState.h"
 #include "Trainer.h"
 #include "PokemonWater.h"
 #include "TrainerPlayerController.h"
@@ -23,6 +24,9 @@ void UWidgetChoosePokemon::NativeConstruct()
 
 	//_PlayerController = Cast<ATrainerPlayerController>(GetWorld()->GetFirstPlayerController());
 
+	
+	
+	
 }
 
 
@@ -60,7 +64,7 @@ void UWidgetChoosePokemon::UndoSelect()
 
 void UWidgetChoosePokemon::CompleteUI()
 {
-	// trainer -> pokemon »ý¼º
+	// trainer -> pokemon ï¿½ï¿½ï¿½ï¿½
 	//if(firstFactory)
 	//{
 	//	trainer->firstPokemon = GetWorld()->SpawnActor<APokemon>(firstFactory, firstLoc, FRotator::ZeroRotator);
@@ -81,7 +85,7 @@ void UWidgetChoosePokemon::CompleteUI()
 	//APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 	//PlayerController->Possess(trainer);
 
-	// À§Á¬ (¿ÏÀü) »èÁ¦
+	// ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½) ï¿½ï¿½ï¿½ï¿½
 	this->SetVisibility(ESlateVisibility::Hidden);
 
 	if (trainer == nullptr)
@@ -90,25 +94,31 @@ void UWidgetChoosePokemon::CompleteUI()
 		return;
 	}
 
-	trainer->CompleteChoose();
+	//trainer->CompleteChoose();
 	auto pc = GetWorld()->GetFirstPlayerController();
 	FString localRole = UEnum::GetValueAsString(trainer->GetLocalRole());
 	if (pc && trainer->IsLocallyControlled())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("ServerSpawnPokemon call!!,    LocalRole : %s, %d"), *localRole, _PlayerController->Pokemon);
-
+		
 		//trainer->ServerSpawnPokemon(trainer->Pokemon);
 
 #pragma region Original
 		if (trainer->HasAuthority())
 		{
-			trainer->MultiSpawnPokemon(trainer->Pokemon);
+			//GameState = GetWorld()->GetAuthGameMode<APokemonGameMode>()->GetGameState<APokemonGameState>();
+			//if(GameState)
+				//GameState->AuthoritySelectPokemon = true;
+			trainer->AuthorityCompleteChoose();
+			//trainer->MultiSpawnPokemon(trainer->Pokemon);
 			UE_LOG(LogTemp, Warning, TEXT("Authority spwawn 1"));
 		}
 		else
 		{
-			trainer->tmp();
-			trainer->ServerSpawnPokemon(trainer->Pokemon);
+			trainer->AutonomousCompleteChoose();
+			//GameState->AutonomousSelectPokemon = true;
+			//trainer->tmp();
+			//trainer->ServerSpawnPokemon(trainer->Pokemon);
 			UE_LOG(LogTemp, Warning, TEXT("Autonomous spawn 2"));
 		}
 #pragma endregion

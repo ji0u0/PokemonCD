@@ -19,7 +19,11 @@ class POKEMONCD_API UWidgetChoosePokemon : public UUserWidget
 	
 public:
 
-	
+	UPROPERTY()
+	class APokemonGameMode* GameMode;
+
+	UPROPERTY()
+	class APokemonGameState* GameState;
 
 	// Bind Widget
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))

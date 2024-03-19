@@ -13,6 +13,7 @@ enum class EGameState
 	BATTLE_PHASE
 };
 
+DECLARE_DELEGATE(FOnMyPokemonChooseComplete)
 /**
  * 
  */
@@ -30,15 +31,15 @@ public:
 	class ATrainer* pp;
 
 	UPROPERTY(Replicated)
-	bool AuthoritySelectPokemon = false;
+	bool bAuthoritySelectPokemon = false;
 
 	UPROPERTY(Replicated)
-	bool AutonomousSelectPokemon = false;
+	bool bAutonomousSelectPokemon = false;
 
-	UPROPERTY(EditAnywhere, Replicated)
+	UPROPERTY(EditAnywhere)
 	bool AuthoritySelectSkill = false;
 
-	UPROPERTY(EditAnywhere, Replicated)
+	UPROPERTY(EditAnywhere)
 	bool AutonomousSelectSkill = false;
 
 	UFUNCTION()
@@ -50,6 +51,8 @@ public:
 	void SelectSkill();
 	void BattlePhase();
 	void Test();
+
+	FOnMyPokemonChooseComplete OnSpawnPokemonDelegate;
 
 	EGameState State;
 

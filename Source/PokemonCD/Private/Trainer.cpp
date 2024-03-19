@@ -225,21 +225,17 @@ void ATrainer::ChoosePokemonWidgetCreate()
 
 void ATrainer::CompleteChoose_Implementation()
 {
-
-
-    if (GameState)
-    {
+        GameState = GetWorld()->GetAuthGameMode()->GetGameState<APokemonGameState>();
         //if(GetLocalRole() == ROLE_Authority && GetRemoteRole() == ROLE_AutonomousProxy)
-        if (HasAuthority())
+        if (Controller->HasAuthority())
         {
-            GameState->AuthoritySelectPokemon = true;
+            GameState->bAuthoritySelectPokemon = true;
         }
         //else if(GetLocalRole() == ROLE_AutonomousProxy && GetRemoteRole() == ROLE_AutonomousProxy)
         else
         {
-            GameState->AutonomousSelectPokemon = true;
+            GameState->bAutonomousSelectPokemon = true;
         }
-    }
 }
 
 void ATrainer::MainWidgetCreate()
@@ -262,6 +258,20 @@ void ATrainer::SkillWidgetCreate()
             PossessedController->SkillWidget->SetSkillName(CurrentPokemon);
         }
     }
+}
+
+void ATrainer::AutonomousCompleteChoose_Implementation()
+{
+    auto gs = GetWorld()->GetGameState<APokemonGameState>();
+    if(gs)
+        gs->bAutonomousSelectPokemon = true;
+}
+
+void ATrainer::AuthorityCompleteChoose_Implementation()
+{
+    auto gs = GetWorld()->GetGameState<APokemonGameState>();
+    if(gs)
+        gs->bAuthoritySelectPokemon = true;
 }
 
 void ATrainer::FindOpponentTrainer()
@@ -393,7 +403,7 @@ void ATrainer::MultiSpawnPokemon_Implementation(EPokemonList choosePokemon)
         MonsterBall->Destroy();
         // currentPokemon
         //skillWidget->SetSkillName(currentPokemon);
-        }, 2.0f, false);
+        }, 1.25f, false);
 
     //Original
 	//ServerSpawnPokemon_Implementation(choosePokemon);
