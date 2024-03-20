@@ -111,6 +111,8 @@ void UWidgetChoosePokemon::SpawnOrder()
 			UE_LOG(LogTemp, Warning, TEXT("Autonomous spawn 2"));
 		}
 		this->SetVisibility(ESlateVisibility::Hidden);
+		trainer->MainWidgetCreate();
+		trainer->SkillWidgetCreate();
 	}
 }
 

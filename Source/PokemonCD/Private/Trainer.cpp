@@ -255,7 +255,7 @@ void ATrainer::SkillWidgetCreate()
         if(PossessedController->SkillWidget)
         {
             PossessedController->SkillWidget->AddToViewport(0);
-            PossessedController->SkillWidget->SetSkillName(CurrentPokemon);
+            //PossessedController->SkillWidget->SetSkillName(CurrentPokemon);
         }
     }
 }
