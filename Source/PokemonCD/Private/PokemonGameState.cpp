@@ -14,7 +14,7 @@ APokemonGameState::APokemonGameState()
 {
 	bReplicates = true;
 	PrimaryActorTick.bCanEverTick = true;
-	
+
 }
 
 
@@ -58,7 +58,7 @@ void APokemonGameState::SelectedPokemon()
 		SetState(EGameState::SELECT_SKILL);
 		if(FOnMyPokemonChooseComplete.IsBound())
 		{
-			
+			FOnMyPokemonChooseComplete.Execute();
 		}
 	}
 	
@@ -91,10 +91,7 @@ void APokemonGameState::Test()
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("AuthoritySelectPokemon : True"));
 }
 
-void APokemonGameState::SpawnEachPokemon()
-{
-	
-}
+
 
 void APokemonGameState::SetState(EGameState Next)
 {

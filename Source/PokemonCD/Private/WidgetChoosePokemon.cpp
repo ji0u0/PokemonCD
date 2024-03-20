@@ -8,6 +8,7 @@
 #include "PokemonWater.h"
 #include "TrainerPlayerController.h"
 #include "Components/Button.h"
+#include "Components/WidgetSwitcher.h"
 #include "GameFramework/GameStateBase.h"
 #include "GameFramework/PlayerState.h"
 
@@ -20,11 +21,15 @@ void UWidgetChoosePokemon::NativeConstruct()
 	Button_Grookey->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::ChooseGrookey);
 
 	undoButton->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::UndoSelect);
-	completeButton->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::CompleteUI);
+	completeButton->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::SelectComplete);
 
 	//_PlayerController = Cast<ATrainerPlayerController>(GetWorld()->GetFirstPlayerController());
-
 	
+	GameState = GetWorld()->GetGameState<APokemonGameState>();
+	if(GameState)
+	{
+		GameState->FOnMyPokemonChooseComplete.BindUObject(this, &UWidgetChoosePokemon::SpawnOrder);
+	}
 	
 	
 }
@@ -62,66 +67,50 @@ void UWidgetChoosePokemon::UndoSelect()
 }
 
 
-void UWidgetChoosePokemon::CompleteUI()
+void UWidgetChoosePokemon::SelectComplete()
 {
-	// trainer -> pokemon ����
-	//if(firstFactory)
-	//{
-	//	trainer->firstPokemon = GetWorld()->SpawnActor<APokemon>(firstFactory, firstLoc, FRotator::ZeroRotator);
-	//	trainer->firstPokemon->OwnedTrainer = trainer;
-	//}
-	//if (secondFactory)
-	//{
-	//	trainer->secondPokemon = GetWorld()->SpawnActor<APokemon>(secondFactory, secondLoc, FRotator::ZeroRotator);
-	//	trainer->secondPokemon->OwnedTrainer = trainer;
-	//}
-	//if (thirdFactory)
-	//{
-	//trainer->thirdPokemon = GetWorld()->SpawnActor<APokemon>(thirdFactory, thirdLoc, FRotator::ZeroRotator);
-	//trainer->thirdPokemon->OwnedTrainer = trainer;
-	//}
-
-	//// Possess Player Controller
-	//APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-	//PlayerController->Possess(trainer);
-
-	// ���� (����) ����
-	this->SetVisibility(ESlateVisibility::Hidden);
-
 	if (trainer == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("trainer null"));
 		return;
 	}
 
-	//trainer->CompleteChoose();
 	auto pc = GetWorld()->GetFirstPlayerController();
 	FString localRole = UEnum::GetValueAsString(trainer->GetLocalRole());
 	if (pc && trainer->IsLocallyControlled())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("ServerSpawnPokemon call!!,    LocalRole : %s, %d"), *localRole, _PlayerController->Pokemon);
 		
-		//trainer->ServerSpawnPokemon(trainer->Pokemon);
-
-#pragma region Original
 		if (trainer->HasAuthority())
 		{
+			ChooseCanvasSwitcher->SetActiveWidgetIndex(SWITCHER_INDEX_Wating);
 			trainer->AuthorityCompleteChoose();
+		}
+		else
+		{
+			ChooseCanvasSwitcher->SetActiveWidgetIndex(SWITCHER_INDEX_Wating);
+			trainer->AutonomousCompleteChoose();
+		}
+	}
+}
+
+void UWidgetChoosePokemon::SpawnOrder()
+{
+	auto pc = GetWorld()->GetFirstPlayerController();
+	if (pc && trainer->IsLocallyControlled())
+	{
+		if (trainer->HasAuthority())
+		{
 			trainer->MultiSpawnPokemon(trainer->Pokemon);
 			UE_LOG(LogTemp, Warning, TEXT("Authority spwawn 1"));
 		}
 		else
 		{
-			trainer->AutonomousCompleteChoose();
 			trainer->tmp();
 			trainer->ServerSpawnPokemon(trainer->Pokemon);
 			UE_LOG(LogTemp, Warning, TEXT("Autonomous spawn 2"));
 		}
-#pragma endregion
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("ServerSpawnPokemon failed...,    LocalRole : %s"), *localRole);
+		this->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
 
