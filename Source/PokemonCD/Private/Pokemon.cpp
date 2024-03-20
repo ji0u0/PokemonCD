@@ -18,6 +18,8 @@ APokemon::APokemon()
 void APokemon::BeginPlay()
 {
 	Super::BeginPlay();
+	//처음 태어날때는 현재 체력 = max체력
+	pokemonCurHealth = pokemonMaxHealth;
 }
 
 // Called every frame

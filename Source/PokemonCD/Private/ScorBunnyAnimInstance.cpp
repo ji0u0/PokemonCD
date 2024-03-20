@@ -4,6 +4,7 @@
 #include "ScorBunnyAnimInstance.h"
 
 #include "Pokemon.h"
+#include "PokemonFire.h"
 #include "Trainer.h"
 #include "WidgetSkill.h"
 
@@ -30,8 +31,14 @@ void UScorBunnyAnimInstance::NativeInitializeAnimation()
 	//isAttack = widgetSkill->isFirstAttack;
 }
 
-void UScorBunnyAnimInstance::PlayScorbunnyAttackMontage(int32 playRate)
+void UScorBunnyAnimInstance::PlayScorbunnyAttackMontage(int32 playTimes)
 {
 	if (nullptr == scorbunnyAttack) return;
-	Montage_Play(scorbunnyAttack, playRate);
+	Montage_Play(scorbunnyAttack, 1.f, EMontagePlayReturnType::MontageLength, playTimes);
+}
+
+void UScorBunnyAnimInstance::AnimNotify_AttackPointScorbunny()
+{
+	//데미지 입음을 표현해야함
+	//데미지를 입었을때 스크롤바가 움직이는 타이밍을 여기서 설정
 }

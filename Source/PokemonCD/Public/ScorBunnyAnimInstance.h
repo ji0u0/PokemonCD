@@ -16,6 +16,9 @@ class POKEMONCD_API UScorBunnyAnimInstance : public UAnimInstance
 public:
 	virtual void NativeInitializeAnimation() override;
 
+	UPROPERTY()
+	class APokemonFire* scorbunny;
+
 	/*UPROPERTY()
 	class APokemon* pokemon;
 
@@ -32,6 +35,8 @@ public:
 	//¿°¹ö´Ï ºÒÅ¸ÀÔ°ø°Ý(ºÒ²É¼¼·Ê)
 	UPROPERTY(EditDefaultsOnly)
 	class UAnimMontage* scorbunnyAttack;
-	void PlayScorbunnyAttackMontage(int32 playRate);
+	void PlayScorbunnyAttackMontage(int32 playTimes);
 
+	UFUNCTION()
+	void AnimNotify_AttackPointScorbunny();
 };

@@ -4,21 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "Pokemon.h"
-#include "PokemonWater.generated.h"
+#include "PokemonGrass.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class POKEMONCD_API APokemonWater : public APokemon
+class POKEMONCD_API APokemonGrass : public APokemon
 {
 	GENERATED_BODY()
-	
 public:
-	APokemonWater();
+	APokemonGrass();
 
 	virtual void BeginPlay() override;
-	
+
 	virtual void Tick(float DeltaSeconds) override;
 
 	// Components

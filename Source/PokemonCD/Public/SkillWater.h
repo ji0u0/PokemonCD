@@ -17,8 +17,8 @@ public:
 
 	
 
-	UFUNCTION()
-	virtual void Attack(ATrainer* trainer) override;
+	/*UFUNCTION()
+	virtual void Attack(ATrainer* trainer) override;*/
 
 	void SpawnParticle(AActor* target);
 	void DestroyParticle();

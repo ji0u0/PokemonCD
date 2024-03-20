@@ -65,13 +65,18 @@ void UWidgetSkill::ClickSwapButton()
 
 void UWidgetSkill::ClickFirstSkill()
 {
-	trainer->CurrentPokemon->Skill(trainer->CurrentPokemon->firstSkill);
+	auto currPokemon = trainer->CurrentPokemon;
+
+	currPokemon->Skill(currPokemon->firstSkill);
 	//몽타주 실행
-	trainer->CurrentPokemon->PlayFirstSkillAnim();
+	currPokemon->PlayFirstSkillAnim();
+
+	//스킬 실행
+
 
 	//this->SetVisibility(ESlateVisibility::Hidden);
 	//trainer->SpawnedPokemon->firstSkill->Attack(trainer->oppoTrainer);
-	//// SetVisibility(ESlateVisibility::Visible); 필요함
+	// SetVisibility(ESlateVisibility::Visible); 필요함
 
 	//trainer->currentPokemon->firstSkill;
 }
@@ -79,8 +84,8 @@ void UWidgetSkill::ClickFirstSkill()
 void UWidgetSkill::ClickSecondSkill()
 {
 	trainer->CurrentPokemon->Skill(trainer->CurrentPokemon->secondSkill);
-	////몽타주 실행
-	trainer->CurrentPokemon->PlayFirstSkillAnim();
+	//몽타주 실행
+	trainer->CurrentPokemon->PlaySecondSkillAnim();
 
 	//this->SetVisibility(ESlateVisibility::Hidden);
 	//trainer->currentPokemon->secondSkill->Attack(trainer->oppoTrainer);
@@ -89,9 +94,10 @@ void UWidgetSkill::ClickSecondSkill()
 
 void UWidgetSkill::ClickThirdSkill()
 {
+
 	trainer->CurrentPokemon->Skill(trainer->CurrentPokemon->thirdSkill);
-	////몽타주 실행
-	trainer->CurrentPokemon->PlayFirstSkillAnim();
+	//몽타주 실행
+	trainer->CurrentPokemon->PlayThirdSkillAnim();
 
 	//this->SetVisibility(ESlateVisibility::Hidden);
 	//trainer->currentPokemon->thirdSkill->Attack(trainer->oppoTrainer);
@@ -100,12 +106,16 @@ void UWidgetSkill::ClickThirdSkill()
 
 void UWidgetSkill::ClickFourthSkill()
 {
-	////몽타주 실행
+	trainer->CurrentPokemon->Skill(trainer->CurrentPokemon->thirdSkill);
+	//몽타주 실행
+	trainer->CurrentPokemon->PlayThirdSkillAnim();
+
+	//몽타주 실행
 	//ClickTOPlayAnim();
 
 	//this->SetVisibility(ESlateVisibility::Hidden);
 	//trainer->currentPokemon->fourthSkill->Attack(trainer->oppoTrainer);
-	//// SetVisibility(ESlateVisibility::Visible); 필요함
+	// SetVisibility(ESlateVisibility::Visible); 필요함
 }
 
 /*

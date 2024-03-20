@@ -192,7 +192,7 @@ void ATrainer::ChoosePokemonWidgetCreate()
         return;
     }
 
-    if (IsLocallyControlled())
+    /*if (IsLocallyControlled())
     {
         if (nullptr == PossessedController->PokemonChoose)
         {
@@ -211,7 +211,7 @@ void ATrainer::ChoosePokemonWidgetCreate()
     else
     {
         UE_LOG(LogTemp, Warning, TEXT("ChoosePokemonWidgetCreate false == IsLocallyControlled()"));
-    }
+    }*/
 
     //<<<<<<< Updated upstream
     //pc->PokemonChoose->trainer = this;

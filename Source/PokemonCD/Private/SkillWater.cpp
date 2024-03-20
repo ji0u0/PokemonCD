@@ -14,7 +14,7 @@
 
 USkillWater::USkillWater()
 {
-	skillName = "Water Skill";
+	//skillName = "Water Skill";
 	static ConstructorHelpers::FObjectFinder<UParticleSystem> ParticleSystem(TEXT("/Game/FXVarietyPack/Particles/P_ky_waterBallHit"));
 
 	// 파티클 시스템이 로드되었는지 확인 후 설정
@@ -88,7 +88,7 @@ void USkillWater::CameraShake()
 	}
 }
 
-void USkillWater::Attack(ATrainer* trainer)
+/*void USkillWater::Attack(ATrainer* trainer)
 {
 	/*APokemon* target = trainer->currentPokemon;
 
@@ -99,5 +99,5 @@ void USkillWater::Attack(ATrainer* trainer)
 		SpawnParticle(trainer);
 	}
 	else
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, "oppo trainer == null");*/
-}
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, "oppo trainer == null");#1#
+}*/
