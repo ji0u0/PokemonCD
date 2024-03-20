@@ -23,10 +23,6 @@ void UWidgetChoosePokemon::NativeConstruct()
 	completeButton->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::CompleteUI);
 
 	//_PlayerController = Cast<ATrainerPlayerController>(GetWorld()->GetFirstPlayerController());
-
-	
-	
-	
 }
 
 
@@ -34,18 +30,36 @@ void UWidgetChoosePokemon::ChooseRabifoot()
 {
 	//if (_PlayerController->IsLocalPlayerController())
 	trainer->SetPokemon(EPokemonList::RABIFOOT);
+
+	if (index > 2)
+	{
+		// pokemonFactory[index] = scorbunnyFactory;
+		index++;
+	}
 }
 
 void UWidgetChoosePokemon::ChooseSobble()
 {
 	//if (_PlayerController->IsLocalPlayerController())
 	trainer->SetPokemon(EPokemonList::SOBBLE);
+
+	if (index > 2)
+	{
+		pokemonFactory[index] = sobbleFactory;
+		index++;
+	}
 }
 
 void UWidgetChoosePokemon::ChooseGrookey()
 {
 	//if (_PlayerController->IsLocalPlayerController())
 	trainer->SetPokemon(EPokemonList::GROOKEY);
+
+	if (index > 2)
+	{
+		// pokemonFactory[index] = grookeyFactory;
+		index++;
+	}
 }
 
 void UWidgetChoosePokemon::SelectedPokemon()
