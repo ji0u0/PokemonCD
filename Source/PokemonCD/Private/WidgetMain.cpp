@@ -4,6 +4,7 @@
 #include "WidgetMain.h"
 
 #include "Pokemon.h"
+#include "PokemonWater.h"
 #include "WidgetStatus.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/CanvasPanel.h"
@@ -15,24 +16,24 @@ void UWidgetMain::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	// My Status Ãß°¡
+	// My Status ì¶”ê°€
 	myStatus = CreateWidget<UWidgetStatus>(GetWorld(), statusWidgetFactory);
 	UCanvasPanelSlot* MyStatusSlot = MyStatusPanel->AddChildToCanvas(myStatus);
 	MyStatusSlot->SetSize(FVector2D(360, 240));
 
-	// Opponent Status Ãß°¡
+	// Opponent Status ì¶”ê°€
 	oppoStatus = CreateWidget<UWidgetStatus>(GetWorld(), statusWidgetFactory);
 	UCanvasPanelSlot* OpponentStatusSlot = OpponentStatusPanel->AddChildToCanvas(oppoStatus);
 	OpponentStatusSlot->SetSize(FVector2D(360, 240));
 
-	// ³» Controller¸¦ °¡Á®¿Â´Ù
+	// ë‚´ Controllerë¥¼ ê°€ì ¸ì˜¨ë‹¤
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 	//if (PlayerController) trainer = Cast<ATrainer>(PlayerController->GetPawn());
 
 	//else UE_LOG(LogTemp, Warning, TEXT("No Controller"));
 }
 
-void UWidgetMain::SetMyStatus(APokemon* pokemon)
+void UWidgetMain::SetMyStatus(APokemonWater* pokemon)
 {
 	myStatus->PokemonName->SetText(FText::FromString(pokemon->pokemonName));
 	myStatus->HealthBar->SetPercent(pokemon->pokemonCurHealth/pokemon->pokemonMaxHealth);

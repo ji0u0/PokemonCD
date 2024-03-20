@@ -66,7 +66,7 @@ void APokemonGameState::SelectedPokemon()
 
 void APokemonGameState::ShowSkillWidget()
 {
-	pp->SkillWidgetCreate();
+	//pp->SkillWidgetCreate();
 }
 
 void APokemonGameState::SelectSkill()
