@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "PokemonWater.h"
 #include "Blueprint/UserWidget.h"
 #include "WidgetMain.generated.h"
 
@@ -39,5 +38,5 @@ public:
 	class UWidgetStatus* oppoStatus;
 
 	UFUNCTION()
-	void SetMyStatus(APokemonWater* pokemon);
+	void SetMyStatus(APokemon* pokemon);
 };
