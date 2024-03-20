@@ -30,6 +30,9 @@ public:
 	TSubclassOf<class UWidgetChoosePokemon> PokemonTemplate;
 
 	UPROPERTY()
+	class UWidgetChoosePokemon* PokemonChoose;
+
+	UPROPERTY()
 	class UWidgetChoosePokemon* PokemonWidget;
 
 	void CreatePokemonWidget();
