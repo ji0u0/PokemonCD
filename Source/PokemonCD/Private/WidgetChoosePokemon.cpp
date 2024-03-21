@@ -8,6 +8,7 @@
 #include "PokemonWater.h"
 #include "TrainerPlayerController.h"
 #include "Components/Button.h"
+#include "Components/TextBlock.h"
 #include "GameFramework/GameStateBase.h"
 #include "GameFramework/PlayerState.h"
 
@@ -23,10 +24,6 @@ void UWidgetChoosePokemon::NativeConstruct()
 	completeButton->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::CompleteUI);
 
 	//_PlayerController = Cast<ATrainerPlayerController>(GetWorld()->GetFirstPlayerController());
-
-	
-	
-	
 }
 
 
@@ -34,18 +31,60 @@ void UWidgetChoosePokemon::ChooseRabifoot()
 {
 	//if (_PlayerController->IsLocalPlayerController())
 	trainer->SetPokemon(EPokemonList::RABIFOOT);
+
+	if (index > 2)
+	{
+		pokemonFactory[index] = scorbunnyFactory;
+
+		switch (index)
+		{
+		case 0: txt_firstpokemon->SetText(FText::FromString("Scorbunny")); break;
+		case 1: txt_secondpokemon->SetText(FText::FromString("Scorbunny")); break;
+		case 2: txt_thirdpokemon->SetText(FText::FromString("Scorbunny")); break;
+		}
+
+		index++;
+	}
 }
 
 void UWidgetChoosePokemon::ChooseSobble()
 {
 	//if (_PlayerController->IsLocalPlayerController())
 	trainer->SetPokemon(EPokemonList::SOBBLE);
+
+	if (index > 2)
+	{
+		pokemonFactory[index] = sobbleFactory;
+
+		switch (index)
+		{
+		case 0: txt_firstpokemon->SetText(FText::FromString("Sobble")); break;
+		case 1: txt_secondpokemon->SetText(FText::FromString("Sobble")); break;
+		case 2: txt_thirdpokemon->SetText(FText::FromString("Sobble")); break;
+		}
+
+		index++;
+	}
 }
 
 void UWidgetChoosePokemon::ChooseGrookey()
 {
 	//if (_PlayerController->IsLocalPlayerController())
 	trainer->SetPokemon(EPokemonList::GROOKEY);
+
+	if (index > 2)
+	{
+		pokemonFactory[index] = grookeyFactory;
+
+		switch (index)
+		{
+		case 0: txt_firstpokemon->SetText(FText::FromString("Grookey")); break;
+		case 1: txt_secondpokemon->SetText(FText::FromString("Grookey")); break;
+		case 2: txt_thirdpokemon->SetText(FText::FromString("Grookey")); break;
+		}
+
+		index++;
+	}
 }
 
 void UWidgetChoosePokemon::SelectedPokemon()

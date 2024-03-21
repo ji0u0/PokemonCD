@@ -41,6 +41,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
 	class UButton* undoButton;
 
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	class UTextBlock* txt_firstpokemon;
+
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	class UTextBlock* txt_secondpokemon;
+
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
+	class UTextBlock* txt_thirdpokemon;
 
 	//// Trainer
 	//UPROPERTY(EditAnywhere)
@@ -77,7 +85,21 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class APokemonWater> sobbleFactory;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class APokemonFire> scorbunnyFactory;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class APokemonGrass> grookeyFactory;
+
 	// Keep Factory
+	TArray<TSubclassOf<class APokemon>> pokemonFactory = {
+		nullptr,
+		nullptr,
+		nullptr
+	};
+
+	int32 index = 0;
+
 	TSubclassOf<class APokemon> firstFactory = nullptr;
 	TSubclassOf<class APokemon> secondFactory = nullptr;
 	TSubclassOf<class APokemon> thirdFactory = nullptr;

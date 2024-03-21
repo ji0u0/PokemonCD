@@ -22,15 +22,11 @@ void APokemonGameState::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//pc = Cast<ATrainerPlayerController>(GetWorld()->GetFirstPlayerController());
+	pc = Cast<ATrainerPlayerController>(GetWorld()->GetFirstPlayerController());
 	//UE_LOG(LogTemp, Warning, TEXT("pc: %d"), pc->GetPlayerState<APlayerState>()->GetPlayerId())
 
-
-	//pp = Cast<ATrainer>(pc->GetPawn());
-
-
-	
 	SetState(EGameState::SELECTED_POKEMON);
+	pc->CreatePokemonWidget();
 }
 
 
