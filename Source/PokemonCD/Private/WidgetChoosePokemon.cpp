@@ -2,6 +2,9 @@
 
 
 #include "WidgetChoosePokemon.h"
+
+#include <PokemonFire.h>
+
 #include "PokemonGameMode.h"
 #include "PokemonGameState.h"
 #include "Trainer.h"
@@ -9,6 +12,7 @@
 #include "TrainerPlayerController.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
+#include "Components/WidgetSwitcher.h"
 #include "GameFramework/GameStateBase.h"
 #include "GameFramework/PlayerState.h"
 
@@ -21,9 +25,16 @@ void UWidgetChoosePokemon::NativeConstruct()
 	Button_Grookey->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::ChooseGrookey);
 
 	undoButton->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::UndoSelect);
-	completeButton->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::CompleteUI);
+	completeButton->OnClicked.AddDynamic(this, &UWidgetChoosePokemon::SelectComplete);
 
 	//_PlayerController = Cast<ATrainerPlayerController>(GetWorld()->GetFirstPlayerController());
+
+	GameState = GetWorld()->GetGameState<APokemonGameState>();
+	if(GameState)
+	{
+		GameState->FOnMyPokemonChooseComplete.BindUObject(this, &UWidgetChoosePokemon::SpawnOrder);
+	}
+
 }
 
 
@@ -32,19 +43,19 @@ void UWidgetChoosePokemon::ChooseRabifoot()
 	//if (_PlayerController->IsLocalPlayerController())
 	trainer->SetPokemon(EPokemonList::RABIFOOT);
 
-	if (index > 2)
-	{
-		pokemonFactory[index] = scorbunnyFactory;
-
-		switch (index)
-		{
-		case 0: txt_firstpokemon->SetText(FText::FromString("Scorbunny")); break;
-		case 1: txt_secondpokemon->SetText(FText::FromString("Scorbunny")); break;
-		case 2: txt_thirdpokemon->SetText(FText::FromString("Scorbunny")); break;
-		}
-
-		index++;
-	}
+	// if (index > 2)
+	// {
+	// 	pokemonFactory[index] = scorbunnyFactory;
+	//
+	// 	switch (index)
+	// 	{
+	// 	case 0: txt_firstpokemon->SetText(FText::FromString("Scorbunny")); break;
+	// 	case 1: txt_secondpokemon->SetText(FText::FromString("Scorbunny")); break;
+	// 	case 2: txt_thirdpokemon->SetText(FText::FromString("Scorbunny")); break;
+	// 	}
+	//
+	// 	index++;
+	// }
 }
 
 void UWidgetChoosePokemon::ChooseSobble()
@@ -52,19 +63,19 @@ void UWidgetChoosePokemon::ChooseSobble()
 	//if (_PlayerController->IsLocalPlayerController())
 	trainer->SetPokemon(EPokemonList::SOBBLE);
 
-	if (index > 2)
-	{
-		pokemonFactory[index] = sobbleFactory;
-
-		switch (index)
-		{
-		case 0: txt_firstpokemon->SetText(FText::FromString("Sobble")); break;
-		case 1: txt_secondpokemon->SetText(FText::FromString("Sobble")); break;
-		case 2: txt_thirdpokemon->SetText(FText::FromString("Sobble")); break;
-		}
-
-		index++;
-	}
+	// if (index > 2)
+	// {
+	// 	pokemonFactory[index] = sobbleFactory;
+	//
+	// 	switch (index)
+	// 	{
+	// 	case 0: txt_firstpokemon->SetText(FText::FromString("Sobble")); break;
+	// 	case 1: txt_secondpokemon->SetText(FText::FromString("Sobble")); break;
+	// 	case 2: txt_thirdpokemon->SetText(FText::FromString("Sobble")); break;
+	// 	}
+	//
+	// 	index++;
+	// }
 }
 
 void UWidgetChoosePokemon::ChooseGrookey()
@@ -72,19 +83,19 @@ void UWidgetChoosePokemon::ChooseGrookey()
 	//if (_PlayerController->IsLocalPlayerController())
 	trainer->SetPokemon(EPokemonList::GROOKEY);
 
-	if (index > 2)
-	{
-		pokemonFactory[index] = grookeyFactory;
-
-		switch (index)
-		{
-		case 0: txt_firstpokemon->SetText(FText::FromString("Grookey")); break;
-		case 1: txt_secondpokemon->SetText(FText::FromString("Grookey")); break;
-		case 2: txt_thirdpokemon->SetText(FText::FromString("Grookey")); break;
-		}
-
-		index++;
-	}
+	// if (index > 2)
+	// {
+	// 	pokemonFactory[index] = grookeyFactory;
+	//
+	// 	switch (index)
+	// 	{
+	// 	case 0: txt_firstpokemon->SetText(FText::FromString("Grookey")); break;
+	// 	case 1: txt_secondpokemon->SetText(FText::FromString("Grookey")); break;
+	// 	case 2: txt_thirdpokemon->SetText(FText::FromString("Grookey")); break;
+	// 	}
+	//
+	// 	index++;
+	// }
 }
 
 void UWidgetChoosePokemon::SelectedPokemon()
@@ -101,66 +112,52 @@ void UWidgetChoosePokemon::UndoSelect()
 }
 
 
-void UWidgetChoosePokemon::CompleteUI()
+void UWidgetChoosePokemon::SelectComplete()
 {
-	// trainer -> pokemon ����
-	//if(firstFactory)
-	//{
-	//	trainer->firstPokemon = GetWorld()->SpawnActor<APokemon>(firstFactory, firstLoc, FRotator::ZeroRotator);
-	//	trainer->firstPokemon->OwnedTrainer = trainer;
-	//}
-	//if (secondFactory)
-	//{
-	//	trainer->secondPokemon = GetWorld()->SpawnActor<APokemon>(secondFactory, secondLoc, FRotator::ZeroRotator);
-	//	trainer->secondPokemon->OwnedTrainer = trainer;
-	//}
-	//if (thirdFactory)
-	//{
-	//trainer->thirdPokemon = GetWorld()->SpawnActor<APokemon>(thirdFactory, thirdLoc, FRotator::ZeroRotator);
-	//trainer->thirdPokemon->OwnedTrainer = trainer;
-	//}
-
-	//// Possess Player Controller
-	//APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-	//PlayerController->Possess(trainer);
-
-	// ���� (����) ����
-	this->SetVisibility(ESlateVisibility::Hidden);
-
 	if (trainer == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("trainer null"));
 		return;
 	}
 
-	//trainer->CompleteChoose();
 	auto pc = GetWorld()->GetFirstPlayerController();
 	FString localRole = UEnum::GetValueAsString(trainer->GetLocalRole());
 	if (pc && trainer->IsLocallyControlled())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("ServerSpawnPokemon call!!,    LocalRole : %s, %d"), *localRole, _PlayerController->Pokemon);
-		
-		//trainer->ServerSpawnPokemon(trainer->Pokemon);
-
-#pragma region Original
+      
 		if (trainer->HasAuthority())
 		{
+			ChooseCanvasSwitcher->SetActiveWidgetIndex(SWITCHER_INDEX_Wating);
 			trainer->AuthorityCompleteChoose();
+		}
+		else
+		{
+			ChooseCanvasSwitcher->SetActiveWidgetIndex(SWITCHER_INDEX_Wating);
+			trainer->AutonomousCompleteChoose();
+		}
+	}
+}
+
+void UWidgetChoosePokemon::SpawnOrder()
+{
+	auto pc = GetWorld()->GetFirstPlayerController();
+	if (pc && trainer->IsLocallyControlled())
+	{
+		if (trainer->HasAuthority())
+		{
 			trainer->MultiSpawnPokemon(trainer->Pokemon);
 			UE_LOG(LogTemp, Warning, TEXT("Authority spwawn 1"));
 		}
 		else
 		{
-			trainer->AutonomousCompleteChoose();
 			trainer->tmp();
 			trainer->ServerSpawnPokemon(trainer->Pokemon);
 			UE_LOG(LogTemp, Warning, TEXT("Autonomous spawn 2"));
 		}
-#pragma endregion
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("ServerSpawnPokemon failed...,    LocalRole : %s"), *localRole);
+		this->SetVisibility(ESlateVisibility::Hidden);
+		trainer->MainWidgetCreate();
+		trainer->SkillWidgetCreate();
 	}
 }
 

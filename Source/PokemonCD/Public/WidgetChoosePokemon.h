@@ -79,6 +79,7 @@ public:
 
 	UFUNCTION()
 	void UndoSelect();
+	void CompleteUI();
 
 	UFUNCTION()
 	void ChooseRabifoot();

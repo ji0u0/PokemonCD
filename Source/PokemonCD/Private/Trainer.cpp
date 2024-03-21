@@ -2,9 +2,13 @@
 
 
 #include "Trainer.h"
+
+#include <PokemonFire.h>
+
 #include "MonsterBall.h"
 #include "Pokemon.h"
 #include "PokemonGameState.h"
+#include "PokemonGrass.h"
 #include "PokemonWater.h"
 #include "TrainerAnimInstance.h"
 #include "TrainerPlayerController.h"
@@ -305,9 +309,9 @@ void ATrainer::SetPokemon(EPokemonList Selected)
 void ATrainer::SpawnFirstPokemon(FTransform SpawnTransform)
 {
 
-    CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(FirstPokemon, SpawnTransform, SpawnParams);
+    CurrentPokemon = GetWorld()->SpawnActor<APokemonFire>(FirstPokemon, SpawnTransform, SpawnParams);
     CurrentPokemon->SetActorRelativeRotation(FRotator(this->GetActorRotation()));
-    //MonsterBall->Destroy();
+    CurrentPokemon->SetActorRelativeScale3D(FVector(1.f));
 }
 
 void ATrainer::SpawnSecondPokemon(FTransform SpawnTransform)
@@ -315,14 +319,13 @@ void ATrainer::SpawnSecondPokemon(FTransform SpawnTransform)
     CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(SecondPokemon, SpawnTransform, SpawnParams);
     CurrentPokemon->SetActorRelativeRotation(FRotator(this->GetActorRotation()));
     CurrentPokemon->SetActorRelativeScale3D(FVector(1.f));
-    //MonsterBall->Destroy();
 }
 
 void ATrainer::SpawnThirdPokemon(FTransform SpawnTransform)
 {
-    CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(ThirdPokemon, SpawnTransform, SpawnParams);
+    CurrentPokemon = GetWorld()->SpawnActor<APokemonGrass>(ThirdPokemon, SpawnTransform, SpawnParams);
     CurrentPokemon->SetActorRelativeRotation(FRotator(this->GetActorRotation()));
-    //MonsterBall->Destroy();
+    CurrentPokemon->SetActorRelativeScale3D(FVector(1.f));
 }
 
 void ATrainer::tmp()
@@ -349,7 +352,7 @@ void ATrainer::tmp()
         MonsterBall->Destroy();
         // currentPokemon
         //skillWidget->SetSkillName(currentPokemon);
-        }, 1.25f, false);
+        }, 1.5f, false);
 }
 
 void ATrainer::MultiSpawnPokemon_Implementation(EPokemonList choosePokemon)
@@ -401,7 +404,7 @@ void ATrainer::MultiSpawnPokemon_Implementation(EPokemonList choosePokemon)
         MonsterBall->Destroy();
         // currentPokemon
         //skillWidget->SetSkillName(currentPokemon);
-        }, 1.25f, false);
+        }, 1.5f, false);
 
     //Original
 	//ServerSpawnPokemon_Implementation(choosePokemon);
@@ -432,16 +435,16 @@ void ATrainer::ServerSpawnPokemon_Implementation(EPokemonList choosePokemon)
         UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SpawnParticle, MonsterBallTransform.GetLocation());
 
         // 포켓몬 소환(?)
-        if (Controller == nullptr)
-        {
-            return;
-        }
-        PossessedController = Cast<ATrainerPlayerController>(Controller);
-
-        if (PossessedController == nullptr)
-        {
-            return;
-        }
+        // if (Controller == nullptr)
+        // {
+        //     return;
+        // }
+        // PossessedController = Cast<ATrainerPlayerController>(Controller);
+        //
+        // if (PossessedController == nullptr)
+        // {
+        //     return;
+        // }
         //FString sss = UEnum::GetValueAsString(spawnPokemonType);
 
         UE_LOG(LogTemp, Warning, TEXT("ServerSpawnPokemon_Implementation ChoosePokeMon ------> %d"), choosePokemon);
