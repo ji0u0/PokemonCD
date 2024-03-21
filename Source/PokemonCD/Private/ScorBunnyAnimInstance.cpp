@@ -34,7 +34,7 @@ void UScorBunnyAnimInstance::NativeInitializeAnimation()
 void UScorBunnyAnimInstance::PlayScorbunnyAttackMontage(int32 playTimes)
 {
 	if (nullptr == scorbunnyAttack) return;
-	Montage_Play(scorbunnyAttack, 1.f, EMontagePlayReturnType::MontageLength, playTimes);
+	Montage_Play(scorbunnyAttack, 1.f, EMontagePlayReturnType::Duration, playTimes);
 }
 
 void UScorBunnyAnimInstance::AnimNotify_AttackPointScorbunny()
