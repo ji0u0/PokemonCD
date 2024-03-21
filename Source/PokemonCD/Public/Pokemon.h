@@ -18,6 +18,11 @@ enum class Type : uint8
 UENUM(BlueprintType)
 enum class ESkill : uint8
 {
+	SkillNormalTackle UMETA(DisplayName = "NormalTackle"),	//몸통박치기 - 염버니
+	SkillNormalPound UMETA(DisplayName = "NormalPound"),	//막치기 - 울머기
+	SkillNormalScratch UMETA(DisplayName = "NormalScratch"),	//할퀴기 - 흥나숭
+	SkillNormalStateChange_1 UMETA(DisplayName = "NormalStateChange_1"),	//상태변화1
+	SkillNormalStateChange_2 UMETA(DisplayName = "NormalStateChange_2"),	//상태변화2
 	SkillWater UMETA(DisplayName = "WaterGun"),
 	SkillFire UMETA(DisplayName = "Ember"),
 	SkillGrass UMETA(DisplayName = "LeafStorm")
