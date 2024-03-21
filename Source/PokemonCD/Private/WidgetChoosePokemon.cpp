@@ -8,6 +8,7 @@
 #include "PokemonWater.h"
 #include "TrainerPlayerController.h"
 #include "Components/Button.h"
+#include "Components/TextBlock.h"
 #include "GameFramework/GameStateBase.h"
 #include "GameFramework/PlayerState.h"
 
@@ -33,7 +34,15 @@ void UWidgetChoosePokemon::ChooseRabifoot()
 
 	if (index > 2)
 	{
-		// pokemonFactory[index] = scorbunnyFactory;
+		pokemonFactory[index] = scorbunnyFactory;
+
+		switch (index)
+		{
+		case 0: txt_firstpokemon->SetText(FText::FromString("Scorbunny")); break;
+		case 1: txt_secondpokemon->SetText(FText::FromString("Scorbunny")); break;
+		case 2: txt_thirdpokemon->SetText(FText::FromString("Scorbunny")); break;
+		}
+
 		index++;
 	}
 }
@@ -46,6 +55,14 @@ void UWidgetChoosePokemon::ChooseSobble()
 	if (index > 2)
 	{
 		pokemonFactory[index] = sobbleFactory;
+
+		switch (index)
+		{
+		case 0: txt_firstpokemon->SetText(FText::FromString("Sobble")); break;
+		case 1: txt_secondpokemon->SetText(FText::FromString("Sobble")); break;
+		case 2: txt_thirdpokemon->SetText(FText::FromString("Sobble")); break;
+		}
+
 		index++;
 	}
 }
@@ -57,7 +74,15 @@ void UWidgetChoosePokemon::ChooseGrookey()
 
 	if (index > 2)
 	{
-		// pokemonFactory[index] = grookeyFactory;
+		pokemonFactory[index] = grookeyFactory;
+
+		switch (index)
+		{
+		case 0: txt_firstpokemon->SetText(FText::FromString("Grookey")); break;
+		case 1: txt_secondpokemon->SetText(FText::FromString("Grookey")); break;
+		case 2: txt_thirdpokemon->SetText(FText::FromString("Grookey")); break;
+		}
+
 		index++;
 	}
 }

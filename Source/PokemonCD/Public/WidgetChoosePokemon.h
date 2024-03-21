@@ -85,8 +85,8 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class APokemonWater> sobbleFactory;
 
-	// UPROPERTY(EditAnywhere)
-	// TSubclassOf<class APokemonFire> scorbunnyFactory;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class APokemonFire> scorbunnyFactory;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class APokemonGrass> grookeyFactory;
