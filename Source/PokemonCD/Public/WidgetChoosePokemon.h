@@ -71,14 +71,15 @@ public:
 	FRotator trainerRot = FRotator(0.f, -90.f, 0.f);
 
 	// Input Button
-	UFUNCTION()
+	/*UFUNCTION()
 	void SelectComplete();
 
 	UFUNCTION()
-	void SpawnOrder();
+	void SpawnOrder();*/
 
 	UFUNCTION()
 	void UndoSelect();
+	void CompleteUI();
 
 	UFUNCTION()
 	void ChooseRabifoot();

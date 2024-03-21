@@ -2,8 +2,11 @@
 
 
 #include "WidgetChoosePokemon.h"
+
+#include "PokemonFire.h"
 #include "PokemonGameMode.h"
 #include "PokemonGameState.h"
+#include "PokemonGrass.h"
 #include "Trainer.h"
 #include "PokemonWater.h"
 #include "TrainerPlayerController.h"
