@@ -195,7 +195,7 @@ int32 APokemon::AttackDamage(float power, APokemon* otherPokemon)
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("물불풀이 아닌 타입은 존재 안하는데 넌 뭐니?"));
+		UE_LOG(LogTemp, Warning, TEXT("??"));
 	}
 	//--------------------------타입상성
 
