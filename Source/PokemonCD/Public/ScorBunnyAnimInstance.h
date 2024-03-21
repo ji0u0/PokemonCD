@@ -35,7 +35,7 @@ public:
 	//¿°¹ö´Ï ºÒÅ¸ÀÔ°ø°Ý(ºÒ²É¼¼·Ê)
 	UPROPERTY(EditDefaultsOnly)
 	class UAnimMontage* scorbunnyAttack;
-	void PlayScorbunnyAttackMontage(int32 playTimes);
+	void PlayScorbunnyAttackMontage(float playTimes);
 
 	UFUNCTION()
 	void AnimNotify_AttackPointScorbunny();

@@ -48,7 +48,7 @@ void APokemonFire::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 }
 
-void APokemonFire::AttackingAnim(int32 index)
+void APokemonFire::AttackingAnim(float index)
 {
 	auto anim = Cast<UScorBunnyAnimInstance>(SkelMeshComp->GetAnimInstance());
 	anim->PlayScorbunnyAttackMontage(index);
@@ -59,28 +59,28 @@ void APokemonFire::PlayFirstSkillAnim()
 {
 	Super::PlayFirstSkillAnim();
 	//타입스킬
-	AttackingAnim(0);
+	AttackingAnim(0.f);
 }
 
 void APokemonFire::PlaySecondSkillAnim()
 {
 	Super::PlaySecondSkillAnim();
 	//노말물리스킬
-	AttackingAnim(1);
+	AttackingAnim(1.f);
 }
 
 void APokemonFire::PlayThirdSkillAnim()
 {
 	Super::PlayThirdSkillAnim();
 	//노말상태변환스킬1
-	AttackingAnim(2);
+	AttackingAnim(2.f);
 }
 
 void APokemonFire::PlayFourthSkillAnim()
 {
 	Super::PlayFourthSkillAnim();
 	//노말상태변환스킬2
-	AttackingAnim(3);
+	AttackingAnim(3.f);
 }
 
 void APokemonFire::OnMyAttack(APokemon* otherpokemon)

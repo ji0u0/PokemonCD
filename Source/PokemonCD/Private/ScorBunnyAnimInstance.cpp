@@ -31,7 +31,7 @@ void UScorBunnyAnimInstance::NativeInitializeAnimation()
 	//isAttack = widgetSkill->isFirstAttack;
 }
 
-void UScorBunnyAnimInstance::PlayScorbunnyAttackMontage(int32 playTimes)
+void UScorBunnyAnimInstance::PlayScorbunnyAttackMontage(float playTimes)
 {
 	if (nullptr == scorbunnyAttack) return;
 	Montage_Play(scorbunnyAttack, 1.f, EMontagePlayReturnType::MontageLength, playTimes);
