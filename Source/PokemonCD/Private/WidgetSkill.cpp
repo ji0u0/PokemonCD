@@ -83,6 +83,7 @@ void UWidgetSkill::ClickFirstSkill()
 
 void UWidgetSkill::ClickSecondSkill()
 {
+	UE_LOG(LogTemp, Warning, TEXT("SecondSkillAllowd"));
 	trainer->CurrentPokemon->Skill(trainer->CurrentPokemon->secondSkill);
 	//¸ùÅ¸ÁÖ ½ÇÇà
 	trainer->CurrentPokemon->PlaySecondSkillAnim();

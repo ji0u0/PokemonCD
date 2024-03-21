@@ -66,21 +66,21 @@ void APokemonFire::PlaySecondSkillAnim()
 {
 	Super::PlaySecondSkillAnim();
 	//노말물리스킬
-	AttackingAnim(1.f);
+	AttackingAnim(1.13f);
 }
 
 void APokemonFire::PlayThirdSkillAnim()
 {
 	Super::PlayThirdSkillAnim();
 	//노말상태변환스킬1
-	AttackingAnim(2.f);
+	AttackingAnim(3.30f);
 }
 
 void APokemonFire::PlayFourthSkillAnim()
 {
 	Super::PlayFourthSkillAnim();
 	//노말상태변환스킬2
-	AttackingAnim(3.f);
+	AttackingAnim(3.30f);
 }
 
 void APokemonFire::OnMyAttack(APokemon* otherpokemon)
