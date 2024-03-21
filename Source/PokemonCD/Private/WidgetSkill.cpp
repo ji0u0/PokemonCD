@@ -65,12 +65,12 @@ void UWidgetSkill::ClickSwapButton()
 
 void UWidgetSkill::ClickFirstSkill()
 {
-	auto currPokemon = trainer->CurrentPokemon;
+	auto myPokemon = trainer->CurrentPokemon;
 	/*auto oppoPokemon = trainer->oppoTrainer.opp;*/
 
-	currPokemon->Skill(currPokemon->firstSkill);
+	myPokemon->Skill(myPokemon->firstSkill);
 	//몽타주 실행
-	currPokemon->PlayFirstSkillAnim();
+	myPokemon->PlayFirstSkillAnim();
 	//공격 데미지 계산 실행
 	/*currPokemon->OnMyAttack()*/
 

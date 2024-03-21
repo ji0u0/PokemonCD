@@ -52,16 +52,16 @@ void APokemon::Skill(ESkill Skill)
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ThrowParticle, myLoc, GetActorUpVector().Rotation(), FVector(0.5f, 0.5f, 1.0f));
 			// 1초 뒤에 실행
 			GetWorldTimerManager().SetTimer(handle, [&]()
-			{
-				// 스플래시 파티클
-				HitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_WaterExplosion.P_WaterExplosion"));
-				if (HitParticle && WaterCameraShakeFactory)
 				{
-					UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticle, oppoLoc);
-					// 카메라 쉐이크
-					UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(WaterCameraShakeFactory);
-				}
-			}, 1.f, false);
+					// 스플래시 파티클
+					HitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_WaterExplosion.P_WaterExplosion"));
+					if (HitParticle && WaterCameraShakeFactory)
+					{
+						UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticle, oppoLoc);
+						// 카메라 쉐이크
+						UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(WaterCameraShakeFactory);
+					}
+				}, 1.f, false);
 		}
 		//자속보정 계산
 		if (this->pokemonType == Type::Water)
@@ -86,22 +86,22 @@ void APokemon::Skill(ESkill Skill)
 			UE_LOG(LogTemp, Warning, TEXT("so sad"));
 		}
 		GetWorldTimerManager().SetTimer(handle, [&]()
-		{
-			FVector Loc = FMath::Lerp(myLoc, oppoLoc, alpha);
-			// Shoot 파티클
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ThrowParticle, Loc);
-			alpha += 0.1f;
-			if (alpha >= 1.0f)
 			{
-				alpha = 0.f;
-				HitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_waterBallHit.P_ky_waterBallHit"));
-				// Hit 파티클
-				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticle, oppoLoc);
-				// Camera Shake
-				UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(WaterCameraShakeFactory);
-				GetWorldTimerManager().ClearTimer(handle);
-			}
-		}, 0.1f, true);
+				FVector Loc = FMath::Lerp(myLoc, oppoLoc, alpha);
+				// Shoot 파티클
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ThrowParticle, Loc);
+				alpha += 0.1f;
+				if (alpha >= 1.0f)
+				{
+					alpha = 0.f;
+					HitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_waterBallHit.P_ky_waterBallHit"));
+					// Hit 파티클
+					UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticle, oppoLoc);
+					// Camera Shake
+					UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(WaterCameraShakeFactory);
+					GetWorldTimerManager().ClearTimer(handle);
+				}
+			}, 0.1f, true);
 
 		//자속보정 계산
 		if (this->pokemonType == Type::Fire)
@@ -128,7 +128,27 @@ void APokemon::Skill(ESkill Skill)
 		{
 			sameType = 1.f;
 		}
+		break;
+	case ESkill::SkillNormalTackle:
+		//몸통박치기 - 염버니
+		sameType = 1.f;
+		break;
+	case ESkill::SkillNormalPound:
+		//막치기 - 울머기
+		sameType = 1.f;
+		break;
+	case ESkill::SkillNormalScratch:
+		//할퀴기 - 흥나숭
+		sameType = 1.f;
+		break;
+	case ESkill::SkillNormalStateChange_1:
+		//상태변화1
+		break;
+	case ESkill::SkillNormalStateChange_2:
+		//상태변화2
+		break;
 	}
+
 }
 
 int32 APokemon::AttackDamage(float power, APokemon* otherPokemon)
