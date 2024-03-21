@@ -22,6 +22,18 @@ public:
 	UPROPERTY(Replicated, EditDefaultsOnly)
 	EPokemonList Pokemon = EPokemonList::GROOKEY;
 
+	TArray<EPokemonList> PokemonLists= {
+		EPokemonList::Default,
+		EPokemonList::Default,
+		EPokemonList::Default
+	};
+
+	TArray<TSubclassOf<class APokemon>> pokemonFactory = {
+		nullptr,
+		nullptr,
+		nullptr
+	};
+
 	// void SetPokemon(EPokemonList Selected);
 
 	///// Widget /////

@@ -19,6 +19,7 @@ void ATrainerPlayerController::CreatePokemonWidget()
 
 	PokemonWidget->trainer = Cast<ATrainer>(GetPawn());
 	PokemonWidget->_PlayerController = this;
+	PokemonWidget->pc = this;
 	SetVisiblePokemonWidget(true);
 }
 

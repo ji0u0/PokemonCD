@@ -35,9 +35,9 @@ void UWidgetChoosePokemon::ChooseRabifoot()
 	//if (_PlayerController->IsLocalPlayerController())
 	trainer->SetPokemon(EPokemonList::RABIFOOT);
 
-	if (index > 2)
+	if (index < 3)
 	{
-		pokemonFactory[index] = scorbunnyFactory;
+		PokemonLists[index] = EPokemonList::RABIFOOT;
 
 		switch (index)
 		{
@@ -55,9 +55,9 @@ void UWidgetChoosePokemon::ChooseSobble()
 	//if (_PlayerController->IsLocalPlayerController())
 	trainer->SetPokemon(EPokemonList::SOBBLE);
 
-	if (index > 2)
+	if (index < 3)
 	{
-		pokemonFactory[index] = sobbleFactory;
+		PokemonLists[index] = EPokemonList::RABIFOOT;
 
 		switch (index)
 		{
@@ -75,7 +75,7 @@ void UWidgetChoosePokemon::ChooseGrookey()
 	//if (_PlayerController->IsLocalPlayerController())
 	trainer->SetPokemon(EPokemonList::GROOKEY);
 
-	if (index > 2)
+	if (index < 3)
 	{
 		pokemonFactory[index] = grookeyFactory;
 
@@ -92,15 +92,23 @@ void UWidgetChoosePokemon::ChooseGrookey()
 
 void UWidgetChoosePokemon::SelectedPokemon()
 {
-	//trainer->SpawnPokemon();
 }
 
 void UWidgetChoosePokemon::UndoSelect()
 {
-	/*if (thirdFactory != nullptr)		thirdFactory = nullptr;
-	else if (secondFactory != nullptr)	secondFactory = nullptr;
-	else if (firstFactory != nullptr)	firstFactory = nullptr;*/
-	//trainer->currentPokemon = nullptr;
+	if (index > 0)
+	{
+		index--;
+
+		pokemonFactory[index] = nullptr;
+
+		switch (index)
+		{
+		case 0: txt_firstpokemon->SetText(FText::FromString("Default")); break;
+		case 1: txt_secondpokemon->SetText(FText::FromString("Default")); break;
+		case 2: txt_thirdpokemon->SetText(FText::FromString("Default")); break;
+		}
+	}
 }
 
 
@@ -137,10 +145,11 @@ void UWidgetChoosePokemon::CompleteUI()
 	}
 
 	//trainer->CompleteChoose();
-	auto pc = GetWorld()->GetFirstPlayerController();
+	// auto pc = GetWorld()->GetFirstPlayerController();
 	FString localRole = UEnum::GetValueAsString(trainer->GetLocalRole());
 	if (pc && trainer->IsLocallyControlled())
 	{
+		pc->pokemonFactory = pokemonFactory;
 		UE_LOG(LogTemp, Warning, TEXT("ServerSpawnPokemon call!!,    LocalRole : %s, %d"), *localRole, _PlayerController->Pokemon);
 		
 		//trainer->ServerSpawnPokemon(trainer->Pokemon);

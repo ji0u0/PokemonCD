@@ -124,12 +124,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class APokemonWater> ThirdPokemon;
 
-	TArray<TSubclassOf<class APokemon>> pokemonFactory = {
-		nullptr,
-		nullptr,
-		nullptr
-	};
-
 	UPROPERTY()
 	class APokemonWater* CurrentPokemon;
 	
