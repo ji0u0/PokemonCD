@@ -102,12 +102,74 @@ void APokemon::Skill(ESkill Skill)
 	}
 }
 
-int32 APokemon::AttackDamage(float power, APokemon* otherPokemon, int32 sameType, int32 typecompat1, int32 typecompat2)
+int32 APokemon::AttackDamage(float power, APokemon* otherPokemon, int32 sameType)
 {
 	int32 attackDamage;
 
 	//자속보정
 	//사용하는 기술의 타입과 사용하는 포켓몬의 타입이 일치하면 1.5를 대입.
+
+	//--------------------------타입상성
+	//나 : 불타입
+	if(this->pokemonType == Type::Fire)
+	{
+		switch (otherPokemon->pokemonType)
+		{
+			case Type::Fire:
+				typecompat1 = 1.f;	typecompat2 = 1.f;
+				break;
+			case Type::Water:
+				typecompat1 = 0.5f;	typecompat2 = 0.5f;
+				break;
+			case Type::Grass:
+				typecompat1 = 1.5f;	typecompat2 = 1.5f;
+				break;
+			default:
+				break;
+		}
+	}
+	//나 : 물타입
+	else if(this->pokemonType == Type::Water)
+	{
+		switch (otherPokemon->pokemonType)
+		{
+		case Type::Fire:
+			typecompat1 = 1.5f;	typecompat2 = 1.5f;
+			break;
+		case Type::Water:
+			typecompat1 = 1.f;	typecompat2 = 1.f;
+			break;
+		case Type::Grass:
+			typecompat1 = 0.5f;	typecompat2 = 0.5f;
+			break;
+		default:
+			break;
+		}
+	}
+	//나 : 풀타입
+	else if (this->pokemonType == Type::Grass)
+	{
+		switch (otherPokemon->pokemonType)
+		{
+		case Type::Fire:
+			typecompat1 = 0.5f;	typecompat2 = 0.5f;
+			break;
+		case Type::Water:
+			typecompat1 = 1.5f;	typecompat2 = 1.5f;
+			break;
+		case Type::Grass:
+			typecompat1 = 1.f;	typecompat2 = 1.f;
+			break;
+		default:
+			break;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("물불풀이 아닌 타입은 존재 안하는데 넌 뭐니?"));
+	}
+	//--------------------------타입상성
+
 	float randomInt = FMath::RandRange(85, 100) / 255;
 
 	//(데미지 = (위력 × 공격 × (레벨 × [[급소]] × 2 ÷ 5 + 2 ) ÷ 방어 ÷ 50 + 2 ) × [[자속 보정]] × 타입상성1 × 타입상성2 × 랜덤수/255)
