@@ -77,7 +77,7 @@ void UWidgetChoosePokemon::ChooseGrookey()
 
 	if (index < 3)
 	{
-		pokemonFactory[index] = grookeyFactory;
+		PokemonLists[index] = EPokemonList::RABIFOOT;
 
 		switch (index)
 		{
@@ -100,7 +100,7 @@ void UWidgetChoosePokemon::UndoSelect()
 	{
 		index--;
 
-		pokemonFactory[index] = nullptr;
+		PokemonLists[index] = EPokemonList::RABIFOOT;
 
 		switch (index)
 		{
@@ -149,7 +149,7 @@ void UWidgetChoosePokemon::CompleteUI()
 	FString localRole = UEnum::GetValueAsString(trainer->GetLocalRole());
 	if (pc && trainer->IsLocallyControlled())
 	{
-		pc->pokemonFactory = pokemonFactory;
+		//pc->pokemonLists = pokemonLists;
 		UE_LOG(LogTemp, Warning, TEXT("ServerSpawnPokemon call!!,    LocalRole : %s, %d"), *localRole, _PlayerController->Pokemon);
 		
 		//trainer->ServerSpawnPokemon(trainer->Pokemon);
