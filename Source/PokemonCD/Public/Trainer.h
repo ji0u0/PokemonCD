@@ -116,16 +116,16 @@ public:
 	class APokemon* firstPokemon = nullptr;*/
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<class APokemonWater> FirstPokemon;
+	TSubclassOf<class APokemonFire> FirstPokemon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class APokemonWater> SecondPokemon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<class APokemonWater> ThirdPokemon;
+	TSubclassOf<class APokemonGrass> ThirdPokemon;
 
 	UPROPERTY()
-	class APokemonWater* CurrentPokemon;
+	class APokemon* CurrentPokemon;
 	
 	UPROPERTY(EditDefaultsOnly)
 	EPokemonList Pokemon;
