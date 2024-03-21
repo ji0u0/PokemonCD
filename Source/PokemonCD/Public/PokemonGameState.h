@@ -13,7 +13,7 @@ enum class EGameState
 	BATTLE_PHASE
 };
 
-DECLARE_DYNAMIC_DELEGATE(FPokemonChooseComplete);
+DECLARE_DELEGATE(FPokemonChooseComplete);
 /**
  * 
  */
@@ -53,8 +53,6 @@ public:
 	void Test();
 
 	FPokemonChooseComplete FOnMyPokemonChooseComplete;
-	UFUNCTION()
-	void SpawnEachPokemon();
 
 	EGameState State;
 

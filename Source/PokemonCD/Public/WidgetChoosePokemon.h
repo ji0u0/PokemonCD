@@ -7,6 +7,9 @@
 #include "Blueprint/UserWidget.h"
 #include "WidgetChoosePokemon.generated.h"
 
+const int SWITCHER_INDEX_SELECTPOKEMON = 0;
+const int SWITCHER_INDEX_Wating = 1;
+
 /**
  * 
  */
@@ -26,6 +29,9 @@ public:
 	class APokemonGameState* GameState;
 
 	// Bind Widget
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
+	class UWidgetSwitcher* ChooseCanvasSwitcher;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
 	class UButton* Button_Rabifoot;
 
@@ -66,7 +72,10 @@ public:
 
 	// Input Button
 	UFUNCTION()
-	void CompleteUI();
+	void SelectComplete();
+
+	UFUNCTION()
+	void SpawnOrder();
 
 	UFUNCTION()
 	void UndoSelect();
