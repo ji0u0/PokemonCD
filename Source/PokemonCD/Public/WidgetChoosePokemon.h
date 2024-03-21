@@ -28,9 +28,12 @@ public:
 	UPROPERTY()
 	class APokemonGameState* GameState;
 
+	UPROPERTY()
+	class ATrainerPlayerController* pc;
+
 	// Bind Widget
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
-	class UWidgetSwitcher* ChooseCanvasSwitcher;
+	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
+	class UWidgetSwitcher* ChooseCanvasSwitcher;*/
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
 	class UButton* Button_Rabifoot;
@@ -102,10 +105,10 @@ public:
 	TSubclassOf<class APokemonGrass> grookeyFactory;
 
 	// Keep Factory
-	TArray<TSubclassOf<class APokemon>> pokemonFactory = {
-		nullptr,
-		nullptr,
-		nullptr
+	TArray<EPokemonList> PokemonLists = {
+		EPokemonList::Default,
+		EPokemonList::Default,
+		EPokemonList::Default
 	};
 
 	int32 index = 0;

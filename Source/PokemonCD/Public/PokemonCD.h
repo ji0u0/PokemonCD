@@ -7,6 +7,7 @@
 UENUM(BlueprintType)
 enum class EPokemonList : uint8
 {
+	Default,
 	RABIFOOT,
 	SOBBLE,
 	GROOKEY
