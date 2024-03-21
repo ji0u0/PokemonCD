@@ -106,9 +106,9 @@ public:
 
 
 	//--------------------------------포켓몬 공격력------------------------------
-	int32 AttackDamage(float power, APokemon* otherPokemon ,  int32 sameType);
-	UPROPERTY(EditAnywhere)
+	int32 AttackDamage(float power, APokemon* otherPokemon);
+
 	float typecompat1;
-	UPROPERTY(EditAnywhere)
 	float typecompat2;
+	float sameType;	//자속보정
 };

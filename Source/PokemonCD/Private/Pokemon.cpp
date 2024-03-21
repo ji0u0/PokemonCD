@@ -63,8 +63,18 @@ void APokemon::Skill(ESkill Skill)
 				}
 			}, 1.f, false);
 		}
+		//자속보정 계산
+		if (this->pokemonType == Type::Water)
+		{
+			sameType = 1.5f;
+		}
+		else
+		{
+			sameType = 1.f;
+		}
 		break;
 	case ESkill::SkillFire:
+
 		ThrowParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_waterBallHit.P_ky_waterBallHit"));
 		if (ThrowParticle)
 		{
@@ -92,6 +102,16 @@ void APokemon::Skill(ESkill Skill)
 				GetWorldTimerManager().ClearTimer(handle);
 			}
 		}, 0.1f, true);
+
+		//자속보정 계산
+		if (this->pokemonType == Type::Fire)
+		{
+			sameType = 1.5f;
+		}
+		else
+		{
+			sameType = 1.f;
+		}
 		break;
 	case ESkill::SkillGrass:
 		HitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_storm.P_ky_storm"));
@@ -99,10 +119,19 @@ void APokemon::Skill(ESkill Skill)
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticle, oppoLoc);
 		// Camera Shake
 		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(GrassCameraShakeFactory);
+		//자속보정 계산
+		if (this->pokemonType == Type::Grass)
+		{
+			sameType = 1.5f;
+		}
+		else
+		{
+			sameType = 1.f;
+		}
 	}
 }
 
-int32 APokemon::AttackDamage(float power, APokemon* otherPokemon, int32 sameType)
+int32 APokemon::AttackDamage(float power, APokemon* otherPokemon)
 {
 	int32 attackDamage;
 

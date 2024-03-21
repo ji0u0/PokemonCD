@@ -66,13 +66,13 @@ void UWidgetSkill::ClickSwapButton()
 void UWidgetSkill::ClickFirstSkill()
 {
 	auto currPokemon = trainer->CurrentPokemon;
+	/*auto oppoPokemon = trainer->oppoTrainer.opp;*/
 
 	currPokemon->Skill(currPokemon->firstSkill);
 	//몽타주 실행
 	currPokemon->PlayFirstSkillAnim();
-
-	//스킬 실행
-
+	//공격 데미지 계산 실행
+	/*currPokemon->OnMyAttack()*/
 
 	//this->SetVisibility(ESlateVisibility::Hidden);
 	//trainer->SpawnedPokemon->firstSkill->Attack(trainer->oppoTrainer);
