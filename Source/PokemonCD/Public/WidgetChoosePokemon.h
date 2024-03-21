@@ -58,7 +58,11 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	class UTextBlock* txt_thirdpokemon;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
+	class UWidgetSwitcher* ChooseCanvasSwitcher;
 
+	
 	//// Trainer
 	//UPROPERTY(EditAnywhere)
 	//TSubclassOf<class ATrainer> trainerFactory;
@@ -82,7 +86,8 @@ public:
 
 	UFUNCTION()
 	void UndoSelect();
-	void CompleteUI();
+	UFUNCTION()
+	void SelectComplete();
 
 	UFUNCTION()
 	void ChooseRabifoot();
@@ -93,6 +98,10 @@ public:
 
 	UFUNCTION()
 	void SelectedPokemon();
+
+	UFUNCTION()
+	void SpawnOrder();
+
 
 	// Pokemon Factory
 	UPROPERTY(EditAnywhere)
