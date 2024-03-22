@@ -5,6 +5,7 @@
 
 #include "Trainer.h"
 #include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystem.h"
 
 
 // Sets default values
@@ -40,6 +41,8 @@ void APokemon::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void APokemon::Skill(ESkill Skill)
 {
+	if(!OwnedTrainer){return;}
+
 	myLoc = GetActorLocation();
 	// oppoLoc = OwnedTrainer->oppoTrainer->GetActorLocation(); // ≤¿ πŸ≤„¡‡!!!!!!!!!!!!
 	oppoLoc = FVector(0.f);

@@ -69,10 +69,10 @@ void APokemonGameState::ShowSkillWidget()
 
 void APokemonGameState::SelectSkill()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("StateChange : SelectSkill"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("StateChange : SelectSkill"));
 	if (AuthoritySelectSkill == true && AutonomousSelectSkill == true)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("SelectSkillComplete"));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("SelectSkillComplete"));
 		SetState(EGameState::BATTLE_PHASE);
 	}
 }
@@ -81,7 +81,22 @@ void APokemonGameState::SelectSkill()
 
 void APokemonGameState::BattlePhase()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("Is BattlePhase"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("Is BattlePhase"));
+	/*if(FOnAuthoritySelectSkill.IsBound() == false || FOnAutonomousSelectSkill.IsBound() == false)
+		return;*/
+
+	if(FOnAuthoritySelectSkill.IsBound())
+	{
+		FOnAuthoritySelectSkill.Execute();
+	}
+	if(FOnAutonomousSelectSkill.IsBound())
+	{
+		FOnAutonomousSelectSkill.Execute();
+	}
+
+	
+	
+	
 }
 
 void APokemonGameState::Test()
@@ -102,6 +117,8 @@ void APokemonGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	
 	DOREPLIFETIME(APokemonGameState, bAuthoritySelectPokemon)
 	DOREPLIFETIME(APokemonGameState, bAutonomousSelectPokemon)
+	DOREPLIFETIME(APokemonGameState, AuthoritySelectSkill)
+	DOREPLIFETIME(APokemonGameState, AutonomousSelectSkill)
 }
 
 

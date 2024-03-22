@@ -28,6 +28,12 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	class ATrainer* trainer;
 
+	UPROPERTY(EditDefaultsOnly)
+	class ATrainerPlayerController* _TrainerPlayerController;
+
+	UPROPERTY(EditDefaultsOnly)
+	class APokemonGameState* GameState;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UButton* SwapButton;
 
@@ -72,6 +78,18 @@ public:
 
 	UFUNCTION()
 	void ClickFourthSkill();
+
+	UFUNCTION()
+	void ExcuteFirstSkill();
+
+	UFUNCTION()
+	void ExcuteSecondSkill();
+	
+	UFUNCTION()
+	void ExcuteThirdSkill();
+
+	UFUNCTION()
+	void ExcuteFourthSkill();
 
 	//애니메이션(응원) 실행 - 트레이너
 	void ClickTOPlayAnimTrainer();

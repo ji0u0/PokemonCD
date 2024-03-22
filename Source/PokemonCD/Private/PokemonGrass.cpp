@@ -50,7 +50,7 @@ void APokemonGrass::Tick(float DeltaSeconds)
 
 }
 
-void APokemonGrass::AttackingAnim(int32 index)
+void APokemonGrass::INSTAAttackingAnim(int32 index)
 {
 	auto anim = Cast<UGrookeyAnimInstance>(SkelMeshComp->GetAnimInstance());
 	anim->PlayScorbunnyAttackMontage(index);

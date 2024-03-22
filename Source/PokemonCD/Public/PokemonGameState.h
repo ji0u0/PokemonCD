@@ -14,6 +14,9 @@ enum class EGameState
 };
 
 DECLARE_DELEGATE(FPokemonChooseComplete);
+DECLARE_DYNAMIC_DELEGATE(FAuthoritySelectSkill);
+DECLARE_DYNAMIC_DELEGATE(FAutonomousSelectSkill);
+
 /**
  * 
  */
@@ -35,10 +38,10 @@ public:
 	UPROPERTY(Replicated)
 	bool bAutonomousSelectPokemon = false;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(Replicated)
 	bool AuthoritySelectSkill = false;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(Replicated)
 	bool AutonomousSelectSkill = false;
 
 	// 포켓몬 선택
@@ -53,6 +56,8 @@ public:
 	void Test();
 
 	FPokemonChooseComplete FOnMyPokemonChooseComplete;
+	FAuthoritySelectSkill FOnAuthoritySelectSkill;
+	FAutonomousSelectSkill FOnAutonomousSelectSkill;
 
 	EGameState State;
 

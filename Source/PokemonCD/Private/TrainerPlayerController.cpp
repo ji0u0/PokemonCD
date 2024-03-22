@@ -71,6 +71,9 @@ void ATrainerPlayerController::CreateSkillWidget()
 	SkillWidget = CreateWidget<UWidgetSkill>(GetWorld(), SkillWidgetTemplate);
 	SkillWidget->AddToViewport(0);
 	SetVisibleSkillWidget(true);
+
+	SkillWidget->_TrainerPlayerController = this;
+	SkillWidget->trainer = Cast<ATrainer>(GetPawn());
 }
 
 void ATrainerPlayerController::SetVisibleSkillWidget(bool bVisible)

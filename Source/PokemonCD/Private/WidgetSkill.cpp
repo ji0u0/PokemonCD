@@ -4,6 +4,7 @@
 #include "WidgetSkill.h"
 
 #include "Pokemon.h"
+#include "PokemonGameState.h"
 #include "PokemonWater.h"
 #include "Skill.h"
 #include "Trainer.h"
@@ -23,10 +24,14 @@ void UWidgetSkill::NativeConstruct()
 
 	// 내 Controller를 가져온다
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-	if (PlayerController) trainer = Cast<ATrainer>(PlayerController->GetPawn());
-		
+	if (PlayerController)
+	{
+		trainer = Cast<ATrainer>(PlayerController->GetPawn());
+	}
+
 	else UE_LOG(LogTemp, Warning, TEXT("No Controller"));
 
+	GameState = GetWorld()->GetGameState<APokemonGameState>();
 }
 
 void UWidgetSkill::SetSkillName(APokemon* Pokemon)
@@ -71,6 +76,74 @@ void UWidgetSkill::ClickSwapButton()
 
 void UWidgetSkill::ClickFirstSkill()
 {
+	if (_TrainerPlayerController && trainer->IsLocallyControlled())
+	{
+		if (trainer->HasAuthority())
+		{
+			GameState->AuthoritySelectSkill = true;
+			GameState->FOnAuthoritySelectSkill.BindDynamic(this, &UWidgetSkill::ExcuteFirstSkill);
+		}
+		else
+		{
+			GameState->AutonomousSelectSkill = true;
+			GameState->FOnAutonomousSelectSkill.BindDynamic(this, &UWidgetSkill::ExcuteFirstSkill);
+		}
+	}
+}
+
+void UWidgetSkill::ClickSecondSkill()
+{
+	if (_TrainerPlayerController && trainer->IsLocallyControlled())
+	{
+		if (trainer->HasAuthority())
+		{
+			GameState->AuthoritySelectSkill = true;
+			GameState->FOnAuthoritySelectSkill.BindDynamic(this, &UWidgetSkill::ExcuteSecondSkill);
+		}
+		else
+		{
+			GameState->AutonomousSelectSkill = true;
+			GameState->FOnAutonomousSelectSkill.BindDynamic(this, &UWidgetSkill::ExcuteSecondSkill);
+		}
+	}
+}
+
+void UWidgetSkill::ClickThirdSkill()
+{
+	if (_TrainerPlayerController && trainer->IsLocallyControlled())
+	{
+		if (trainer->HasAuthority())
+		{
+			GameState->AuthoritySelectSkill = true;
+			GameState->FOnAuthoritySelectSkill.BindDynamic(this, &UWidgetSkill::ExcuteThirdSkill);
+		}
+		else
+		{
+			GameState->AutonomousSelectSkill = true;
+			GameState->FOnAutonomousSelectSkill.BindDynamic(this, &UWidgetSkill::ExcuteThirdSkill);
+		}
+	}
+}
+
+void UWidgetSkill::ClickFourthSkill()
+{
+	if (_TrainerPlayerController && trainer->IsLocallyControlled())
+	{
+		if (trainer->HasAuthority())
+		{
+			GameState->AuthoritySelectSkill = true;
+			GameState->FOnAuthoritySelectSkill.BindDynamic(this, &UWidgetSkill::ExcuteFourthSkill);
+		}
+		else
+		{
+			GameState->AutonomousSelectSkill = true;
+			GameState->FOnAutonomousSelectSkill.BindDynamic(this, &UWidgetSkill::ExcuteFourthSkill);
+		}
+	}
+}
+
+void UWidgetSkill::ExcuteFirstSkill()
+{
 	auto myPokemon = trainer->CurrentPokemon;
 	/*auto oppoPokemon = trainer->oppoTrainer.opp;*/
 
@@ -85,9 +158,14 @@ void UWidgetSkill::ClickFirstSkill()
 	// SetVisibility(ESlateVisibility::Visible); 필요함
 
 	//trainer->currentPokemon->firstSkill;
+
+	GameState->FOnAuthoritySelectSkill.Unbind();
+
+	GEngine->AddOnScreenDebugMessage(-1, 30, FColor::Red, TEXT("UWidgetSkill::ExcuteFirstSkill"));
+
 }
 
-void UWidgetSkill::ClickSecondSkill()
+void UWidgetSkill::ExcuteSecondSkill()
 {
 	UE_LOG(LogTemp, Warning, TEXT("SecondSkillAllowd"));
 	trainer->CurrentPokemon->Skill(trainer->CurrentPokemon->secondSkill);
@@ -97,11 +175,15 @@ void UWidgetSkill::ClickSecondSkill()
 	//this->SetVisibility(ESlateVisibility::Hidden);
 	//trainer->currentPokemon->secondSkill->Attack(trainer->oppoTrainer);
 	//// SetVisibility(ESlateVisibility::Visible); 필요함
+
+	GameState->FOnAuthoritySelectSkill.Unbind();
+	//autonomous도 언바인딩해주기...
+	GEngine->AddOnScreenDebugMessage(-1, 30, FColor::Red, TEXT("UWidgetSkill::ExcuteSecondSkill"));
+
 }
 
-void UWidgetSkill::ClickThirdSkill()
+void UWidgetSkill::ExcuteThirdSkill()
 {
-
 	trainer->CurrentPokemon->Skill(trainer->CurrentPokemon->thirdSkill);
 	//몽타주 실행
 	trainer->CurrentPokemon->PlayThirdSkillAnim();
@@ -109,9 +191,13 @@ void UWidgetSkill::ClickThirdSkill()
 	//this->SetVisibility(ESlateVisibility::Hidden);
 	//trainer->currentPokemon->thirdSkill->Attack(trainer->oppoTrainer);
 	//// SetVisibility(ESlateVisibility::Visible); 필요함
+	///
+	GameState->FOnAuthoritySelectSkill.Unbind();
+	GEngine->AddOnScreenDebugMessage(-1, 30, FColor::Red, TEXT("UWidgetSkill::ExcuteThirdSkill"));
+
 }
 
-void UWidgetSkill::ClickFourthSkill()
+void UWidgetSkill::ExcuteFourthSkill()
 {
 	trainer->CurrentPokemon->Skill(trainer->CurrentPokemon->thirdSkill);
 	//몽타주 실행
@@ -123,7 +209,12 @@ void UWidgetSkill::ClickFourthSkill()
 	//this->SetVisibility(ESlateVisibility::Hidden);
 	//trainer->currentPokemon->fourthSkill->Attack(trainer->oppoTrainer);
 	// SetVisibility(ESlateVisibility::Visible); 필요함
+
+	GameState->FOnAuthoritySelectSkill.Unbind();
+
+	GEngine->AddOnScreenDebugMessage(-1, 30, FColor::Red, TEXT("UWidgetSkill::ExcuteFourthSkill"));
 }
+
 
 /*
 void UWidgetSkill::ClickTOPlayAnim()
