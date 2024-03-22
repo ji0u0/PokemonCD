@@ -5,6 +5,7 @@
 
 #include "Trainer.h"
 #include "Kismet/GameplayStatics.h"
+#include "Net/UnrealNetwork.h"
 
 
 // Sets default values
@@ -41,8 +42,7 @@ void APokemon::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void APokemon::Skill(ESkill Skill)
 {
 	myLoc = GetActorLocation();
-	// oppoLoc = OwnedTrainer->oppoTrainer->GetActorLocation(); // ²À ¹Ù²ãÁà!!!!!!!!!!!!
-	oppoLoc = FVector(0.f);
+	oppoLoc = OwnedTrainer->oppoTrainer->GetActorLocation();
 
 	switch (Skill)
 	{
@@ -266,4 +266,11 @@ void APokemon::AttackPower(APokemon* otherPokemon)
 void APokemon::DefencePower(APokemon* otherPokemon)
 {
 	//»ó´ë¹æÀÇ °ø°Ý·Â ³·Ãß±â
+}
+
+void APokemon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(APokemon, OwnedTrainer);
 }

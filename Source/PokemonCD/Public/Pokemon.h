@@ -50,7 +50,7 @@ public:
 
 	float timeDeltaTime;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(Replicated, EditDefaultsOnly)
 	class ATrainer* OwnedTrainer;
 
 	///// status /////
