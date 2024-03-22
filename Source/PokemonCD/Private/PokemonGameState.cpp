@@ -55,6 +55,8 @@ void APokemonGameState::SelectedPokemon()
 		if(FOnMyPokemonChooseComplete.IsBound())
 		{
 			FOnMyPokemonChooseComplete.Execute();
+			ATrainer* pp = pc->GetPawn<ATrainer>();
+			pp->FindOpponentTrainer();
 		}
 	}
 	

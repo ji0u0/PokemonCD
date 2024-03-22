@@ -281,8 +281,13 @@ void ATrainer::AuthorityCompleteChoose_Implementation()
 void ATrainer::FindOpponentTrainer()
 {
     // 서버에서 상대 트레이너를 찾는다... 로 변경 요망
+    if(HasAuthority())
+    {
+	    oppoTrainer = GameMode->Autonomous;
+        GameMode->Autonomous->oppoTrainer = this;
+    }
 
-    // 월드 상에 배치되어있는 액터들을 담아놓을 배열 선언
+    /*// 월드 상에 배치되어있는 액터들을 담아놓을 배열 선언
     TArray<AActor*> ActorsToFind;
     if (GetWorld())
     {
@@ -298,7 +303,7 @@ void ATrainer::FindOpponentTrainer()
         {
             oppoTrainer = Cast<ATrainer>(target);
         }
-    }
+    }*/
 }
 
 void ATrainer::SetPokemon(EPokemonList Selected)
@@ -312,6 +317,7 @@ void ATrainer::SpawnFirstPokemon(FTransform SpawnTransform)
     CurrentPokemon = GetWorld()->SpawnActor<APokemonFire>(FirstPokemon, SpawnTransform, SpawnParams);
     CurrentPokemon->SetActorRelativeRotation(FRotator(this->GetActorRotation()));
     CurrentPokemon->SetActorRelativeScale3D(FVector(1.f));
+    CurrentPokemon->OwnedTrainer = this;
 }
 
 void ATrainer::SpawnSecondPokemon(FTransform SpawnTransform)
@@ -319,6 +325,7 @@ void ATrainer::SpawnSecondPokemon(FTransform SpawnTransform)
     CurrentPokemon = GetWorld()->SpawnActor<APokemonWater>(SecondPokemon, SpawnTransform, SpawnParams);
     CurrentPokemon->SetActorRelativeRotation(FRotator(this->GetActorRotation()));
     CurrentPokemon->SetActorRelativeScale3D(FVector(1.f));
+    CurrentPokemon->OwnedTrainer = this;
 }
 
 void ATrainer::SpawnThirdPokemon(FTransform SpawnTransform)
@@ -326,6 +333,7 @@ void ATrainer::SpawnThirdPokemon(FTransform SpawnTransform)
     CurrentPokemon = GetWorld()->SpawnActor<APokemonGrass>(ThirdPokemon, SpawnTransform, SpawnParams);
     CurrentPokemon->SetActorRelativeRotation(FRotator(this->GetActorRotation()));
     CurrentPokemon->SetActorRelativeScale3D(FVector(1.f));
+    CurrentPokemon->OwnedTrainer = this;
 }
 
 void ATrainer::tmp()

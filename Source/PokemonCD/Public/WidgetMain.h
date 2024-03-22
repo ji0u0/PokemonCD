@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "WidgetMain.generated.h"
 
+class APokemon;
 /**
  * 
  */
@@ -38,5 +39,5 @@ public:
 	class UWidgetStatus* oppoStatus;
 
 	UFUNCTION()
-	void SetMyStatus(APokemon* pokemon);
+	void SetStatus();
 };

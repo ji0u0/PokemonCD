@@ -4,6 +4,7 @@
 #include "WidgetMain.h"
 
 #include "Pokemon.h"
+#include "Trainer.h"
 #include "WidgetStatus.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/CanvasPanel.h"
@@ -32,9 +33,14 @@ void UWidgetMain::NativeConstruct()
 	//else UE_LOG(LogTemp, Warning, TEXT("No Controller"));
 }
 
-void UWidgetMain::SetMyStatus(APokemon* pokemon)
+void UWidgetMain::SetStatus()
 {
-	myStatus->PokemonName->SetText(FText::FromString(pokemon->pokemonName));
-	myStatus->HealthBar->SetPercent(pokemon->pokemonCurHealth/pokemon->pokemonMaxHealth);
-	//myStatus->SetPokeballBox(trainer);
+	APokemon* myPokemon = trainer->CurrentPokemon;
+	APokemon* oppoPokemon = trainer->oppoTrainer->CurrentPokemon;
+
+	myStatus->PokemonName->SetText(FText::FromString(myPokemon->pokemonName));
+	myStatus->HealthBar->SetPercent(myPokemon->pokemonCurHealth / myPokemon->pokemonMaxHealth);
+
+	oppoStatus->PokemonName->SetText(FText::FromString(oppoPokemon->pokemonName));
+	myStatus->HealthBar->SetPercent(oppoPokemon->pokemonCurHealth / oppoPokemon->pokemonMaxHealth);
 }

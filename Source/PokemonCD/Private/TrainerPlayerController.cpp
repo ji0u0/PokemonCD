@@ -47,10 +47,7 @@ void ATrainerPlayerController::SetVisibleMainWidget(bool bVisible)
 	if (bVisible)
 	{
 		MainWidget->SetVisibility(ESlateVisibility::Visible);
-		if (auto poke = Cast<ATrainer>(GetPawn())->CurrentPokemon)
-		{
-			MainWidget->SetMyStatus(poke);
-		}
+		MainWidget->SetStatus();
 		// 상대 스테이터스도 추가하기
 	}
 	else

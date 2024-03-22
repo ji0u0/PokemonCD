@@ -3,6 +3,7 @@
 
 #include "Pokemon.h"
 
+#include "Trainer.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -40,7 +41,8 @@ void APokemon::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void APokemon::Skill(ESkill Skill)
 {
 	myLoc = GetActorLocation();
-	oppoLoc = FVector(0.f); // ≤¿ πŸ≤„¡‡!!!!!!!!!!!!
+	// oppoLoc = OwnedTrainer->oppoTrainer->GetActorLocation(); // ≤¿ πŸ≤„¡‡!!!!!!!!!!!!
+	oppoLoc = FVector(0.f);
 
 	switch (Skill)
 	{
