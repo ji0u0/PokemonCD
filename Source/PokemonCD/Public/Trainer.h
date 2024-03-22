@@ -106,7 +106,7 @@ public:
 	bool isAttachBall;
 
 	// »ó´ë¹æ
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(Replicated, EditDefaultsOnly)
 	class ATrainer* oppoTrainer;
 
 	void FindOpponentTrainer();
@@ -124,7 +124,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class APokemonGrass> ThirdPokemon;
 
-	UPROPERTY()
+	UPROPERTY(Replicated)
 	class APokemon* CurrentPokemon;
 	
 	UPROPERTY(EditDefaultsOnly)

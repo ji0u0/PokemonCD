@@ -35,12 +35,18 @@ void UWidgetMain::NativeConstruct()
 
 void UWidgetMain::SetStatus()
 {
+	if (pc == nullptr)	return;
+	if (trainer == nullptr)	return;
+
 	APokemon* myPokemon = trainer->CurrentPokemon;
 	APokemon* oppoPokemon = trainer->oppoTrainer->CurrentPokemon;
+
+	if(!myPokemon || !oppoPokemon)
+	{ return;}
 
 	myStatus->PokemonName->SetText(FText::FromString(myPokemon->pokemonName));
 	myStatus->HealthBar->SetPercent(myPokemon->pokemonCurHealth / myPokemon->pokemonMaxHealth);
 
 	oppoStatus->PokemonName->SetText(FText::FromString(oppoPokemon->pokemonName));
-	myStatus->HealthBar->SetPercent(oppoPokemon->pokemonCurHealth / oppoPokemon->pokemonMaxHealth);
+	oppoStatus->HealthBar->SetPercent(oppoPokemon->pokemonCurHealth / oppoPokemon->pokemonMaxHealth);
 }

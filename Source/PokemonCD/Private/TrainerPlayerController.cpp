@@ -39,7 +39,17 @@ void ATrainerPlayerController::CreateMainWidget()
 {
 	MainWidget = CreateWidget<UWidgetMain>(GetWorld(), MainWidgetTemplate);
 	MainWidget->AddToViewport(0);
-	SetVisibleMainWidget(false);
+	if (auto pp = GetPawn())
+	{
+		if (auto pt = Cast<ATrainer>(pp))
+		{
+			MainWidget->trainer = pt;
+		}
+	}
+
+	//MainWidget->trainer = GetPawn<ATrainer>();
+	MainWidget->pc = this;
+	SetVisibleMainWidget(true);
 }
 
 void ATrainerPlayerController::SetVisibleMainWidget(bool bVisible)

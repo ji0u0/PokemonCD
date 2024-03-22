@@ -129,6 +129,7 @@ void UWidgetChoosePokemon::SelectComplete()
 	}
 
 	pc = Cast<ATrainerPlayerController>(GetWorld()->GetFirstPlayerController());
+
 	FString localRole = UEnum::GetValueAsString(trainer->GetLocalRole());
 	if (pc && trainer->IsLocallyControlled())
 	{
@@ -165,8 +166,13 @@ void UWidgetChoosePokemon::SpawnOrder()
 			UE_LOG(LogTemp, Warning, TEXT("Autonomous spawn 2"));
 		}
 		this->SetVisibility(ESlateVisibility::Hidden);
-		trainer->MainWidgetCreate();
-		trainer->SkillWidgetCreate();
+
+		FTimerHandle handle;
+		GetWorld()->GetTimerManager().SetTimer(handle, [&]()
+		{
+			pc->CreateMainWidget();
+			pc->CreateSkillWidget();
+		}, 5.0f, false);
 	}
 }
 

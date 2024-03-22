@@ -20,6 +20,7 @@
 #include "WidgetMain.h"
 #include "WidgetSkill.h"
 #include "GameFramework/PlayerState.h"
+#include "Net/UnrealNetwork.h"
 
 
 // Sets default values
@@ -499,3 +500,12 @@ void ATrainer::ThrowingMonsterBall()
    FirePokemon->BoxComponent->SetSimulatePhysics(true);
    MonsterBall->Destroy();
 }*/
+
+
+void ATrainer::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+    DOREPLIFETIME(ATrainer, CurrentPokemon);
+    DOREPLIFETIME(ATrainer, oppoTrainer);
+}

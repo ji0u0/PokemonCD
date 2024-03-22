@@ -19,6 +19,9 @@ public:
 	virtual void NativeConstruct() override;
 
 	UPROPERTY(EditDefaultsOnly)
+	class ATrainerPlayerController* pc;
+
+	UPROPERTY(EditDefaultsOnly)
 	class ATrainer* trainer;
 
 	// Bind Widget
