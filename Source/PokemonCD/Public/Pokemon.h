@@ -21,8 +21,8 @@ enum class ESkill : uint8
 	SkillNormalTackle UMETA(DisplayName = "NormalTackle"),	//몸통박치기 - 염버니
 	SkillNormalPound UMETA(DisplayName = "NormalPound"),	//막치기 - 울머기
 	SkillNormalScratch UMETA(DisplayName = "NormalScratch"),	//할퀴기 - 흥나숭
-	SkillNormalStateChange_1 UMETA(DisplayName = "NormalStateChange_1"),	//상태변화1
-	SkillNormalStateChange_2 UMETA(DisplayName = "NormalStateChange_2"),	//상태변화2
+	SkillNormalStateChange_AttackPower UMETA(DisplayName = "SkillNormalStateChange_AttackPower"),	//상태변화1
+	SkillNormalStateChange_DefencePower UMETA(DisplayName = "SkillNormalStateChange_DefencePower"),	//상태변화2
 	SkillWater UMETA(DisplayName = "WaterGun"),
 	SkillFire UMETA(DisplayName = "Ember"),
 	SkillGrass UMETA(DisplayName = "LeafStorm")
@@ -109,11 +109,14 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UCameraShakeBase> GrassCameraShakeFactory;
 
-
 	//--------------------------------포켓몬 공격력------------------------------
 	int32 AttackDamage(float power, APokemon* otherPokemon);
 
 	float typecompat1;
 	float typecompat2;
 	float sameType;	//자속보정
+
+	//----------------------------포켓몬 상태변화---------------------------
+	void AttackPower(APokemon* otherPokemon);	//공격력변화
+	void DefencePower(APokemon* otherPokemon);	//방어력변화
 };
