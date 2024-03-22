@@ -3,6 +3,7 @@
 
 #include "Pokemon.h"
 
+#include "Trainer.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -72,6 +73,9 @@ void APokemon::Skill(ESkill Skill)
 		{
 			sameType = 1.f;
 		}
+
+		//스킬 위력에 따른 데미지 계산, 물대포(위력 : 40/ 명중률 : 100)
+		AttackDamage(50, OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
 	case ESkill::SkillFire:
 
@@ -112,6 +116,8 @@ void APokemon::Skill(ESkill Skill)
 		{
 			sameType = 1.f;
 		}
+		//스킬 위력에 따른 데미지 계산, 불꽃세례(위력 : 40/ 명중률 : 100)
+		AttackDamage(50, OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
 	case ESkill::SkillGrass:
 		HitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_storm.P_ky_storm"));
@@ -128,29 +134,47 @@ void APokemon::Skill(ESkill Skill)
 		{
 			sameType = 1.f;
 		}
+
+		//스킬 위력에 따른 데미지 계산, 가지찌르기(위력 : 40/ 명중률 : 100)
+		AttackDamage(50, OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
 	case ESkill::SkillNormalTackle:
 		//몸통박치기 - 염버니
 		sameType = 1.f;
+
+		//스킬 위력에 따른 데미지 계산, 몸통박치기(위력 : 40/ 명중률 : 100)
+		AttackDamage(40, OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
 	case ESkill::SkillNormalPound:
 		//막치기 - 울머기
 		sameType = 1.f;
+
+		//스킬 위력에 따른 데미지 계산, 막치기(위력 : 40/ 명중률 : 100)
+		AttackDamage(40, OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
 	case ESkill::SkillNormalScratch:
 		//할퀴기 - 흥나숭
 		sameType = 1.f;
+
+		//스킬 위력에 따른 데미지 계산, 할퀴기(위력 : 40/ 명중률 : 100)
+		AttackDamage(40, OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
-	case ESkill::SkillNormalStateChange_1:
+	case ESkill::SkillNormalStateChange_AttackPower:
 		//상태변화1
+
+		//상대방의 공격력 낮추기
+		AttackPower(OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
-	case ESkill::SkillNormalStateChange_2:
+	case ESkill::SkillNormalStateChange_DefencePower:
 		//상태변화2
+
+		//상대방의 방어력 낮추기
+		DefencePower(OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
 	}
 
 }
-
+//--------------------------------포켓몬 공격력------------------------------
 int32 APokemon::AttackDamage(float power, APokemon* otherPokemon)
 {
 	int32 attackDamage;
@@ -224,5 +248,19 @@ int32 APokemon::AttackDamage(float power, APokemon* otherPokemon)
 	//(데미지 = (위력 × 공격 × (레벨 × [[급소]] × 2 ÷ 5 + 2 ) ÷ 방어 ÷ 50 + 2 ) × [[자속 보정]] × 타입상성1 × 타입상성2 × 랜덤수/255)
 	attackDamage = (power * pokemonAttack * (35 * 1 * 2 / 5 + 2) / otherPokemon->pokemonDefense / 50 + 2 ) * sameType * typecompat1 * typecompat2 * randomInt;
 
+	otherPokemon->pokemonCurHealth = otherPokemon->pokemonCurHealth - attackDamage;
+
+	UE_LOG(LogTemp, Warning, TEXT("ONATTACK!!!!!!!!!!!\nPOWER : %d, OtherPokeAttacked: %d", power, otherPokemon->pokemonCurHealth));
+
 	return attackDamage;
+}
+//----------------------------포켓몬 상태변화---------------------------
+void APokemon::AttackPower(APokemon* otherPokemon)
+{
+	//상대방의 공격력 낮추기
+}
+
+void APokemon::DefencePower(APokemon* otherPokemon)
+{
+	//상대방의 공격력 낮추기
 }
