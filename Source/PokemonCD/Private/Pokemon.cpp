@@ -252,9 +252,8 @@ int32 APokemon::AttackDamage(float power, APokemon* otherPokemon)
 
 	otherPokemon->pokemonCurHealth = otherPokemon->pokemonCurHealth - attackDamage;
 
-	int32 otherHP = otherPokemon->pokemonCurHealth;
-
-	UE_LOG(LogTemp, Warning, TEXT("Power : , OtherPokeAttacked: "/*, 50, otherhp*/));
+	// int32 otherHP = otherPokemon->pokemonCurHealth;
+	UE_LOG(LogTemp, Warning, TEXT("Power: %f, OtherPokeAttacked: %d"), power, otherPokemon->pokemonCurHealth);
 
 	return attackDamage;
 }
