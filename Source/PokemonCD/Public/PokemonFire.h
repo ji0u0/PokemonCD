@@ -45,6 +45,6 @@ public:
 	virtual void PlayFourthSkillAnim() override;
 
 	//공격 하기(공격 대상 포켓몬 hp를 줄어들게 한다
-	UFUNCTION()
-	void OnMyAttack(APokemon* otherpokemon);
+	/*UFUNCTION()
+	void OnMyAttack(APokemon* otherpokemon);*/
 };

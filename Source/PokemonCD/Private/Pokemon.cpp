@@ -77,6 +77,7 @@ void APokemon::Skill(ESkill Skill)
 
 		//스킬 위력에 따른 데미지 계산, 물대포(위력 : 40/ 명중률 : 100)
 		AttackDamage(50, OwnedTrainer->oppoTrainer->CurrentPokemon);
+
 		break;
 	case ESkill::SkillFire:
 
@@ -251,7 +252,9 @@ int32 APokemon::AttackDamage(float power, APokemon* otherPokemon)
 
 	otherPokemon->pokemonCurHealth = otherPokemon->pokemonCurHealth - attackDamage;
 
-	UE_LOG(LogTemp, Warning, TEXT("ONATTACK!!!!!!!!!!!\nPOWER : %d, OtherPokeAttacked: %d", power, otherPokemon->pokemonCurHealth));
+	int32 otherHP = otherPokemon->pokemonCurHealth;
+
+	UE_LOG(LogTemp, Warning, TEXT("Power : , OtherPokeAttacked: "/*, 50, otherhp*/));
 
 	return attackDamage;
 }
