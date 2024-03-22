@@ -35,9 +35,6 @@ void UWidgetMain::NativeConstruct()
 
 void UWidgetMain::SetStatus()
 {
-	if (pc == nullptr)	return;
-	if (trainer == nullptr)	return;
-
 	APokemon* myPokemon = trainer->CurrentPokemon;
 	APokemon* oppoPokemon = trainer->oppoTrainer->CurrentPokemon;
 

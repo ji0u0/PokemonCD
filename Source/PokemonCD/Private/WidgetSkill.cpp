@@ -34,6 +34,12 @@ void UWidgetSkill::SetSkillName(APokemon* Pokemon)
 	UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("ESkill"), true);
 	FText DisplayName = EnumPtr->GetDisplayNameTextByIndex(static_cast<int32>(Pokemon->firstSkill));
 	firstSkillName->SetText(DisplayName);
+	DisplayName = EnumPtr->GetDisplayNameTextByIndex(static_cast<int32>(Pokemon->secondSkill));
+	secondSkillName->SetText(DisplayName);
+	DisplayName = EnumPtr->GetDisplayNameTextByIndex(static_cast<int32>(Pokemon->thirdSkill));
+	thirdSkillName->SetText(DisplayName);
+	DisplayName = EnumPtr->GetDisplayNameTextByIndex(static_cast<int32>(Pokemon->fourthSkill));
+	fourthSkillName->SetText(DisplayName);
 
 	/*if(Pokemon->firstSkill)
 	{

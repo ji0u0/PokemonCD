@@ -70,7 +70,7 @@ void ATrainerPlayerController::CreateSkillWidget()
 {
 	SkillWidget = CreateWidget<UWidgetSkill>(GetWorld(), SkillWidgetTemplate);
 	SkillWidget->AddToViewport(0);
-	SetVisibleSkillWidget(false);
+	SetVisibleSkillWidget(true);
 }
 
 void ATrainerPlayerController::SetVisibleSkillWidget(bool bVisible)
