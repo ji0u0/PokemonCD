@@ -5,6 +5,7 @@
 
 #include "Trainer.h"
 #include "Kismet/GameplayStatics.h"
+#include "Math/UnrealMathUtility.h"
 #include "Net/UnrealNetwork.h"
 
 
@@ -75,8 +76,8 @@ void APokemon::Skill(ESkill Skill)
 			sameType = 1.f;
 		}
 
-		//스킬 위력에 따른 데미지 계산, 물대포(위력 : 40/ 명중률 : 100)
-		AttackDamage(50, OwnedTrainer->oppoTrainer->CurrentPokemon);
+		//스킬 위력에 따른 데미지 계산, 물대포(위력 : 50/ 명중률 : 100)
+		AttackDamage(50.f, OwnedTrainer->oppoTrainer->CurrentPokemon);
 
 		break;
 	case ESkill::SkillFire:
@@ -118,8 +119,8 @@ void APokemon::Skill(ESkill Skill)
 		{
 			sameType = 1.f;
 		}
-		//스킬 위력에 따른 데미지 계산, 불꽃세례(위력 : 40/ 명중률 : 100)
-		AttackDamage(50, OwnedTrainer->oppoTrainer->CurrentPokemon);
+		//스킬 위력에 따른 데미지 계산, 불꽃세례(위력 : 50/ 명중률 : 100)
+		AttackDamage(50.f, OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
 	case ESkill::SkillGrass:
 		HitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_storm.P_ky_storm"));
@@ -137,8 +138,8 @@ void APokemon::Skill(ESkill Skill)
 			sameType = 1.f;
 		}
 
-		//스킬 위력에 따른 데미지 계산, 가지찌르기(위력 : 40/ 명중률 : 100)
-		AttackDamage(50, OwnedTrainer->oppoTrainer->CurrentPokemon);
+		//스킬 위력에 따른 데미지 계산, 가지찌르기(위력 : 50/ 명중률 : 100)
+		AttackDamage(50.f, OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
 	case ESkill::SkillNormalTackle:
 		//몸통박치기 - 염버니
@@ -152,14 +153,14 @@ void APokemon::Skill(ESkill Skill)
 		sameType = 1.f;
 
 		//스킬 위력에 따른 데미지 계산, 막치기(위력 : 40/ 명중률 : 100)
-		AttackDamage(40, OwnedTrainer->oppoTrainer->CurrentPokemon);
+		AttackDamage(40.f, OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
 	case ESkill::SkillNormalScratch:
 		//할퀴기 - 흥나숭
 		sameType = 1.f;
 
 		//스킬 위력에 따른 데미지 계산, 할퀴기(위력 : 40/ 명중률 : 100)
-		AttackDamage(40, OwnedTrainer->oppoTrainer->CurrentPokemon);
+		AttackDamage(40.f, OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
 	case ESkill::SkillNormalStateChange_AttackPower:
 		//상태변화1
@@ -177,10 +178,11 @@ void APokemon::Skill(ESkill Skill)
 
 }
 //--------------------------------포켓몬 공격력------------------------------
+int32 attackDamage;
+float _power;
 int32 APokemon::AttackDamage(float power, APokemon* otherPokemon)
 {
-	int32 attackDamage;
-
+	_power = power;
 	//자속보정
 	//사용하는 기술의 타입과 사용하는 포켓몬의 타입이 일치하면 1.5를 대입.
 
@@ -245,15 +247,17 @@ int32 APokemon::AttackDamage(float power, APokemon* otherPokemon)
 	}
 	//--------------------------타입상성
 
-	float randomInt = FMath::RandRange(85, 100) / 255;
+	int32 RandomNumber;
+	RandomNumber = FMath::RandRange(85, 100);
+	UE_LOG(LogTemp, Warning, TEXT("Random : %d"), RandomNumber);
 
 	//(데미지 = (위력 × 공격 × (레벨 × [[급소]] × 2 ÷ 5 + 2 ) ÷ 방어 ÷ 50 + 2 ) × [[자속 보정]] × 타입상성1 × 타입상성2 × 랜덤수/255)
-	attackDamage = (power * pokemonAttack * (35 * 1 * 2 / 5 + 2) / otherPokemon->pokemonDefense / 50 + 2 ) * sameType * typecompat1 * typecompat2 * randomInt;
+	attackDamage = static_cast<int32>((_power * OwnedTrainer->CurrentPokemon->pokemonAttack * (35 * 1 * 2 / 5 + 2) / OwnedTrainer->oppoTrainer->CurrentPokemon->pokemonDefense / 50 + 2 ) * sameType * typecompat1 * typecompat2 * RandomNumber / 255);
 
 	otherPokemon->pokemonCurHealth = otherPokemon->pokemonCurHealth - attackDamage;
 
 	// int32 otherHP = otherPokemon->pokemonCurHealth;
-	UE_LOG(LogTemp, Warning, TEXT("Power: %f, OtherPokeAttacked: %d"), power, otherPokemon->pokemonCurHealth);
+	UE_LOG(LogTemp, Warning, TEXT("Power: %f, OtherPokeAttacked: %d"), _power, otherPokemon->pokemonCurHealth - attackDamage);
 
 	return attackDamage;
 }

@@ -48,7 +48,7 @@ void APokemonWater::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 }
 
-void APokemonWater::AttackingAnim(int32 index)
+void APokemonWater::AttackingAnim(float index)
 {
 	//울머기 애니메이션
 	auto anim = Cast<USobbleAnimInstance>(SkelMeshComp->GetAnimInstance());
@@ -59,14 +59,14 @@ void APokemonWater::PlayFirstSkillAnim()
 {
 	Super::PlayFirstSkillAnim();
 	//타입스킬
-	AttackingAnim(0);
+	AttackingAnim(2.4f);
 }
 
 void APokemonWater::PlaySecondSkillAnim()
 {
 	Super::PlaySecondSkillAnim();
 	//노말물리스킬
-	AttackingAnim(1);
+	AttackingAnim(0.f);
 }
 
 
@@ -84,11 +84,11 @@ void APokemonWater::PlayFourthSkillAnim()
 	AttackingAnim(3);
 }
 
-void APokemonWater::OnMyAttack(APokemon* otherpokemon)
+/*void APokemonWater::OnMyAttack(APokemon* otherpokemon)
 {
 	//위력, 상대포켓몬, 자속보정, 타입상성1, 타입상성2 설정
 	auto attackDamage = AttackDamage(40, this); //더미, 스킬에 따른 자속보정, 타입상성 설정 후 다시 작성
 	//상대포켓몬 현재 체력에서 attackDamage를 뺸 후의 체력을 다시 상대포켓몬 체력에 넣는다
 	otherpokemon->pokemonCurHealth = otherpokemon->pokemonCurHealth - attackDamage;
-}
+}*/
 

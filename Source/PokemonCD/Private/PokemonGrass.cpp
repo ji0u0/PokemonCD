@@ -50,7 +50,7 @@ void APokemonGrass::Tick(float DeltaSeconds)
 
 }
 
-void APokemonGrass::AttackingAnim(int32 index)
+void APokemonGrass::AttackingAnim(float index)
 {
 	auto anim = Cast<UGrookeyAnimInstance>(SkelMeshComp->GetAnimInstance());
 	anim->PlayScorbunnyAttackMontage(index);
@@ -60,14 +60,14 @@ void APokemonGrass::PlayFirstSkillAnim()
 {
 	Super::PlayFirstSkillAnim();
 	//타입스킬
-	AttackingAnim(0);
+	AttackingAnim(0.f);
 }
 
 void APokemonGrass::PlaySecondSkillAnim()
 {
 	Super::PlaySecondSkillAnim();
 	//노말물리스킬
-	AttackingAnim(1.f);
+	AttackingAnim(0.f);
 }
 
 void APokemonGrass::PlayThirdSkillAnim()
@@ -84,10 +84,10 @@ void APokemonGrass::PlayFourthSkillAnim()
 	AttackingAnim(3.f);
 }
 
-void APokemonGrass::OnMyAttack(APokemon* otherpokemon)
+/*void APokemonGrass::OnMyAttack(APokemon* otherpokemon)
 {
 	//스킬위력, 상대포켓몬, 자속보정, 타입상성1, 타입상성2 설정
 	auto attackDamage = AttackDamage(40, this); //더미, 스킬에 따른 자속보정, 타입상성 설정 후 다시 작성
 	//상대포켓몬 현재 체력에서 attackDamage를 뺸 후의 체력을 다시 상대포켓몬 체력에 넣는다
 	otherpokemon->pokemonCurHealth = otherpokemon->pokemonCurHealth - attackDamage;
-}
+}*/

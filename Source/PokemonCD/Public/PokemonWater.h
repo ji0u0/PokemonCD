@@ -36,7 +36,7 @@ public:
 	class USkillWater* waterSkill;
 
 	//애니메이션
-	void AttackingAnim(int32 index);
+	void AttackingAnim(float index);
 
 	//애니메이션 실행
 	virtual void PlayFirstSkillAnim() override;
@@ -44,6 +44,6 @@ public:
 	virtual void PlayThirdSkillAnim() override;
 	virtual void PlayFourthSkillAnim() override;
 
-	//공격 하기(공격 대상 포켓몬 hp를 줄어들게 한다
-	void OnMyAttack(APokemon* otherpokemon);
+	/*//공격 하기(공격 대상 포켓몬 hp를 줄어들게 한다
+	void OnMyAttack(APokemon* otherpokemon);*/
 };
