@@ -46,12 +46,42 @@ void APokemon::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void APokemon::OnRep_SetHealthBar()
 {
+	if (!OwnedTrainer)	return;
+	if (!OwnedTrainer->oppoTrainer)	return;
+	if (!OwnedTrainer->oppoTrainer->CurrentPokemon)	return;
+
+	ATrainerPlayerController* myController = OwnedTrainer->GetController<ATrainerPlayerController>();
+	ATrainerPlayerController* oppoController = OwnedTrainer->oppoTrainer->GetController<ATrainerPlayerController>();
+
+	if (myController)
+	{
+		if (myController->MainWidget)
+		{
+			myController->MainWidget->SetStatus();
+		}
+	}
+	if (oppoController)
+	{
+		if (oppoController->MainWidget)
+		{
+			oppoController->MainWidget->SetStatus();
+		}
+	}
+
+	// OwnedTrainer->oppoTrainer->CurrentPokemon->StatusWidget->DamagedBar();
+}
+
+
+//안씀
+void APokemon::ServerChangeReplicatedVariable_Implementation()
+{
+	OnRep_SetHealthBar();
 }
 
 void APokemon::Skill(ESkill Skill)
 {
 	myLoc = GetActorLocation();
-	oppoLoc = OwnedTrainer->oppoTrainer->GetActorLocation();
+	oppoLoc = OwnedTrainer->oppoTrainer->CurrentPokemon->GetActorLocation();
 
 	/*switch (Skill)
 	{
@@ -223,7 +253,7 @@ void APokemon::MultiSkill_Implementation(ESkill skill, FVector _myLoc, FVector _
 		}
 
 		//스킬 위력에 따른 데미지 계산, 물대포(위력 : 50/ 명중률 : 100)
-		AttackDamage(50.f, OwnedTrainer->oppoTrainer->CurrentPokemon);
+		ServerAttackDamage(50.f, OwnedTrainer->oppoTrainer->CurrentPokemon);
 
 		break;
 	case ESkill::SkillFire:
@@ -266,7 +296,7 @@ void APokemon::MultiSkill_Implementation(ESkill skill, FVector _myLoc, FVector _
 			sameType = 1.f;
 		}
 		//스킬 위력에 따른 데미지 계산, 불꽃세례(위력 : 50/ 명중률 : 100)
-		AttackDamage(50.f, OwnedTrainer->oppoTrainer->CurrentPokemon);
+		ServerAttackDamage(50.f, OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
 	case ESkill::SkillGrass:
 		FireHitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_storm.P_ky_storm"));
@@ -285,7 +315,7 @@ void APokemon::MultiSkill_Implementation(ESkill skill, FVector _myLoc, FVector _
 		}
 
 		//스킬 위력에 따른 데미지 계산, 가지찌르기(위력 : 50/ 명중률 : 100)
-		AttackDamage(50.f, OwnedTrainer->oppoTrainer->CurrentPokemon);
+		ServerAttackDamage(50.f, OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
 	case ESkill::SkillNormalTackle:
 		//몸통박치기 - 염버니
@@ -351,11 +381,11 @@ void APokemon::ServerSkill_Implementation(ESkill skill, FVector _myloc, FVector 
 }
 
 //--------------------------------포켓몬 공격력------------------------------
-int32 attackDamage;
-float _power;
-int32 APokemon::AttackDamage(float power, APokemon* otherPokemon)
+/*int32 attackDamage;
+float _power;*/
+float APokemon::AttackDamage(float power, APokemon* otherPokemon)
 {
-	_power = power;
+	// _power = power;
 	//자속보정
 	//사용하는 기술의 타입과 사용하는 포켓몬의 타입이 일치하면 1.5를 대입.
 
@@ -420,20 +450,33 @@ int32 APokemon::AttackDamage(float power, APokemon* otherPokemon)
 	}
 	//--------------------------타입상성
 
+	float attackDamage;
 	int32 RandomNumber;
 	RandomNumber = FMath::RandRange(85, 100);
 	UE_LOG(LogTemp, Warning, TEXT("Random : %d"), RandomNumber);
 
 	//(데미지 = (위력 × 공격 × (레벨 × [[급소]] × 2 ÷ 5 + 2 ) ÷ 방어 ÷ 50 + 2 ) × [[자속 보정]] × 타입상성1 × 타입상성2 × 랜덤수/255)
-	attackDamage = static_cast<int32>((_power * OwnedTrainer->CurrentPokemon->pokemonAttack * (35 * 1 * 2 / 5 + 2) / OwnedTrainer->oppoTrainer->CurrentPokemon->pokemonDefense / 50 + 2 ) * sameType * typecompat1 * typecompat2 * RandomNumber / 255);
+	attackDamage = /*static_cast<int32>*/((power * OwnedTrainer->CurrentPokemon->pokemonAttack * (35 * 1 * 2 / 5 + 2) / OwnedTrainer->oppoTrainer->CurrentPokemon->pokemonDefense / 50 + 2 ) * sameType * typecompat1 * typecompat2 * RandomNumber / 255);
 
 	otherPokemon->pokemonCurHealth = otherPokemon->pokemonCurHealth - attackDamage;
 
 	// int32 otherHP = otherPokemon->pokemonCurHealth;
-	UE_LOG(LogTemp, Warning, TEXT("Power: %f, ATKDamage: %d, OppoAfterHP: %d"), _power, attackDamage ,otherPokemon->pokemonCurHealth);
+	UE_LOG(LogTemp, Warning, TEXT("Power: %f, ATKDamage: %f, OppoAfterHP: %f"), power, attackDamage ,otherPokemon->pokemonCurHealth);
 
 	return attackDamage;
 }
+
+void APokemon::MultiAttackDamage_Implementation(float power, APokemon* otherPokemon)
+{
+	// AttackDamage( power,  otherPokemon);
+}
+
+void APokemon::ServerAttackDamage_Implementation(float power, APokemon* otherPokemon)
+{
+	AttackDamage(power, otherPokemon);
+	OnRep_SetHealthBar();
+}
+
 //----------------------------포켓몬 상태변화---------------------------
 void APokemon::AttackPower(APokemon* otherPokemon)
 {
@@ -456,5 +499,5 @@ void APokemon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetime
 	DOREPLIFETIME(APokemon, OwnedTrainer);
 	DOREPLIFETIME(APokemon, myLoc);
 	DOREPLIFETIME(APokemon, oppoLoc);
-
+	DOREPLIFETIME(APokemon, pokemonCurHealth);
 }
