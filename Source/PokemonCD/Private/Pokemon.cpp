@@ -309,10 +309,19 @@ void APokemon::MultiSkill_Implementation(ESkill skill, FVector _myLoc, FVector _
 		break;
 	case ESkill::SkillNormalTackle:
 		//몸통박치기 - 염버니
-		// Hit 파티클
+		/*// Hit 파티클
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), NormalHitParticle, oppoLoc + FVector(0, 0, 50.f));
 		// Camera Shake
-		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(WaterCameraShakeFactory);
+		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(WaterCameraShakeFactory);*/
+
+		// 1초 뒤에 실행
+		GetWorldTimerManager().SetTimer(handle, [&]()
+			{
+				// Hit 파티클
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), NormalHitParticle, oppoLoc + FVector(0, 0, 50.f));
+				// Camera Shake
+				UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(WaterCameraShakeFactory);
+			}, 1.f, false);
 
 		sameType = 1.f;
 
@@ -322,9 +331,12 @@ void APokemon::MultiSkill_Implementation(ESkill skill, FVector _myLoc, FVector _
 	case ESkill::SkillNormalPound:
 		//막치기 - 울머기
 		// Hit 파티클
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), NormalHitParticle, oppoLoc);
-		// Camera Shake
-		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(WaterCameraShakeFactory);
+		GetWorldTimerManager().SetTimer(handle, [&]()
+			{
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), NormalHitParticle, oppoLoc);
+				// Camera Shake
+				UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(WaterCameraShakeFactory);
+			}, 1.f, false);
 		sameType = 1.f;
 
 		//스킬 위력에 따른 데미지 계산, 막치기(위력 : 40/ 명중률 : 100)
@@ -332,10 +344,13 @@ void APokemon::MultiSkill_Implementation(ESkill skill, FVector _myLoc, FVector _
 		break;
 	case ESkill::SkillNormalScratch:
 		//할퀴기 - 흥나숭
-		// Hit 파티클
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), NormalHitParticle, oppoLoc);
-		// Camera Shake
-		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(WaterCameraShakeFactory);
+		GetWorldTimerManager().SetTimer(handle, [&]()
+			{
+				// Hit 파티클
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), NormalHitParticle, oppoLoc);
+				// Camera Shake
+				UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(WaterCameraShakeFactory);
+			}, 1.f, false);
 		sameType = 1.f;
 
 		//스킬 위력에 따른 데미지 계산, 할퀴기(위력 : 40/ 명중률 : 100)
