@@ -341,7 +341,7 @@ int32 APokemon::AttackDamage(float power, APokemon* otherPokemon)
 	otherPokemon->pokemonCurHealth = otherPokemon->pokemonCurHealth - attackDamage;
 
 	// int32 otherHP = otherPokemon->pokemonCurHealth;
-	UE_LOG(LogTemp, Warning, TEXT("Power: %f, OtherPokeAttacked: %d"), _power, otherPokemon->pokemonCurHealth - attackDamage);
+	UE_LOG(LogTemp, Warning, TEXT("Power: %f, OtherPokeAttacked: %d"), _power, otherPokemon->pokemonCurHealth);
 
 	return attackDamage;
 }
@@ -349,12 +349,15 @@ int32 APokemon::AttackDamage(float power, APokemon* otherPokemon)
 void APokemon::AttackPower(APokemon* otherPokemon)
 {
 	//상대방의 공격력 낮추기
-	
+	otherPokemon->pokemonAttack = otherPokemon->pokemonAttack * 2 / 3;
+	UE_LOG(LogTemp, Warning, TEXT("OtherPokeAtkPower: %d"), otherPokemon->pokemonAttack);
 }
 
 void APokemon::DefencePower(APokemon* otherPokemon)
 {
-	//상대방의 공격력 낮추기
+	//상대방의 방어력 낮추기
+	otherPokemon->pokemonDefense = otherPokemon->pokemonDefense * 2 / 3;
+	UE_LOG(LogTemp, Warning, TEXT("OtherPokeDefencePower: %d"), otherPokemon->pokemonDefense);
 }
 
 void APokemon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
