@@ -50,11 +50,11 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UFUNCTION(Server, Reliable)
+	/*UFUNCTION(Server, Reliable)
 	void ServerSetPokemonLocation();
 
 	UFUNCTION(NetMulticast, Reliable)
-	void MultiSetPokemonLocation();
+	void MultiSetPokemonLocation();*/
 
 	UPROPERTY(Replicated, EditDefaultsOnly)
 	class ATrainer* OwnedTrainer;
@@ -78,8 +78,8 @@ public:
 	UFUNCTION()
 	void OnRep_SetHealthBar();
 
-	UFUNCTION(Server, Reliable)
-	void ServerChangeReplicatedVariable();
+	/*UFUNCTION(Server, Reliable)
+	void ServerChangeReplicatedVariable();*/
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float pokemonAttack;
