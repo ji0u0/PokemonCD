@@ -25,9 +25,10 @@ APokemonGrass::APokemonGrass()
 	SkelMeshComp->SetupAttachment(RootComponent);
 
 	// Skill Components
-	firstSkill = ESkill::SkillWater;
-	secondSkill = ESkill::SkillFire;
-	thirdSkill = ESkill::SkillGrass;
+	firstSkill = ESkill::SkillGrass;
+	secondSkill = ESkill::SkillNormalScratch;
+	thirdSkill = ESkill::SkillNormalStateChange_AttackPower;
+	fourthSkill = ESkill::SkillNormalStateChange_DefencePower;
 
 	// Set info
 	pokemonName = "Grookey";

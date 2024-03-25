@@ -26,8 +26,9 @@ APokemonWater::APokemonWater()
 
 	// Skill Components
 	firstSkill = ESkill::SkillWater;
-	secondSkill = ESkill::SkillFire;
-	thirdSkill = ESkill::SkillGrass;
+	secondSkill = ESkill::SkillNormalPound;
+	thirdSkill = ESkill::SkillNormalStateChange_AttackPower;
+	fourthSkill = ESkill::SkillNormalStateChange_DefencePower;
 
 	// Set info
 	pokemonName = "Sobble";

@@ -77,8 +77,6 @@ void UWidgetSkill::ClickFirstSkill()
 	myPokemon->Skill(myPokemon->firstSkill);
 	////몽타주 실행
 	myPokemon->PlayFirstSkillAnim();
-	//공격 데미지 계산 실행
-	/*currPokemon->OnMyAttack()*/
 
 	//this->SetVisibility(ESlateVisibility::Hidden);
 	//trainer->SpawnedPokemon->firstSkill->Attack(trainer->oppoTrainer);
