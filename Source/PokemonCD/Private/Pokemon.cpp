@@ -15,6 +15,12 @@ APokemon::APokemon()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	WaterThrowParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_Waterthrower.P_Waterthrower"));
+	WaterHitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_WaterExplosion.P_WaterExplosion"));
+	FireThrowParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_waterBallHit.P_ky_waterBallHit"));
+	FireHitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_waterBallHit.P_ky_waterBallHit"));
+	GrassHitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_storm.P_ky_storm"));
+
 }
 
 // Called when the game starts or when spawned
@@ -45,14 +51,15 @@ void APokemon::Skill(ESkill Skill)
 	myLoc = GetActorLocation();
 	oppoLoc = OwnedTrainer->oppoTrainer->GetActorLocation();
 
-	switch (Skill)
+	/*switch (Skill)
 	{
 	case ESkill::SkillWater:
 		// 물대포 파티클
 		ThrowParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_Waterthrower.P_Waterthrower"));
 		if (ThrowParticle)
 		{
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ThrowParticle, myLoc, GetActorUpVector().Rotation(), FVector(0.5f, 0.5f, 1.0f));
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ThrowParticle, myLoc, GetActorForwardVector().Rotation()/*, FVector(0.5f, 0.5f, 1.0f)#1#);
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ThrowParticle, myLoc, GetActorRightVector().Rotation()/*, FVector(0.5f, 0.5f, 1.0f)#1#);
 			// 1초 뒤에 실행
 			GetWorldTimerManager().SetTimer(handle, [&]()
 				{
@@ -174,9 +181,86 @@ void APokemon::Skill(ESkill Skill)
 		//상대방의 방어력 낮추기
 		DefencePower(OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
+	}*/
+	if (HasAuthority())
+	{
+		//ServerSkill(Skill, myLoc, oppoLoc);
+		MultiSkill(Skill, myLoc, oppoLoc);
 	}
+	else
+	{
+		ServerSkill_Implementation(Skill, myLoc, oppoLoc);
+	}
+}
+
+void APokemon::MultiSkill_Implementation(ESkill skill, FVector _myLoc, FVector _oppoLoc)
+{
+	switch (skill)
+	{
+	case ESkill::SkillWater:
+		// 물대포 파티클
+		if (WaterThrowParticle)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), WaterThrowParticle, _myLoc, FRotator(GetActorForwardVector().Y * 90, GetActorForwardVector().Z * 90, GetActorForwardVector().X * 90)/*, FVector(0.5f, 0.5f, 1.0f)*/);
+
+
+			// 1초 뒤에 실행
+			GetWorldTimerManager().SetTimer(handle, [&]()
+				{
+					// 스플래시 파티클
+					if (WaterHitParticle && WaterCameraShakeFactory)
+					{
+						UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), WaterHitParticle, _oppoLoc);
+						// 카메라 쉐이크
+						UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(WaterCameraShakeFactory);
+					}
+				}, 1.f, false);
+		}
+		break;
+	case ESkill::SkillFire:
+		GetWorldTimerManager().SetTimer(handle, [&]()
+			{
+				FVector Loc = FMath::Lerp(_myLoc, _oppoLoc, alpha);
+				// Shoot 파티클
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), FireThrowParticle, Loc);
+				alpha += 0.1f;
+				if (alpha >= 1.0f)
+				{
+					alpha = 0.f;
+					// Hit 파티클
+					UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), FireHitParticle, _oppoLoc);
+					// Camera Shake
+					UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(WaterCameraShakeFactory);
+					GetWorldTimerManager().ClearTimer(handle);
+				}
+			}, 0.1f, true);
+		break;
+	case ESkill::SkillGrass:
+		// Hit 파티클
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), GrassHitParticle, _oppoLoc);
+		// Camera Shake
+		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(GrassCameraShakeFactory);
+		break;
+	case ESkill::SkillNormalTackle:
+		break;
+	case ESkill::SkillNormalPound:
+		break;
+	case ESkill::SkillNormalScratch:
+		break;
+	case ESkill::SkillNormalStateChange_AttackPower:
+		break;
+	case ESkill::SkillNormalStateChange_DefencePower:
+		break;
+	}
+}
+
+void APokemon::ServerSkill_Implementation(ESkill skill, FVector _myloc, FVector _oppoloc)
+{
+	UE_LOG(LogTemp, Warning, TEXT("ill kill u"));
+	MultiSkill_Implementation(skill, _myloc, _oppoloc);
 
 }
+
 //--------------------------------포켓몬 공격력------------------------------
 int32 attackDamage;
 float _power;
@@ -278,4 +362,7 @@ void APokemon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetime
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(APokemon, OwnedTrainer);
+	DOREPLIFETIME(APokemon, myLoc);
+	DOREPLIFETIME(APokemon, oppoLoc);
+
 }

@@ -84,18 +84,27 @@ public:
 	UFUNCTION()
 	void Skill(ESkill Skill);
 
+	UFUNCTION(Server, Reliable)
+	void ServerSkill(ESkill skill, FVector myloc, FVector oppoloc);
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MultiSkill(ESkill skill, FVector _myloc, FVector _oppoloc);
+
 	virtual void PlayFirstSkillAnim() {};
 	virtual void PlaySecondSkillAnim() {};
 	virtual void PlayThirdSkillAnim() {};
 	virtual void PlayFourthSkillAnim() {};
 
 	// Particle
-	UParticleSystem* ThrowParticle;
+	UParticleSystem* WaterThrowParticle;
+	UParticleSystem* FireThrowParticle;
+	UParticleSystem* WaterHitParticle;
+	UParticleSystem* FireHitParticle;
+	UParticleSystem* GrassHitParticle;
 
-	UParticleSystem* HitParticle;
-
+	UPROPERTY(Replicated)
 	FVector myLoc;
-
+	UPROPERTY(Replicated)
 	FVector oppoLoc;
 
 	FTimerHandle handle;

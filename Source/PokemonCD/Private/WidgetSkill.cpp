@@ -75,7 +75,7 @@ void UWidgetSkill::ClickFirstSkill()
 	/*auto oppoPokemon = trainer->oppoTrainer.opp;*/
 
 	myPokemon->Skill(myPokemon->firstSkill);
-	//몽타주 실행
+	////몽타주 실행
 	myPokemon->PlayFirstSkillAnim();
 	//공격 데미지 계산 실행
 	/*currPokemon->OnMyAttack()*/
