@@ -119,6 +119,7 @@ public:
 	TSubclassOf<class UCameraShakeBase> GrassCameraShakeFactory;
 
 	//--------------------------------포켓몬 공격력------------------------------
+	UFUNCTION()
 	int32 AttackDamage(float power, APokemon* otherPokemon);
 
 	float typecompat1;
