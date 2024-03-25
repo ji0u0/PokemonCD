@@ -3,13 +3,20 @@
 
 #include "WidgetStatus.h"
 
+#include "Pokemon.h"
 #include "Trainer.h"
 #include "Components/HorizontalBox.h"
 #include "Components/Image.h"
+#include "Components/ProgressBar.h"
 
 void UWidgetStatus::NativeConstruct()
 {
 	Super::NativeConstruct();
+}
+
+void UWidgetStatus::DamagedBar()
+{
+	HealthBar->SetPercent(OwnedPokemon->pokemonCurHealth/OwnedPokemon->pokemonMaxHealth);
 }
 
 //void UWidgetStatus::SetPokeballBox(ATrainer* trainer)

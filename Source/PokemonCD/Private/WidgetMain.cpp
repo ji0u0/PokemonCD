@@ -8,7 +8,6 @@
 #include "WidgetStatus.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/CanvasPanel.h"
-#include "Components/HorizontalBox.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 
@@ -41,9 +40,13 @@ void UWidgetMain::SetStatus()
 	if(!myPokemon || !oppoPokemon)
 	{ return;}
 
+	myStatus->OwnedPokemon = myPokemon;
+	myPokemon->StatusWidget = myStatus;
 	myStatus->PokemonName->SetText(FText::FromString(myPokemon->pokemonName));
 	myStatus->HealthBar->SetPercent(myPokemon->pokemonCurHealth / myPokemon->pokemonMaxHealth);
 
+	oppoStatus->OwnedPokemon = oppoPokemon;
+	oppoPokemon->StatusWidget = oppoStatus;
 	oppoStatus->PokemonName->SetText(FText::FromString(oppoPokemon->pokemonName));
 	oppoStatus->HealthBar->SetPercent(oppoPokemon->pokemonCurHealth / oppoPokemon->pokemonMaxHealth);
 }

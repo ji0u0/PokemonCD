@@ -470,6 +470,12 @@ void ATrainer::ServerSpawnPokemon_Implementation(EPokemonList choosePokemon)
             break;
         }
         MonsterBall->Destroy();
+
+        if (CurrentPokemon)
+        {
+            CurrentPokemon->SetOwner(this);
+        }
+
         // currentPokemon
         //skillWidget->SetSkillName(currentPokemon);
         }, 2.0f, false);

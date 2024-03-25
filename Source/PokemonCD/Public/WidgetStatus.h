@@ -15,6 +15,8 @@ class POKEMONCD_API UWidgetStatus : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	void NativeConstruct() override;
+
 	// bind widget
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UTextBlock* PokemonName;
@@ -37,7 +39,10 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	class UUserWidget* noneBallImage;
 
-	void NativeConstruct() override;
+	UPROPERTY()
+	class APokemon* OwnedPokemon;
+
+	void DamagedBar();
 
 	//void SetPokeballBox(ATrainer* trainer);
 };

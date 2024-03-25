@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "WidgetMain.h"
+#include "WidgetStatus.h"
 #include "GameFramework/Pawn.h"
 #include "Pokemon.generated.h"
 
@@ -48,10 +50,17 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	float timeDeltaTime;
+	UFUNCTION(Server, Reliable)
+	void ServerSetPokemonLocation();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MultiSetPokemonLocation();
 
 	UPROPERTY(Replicated, EditDefaultsOnly)
 	class ATrainer* OwnedTrainer;
+
+	UPROPERTY()
+	UWidgetStatus* StatusWidget;
 
 	///// status /////
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
@@ -63,8 +72,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	int pokemonMaxHealth;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, ReplicatedUsing = OnRep_SetHealthBar)
 	int pokemonCurHealth;
+
+	UFUNCTION()
+	void OnRep_SetHealthBar();
+
+	UFUNCTION(Server, Reliable)
+	void ServerChangeReplicatedVariable();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float pokemonAttack;
@@ -85,7 +100,7 @@ public:
 	void Skill(ESkill Skill);
 
 	UFUNCTION(Server, Reliable)
-	void ServerSkill(ESkill skill, FVector myloc, FVector oppoloc);
+	void ServerSkill(ESkill skill, FVector _myloc, FVector _oppoloc);
 
 	UFUNCTION(NetMulticast, Reliable)
 	void MultiSkill(ESkill skill, FVector _myloc, FVector _oppoloc);
