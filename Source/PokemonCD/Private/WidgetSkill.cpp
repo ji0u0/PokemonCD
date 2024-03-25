@@ -71,6 +71,9 @@ void UWidgetSkill::ClickSwapButton()
 
 void UWidgetSkill::ClickFirstSkill()
 {
+
+	if (!trainer)	return;
+	if (!trainer->CurrentPokemon)	return;
 	auto myPokemon = trainer->CurrentPokemon;
 	/*auto oppoPokemon = trainer->oppoTrainer.opp;*/
 
@@ -89,6 +92,8 @@ void UWidgetSkill::ClickFirstSkill()
 
 void UWidgetSkill::ClickSecondSkill()
 {
+	if (!trainer)	return;
+	if (!trainer->CurrentPokemon)	return;
 	trainer->CurrentPokemon->Skill(trainer->CurrentPokemon->secondSkill);
 	//¸ùÅ¸ÁÖ ½ÇÇà
 	trainer->CurrentPokemon->PlaySecondSkillAnim();

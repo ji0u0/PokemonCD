@@ -70,16 +70,16 @@ public:
 	Type pokemonType;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	int pokemonMaxHealth;
+	float  pokemonMaxHealth;
 
 	UPROPERTY(EditDefaultsOnly, ReplicatedUsing = OnRep_SetHealthBar)
-	int pokemonCurHealth;
+	float pokemonCurHealth;
 
 	UFUNCTION()
 	void OnRep_SetHealthBar();
 
-	/*UFUNCTION(Server, Reliable)
-	void ServerChangeReplicatedVariable();*/
+	UFUNCTION(Server, Reliable)
+	void ServerChangeReplicatedVariable();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float pokemonAttack;
@@ -135,7 +135,13 @@ public:
 
 	//--------------------------------포켓몬 공격력------------------------------
 	UFUNCTION()
-	int32 AttackDamage(float power, APokemon* otherPokemon);
+	float AttackDamage(float power, APokemon* otherPokemon);
+
+	UFUNCTION(Server, Reliable)
+	void  ServerAttackDamage(float power, APokemon* otherPokemon);
+
+	UFUNCTION(NetMulticast, Reliable)
+	void  MultiAttackDamage(float power, APokemon* otherPokemon);
 
 	float typecompat1;
 	float typecompat2;
