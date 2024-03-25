@@ -319,6 +319,11 @@ void APokemon::MultiSkill_Implementation(ESkill skill, FVector _myLoc, FVector _
 		break;
 	case ESkill::SkillNormalTackle:
 		//몸통박치기 - 염버니
+		NormalHitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_hit1.P_ky_hit1'"));
+		// Hit 파티클
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), NormalHitParticle, oppoLoc);
+		// Camera Shake
+		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(WaterCameraShakeFactory);
 		sameType = 1.f;
 
 		//스킬 위력에 따른 데미지 계산, 몸통박치기(위력 : 40/ 명중률 : 100)
@@ -326,6 +331,11 @@ void APokemon::MultiSkill_Implementation(ESkill skill, FVector _myLoc, FVector _
 		break;
 	case ESkill::SkillNormalPound:
 		//막치기 - 울머기
+		NormalHitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_hit1.P_ky_hit1'"));
+		// Hit 파티클
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), NormalHitParticle, oppoLoc);
+		// Camera Shake
+		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(WaterCameraShakeFactory);
 		sameType = 1.f;
 
 		//스킬 위력에 따른 데미지 계산, 막치기(위력 : 40/ 명중률 : 100)
@@ -333,6 +343,11 @@ void APokemon::MultiSkill_Implementation(ESkill skill, FVector _myLoc, FVector _
 		break;
 	case ESkill::SkillNormalScratch:
 		//할퀴기 - 흥나숭
+		NormalHitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_hit1.P_ky_hit1'"));
+		// Hit 파티클
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), NormalHitParticle, oppoLoc);
+		// Camera Shake
+		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(WaterCameraShakeFactory);
 		sameType = 1.f;
 
 		//스킬 위력에 따른 데미지 계산, 할퀴기(위력 : 40/ 명중률 : 100)
@@ -341,12 +356,18 @@ void APokemon::MultiSkill_Implementation(ESkill skill, FVector _myLoc, FVector _
 	case ESkill::SkillNormalStateChange_AttackPower:
 		//상태변화1
 
+		NormalChangeParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_magicCircle1.P_ky_magicCircle1'"));
+		// Hit 파티클
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), NormalChangeParticle, oppoLoc);
 		//상대방의 공격력 낮추기
 		AttackPower(OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
 	case ESkill::SkillNormalStateChange_DefencePower:
 		//상태변화2
 
+		NormalChangeParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_magicCircle1.P_ky_magicCircle1'"));
+		// Hit 파티클
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), NormalChangeParticle, oppoLoc);
 		//상대방의 방어력 낮추기
 		DefencePower(OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;

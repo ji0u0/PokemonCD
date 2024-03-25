@@ -116,6 +116,8 @@ public:
 	UParticleSystem* WaterHitParticle;
 	UParticleSystem* FireHitParticle;
 	UParticleSystem* GrassHitParticle;
+	UParticleSystem* NormalHitParticle;
+	UParticleSystem* NormalChangeParticle;
 
 	UPROPERTY(Replicated)
 	FVector myLoc;

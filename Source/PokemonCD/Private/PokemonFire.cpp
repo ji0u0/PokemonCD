@@ -24,9 +24,10 @@ APokemonFire::APokemonFire()
 	SkelMeshComp->SetupAttachment(RootComponent);
 
 	// Skill Components
-	firstSkill = ESkill::SkillWater;
-	secondSkill = ESkill::SkillFire;
-	thirdSkill = ESkill::SkillGrass;
+	firstSkill = ESkill::SkillFire;
+	secondSkill = ESkill::SkillNormalTackle;
+	thirdSkill = ESkill::SkillNormalStateChange_AttackPower;
+	fourthSkill = ESkill::SkillNormalStateChange_DefencePower;
 
 	// Set info
 	pokemonName = "Scorbunny";
