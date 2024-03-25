@@ -20,6 +20,8 @@ APokemon::APokemon()
 	FireThrowParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_waterBallHit.P_ky_waterBallHit"));
 	FireHitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_waterBallHit.P_ky_waterBallHit"));
 	GrassHitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_storm.P_ky_storm"));
+	NormalHitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_hit1.P_ky_hit1"));
+	NormalChangeParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_magicCircle1.P_ky_magicCircle1"));
 
 }
 
@@ -71,12 +73,6 @@ void APokemon::OnRep_SetHealthBar()
 	// OwnedTrainer->oppoTrainer->CurrentPokemon->StatusWidget->DamagedBar();
 }
 
-
-//안씀
-void APokemon::ServerChangeReplicatedVariable_Implementation()
-{
-	OnRep_SetHealthBar();
-}
 
 void APokemon::Skill(ESkill Skill)
 {
@@ -225,7 +221,6 @@ void APokemon::MultiSkill_Implementation(ESkill skill, FVector _myLoc, FVector _
 	{
 	case ESkill::SkillWater:
 		// 물대포 파티클
-		WaterThrowParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_Waterthrower.P_Waterthrower"));
 		if (WaterThrowParticle)
 		{
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), WaterThrowParticle, myLoc, FRotator(GetActorForwardVector().Y * 90, GetActorForwardVector().Z * 90, GetActorForwardVector().X * 90));
@@ -233,7 +228,6 @@ void APokemon::MultiSkill_Implementation(ESkill skill, FVector _myLoc, FVector _
 			GetWorldTimerManager().SetTimer(handle, [&]()
 				{
 					// 스플래시 파티클
-					WaterHitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_WaterExplosion.P_WaterExplosion"));
 					if (WaterHitParticle && WaterCameraShakeFactory)
 					{
 						UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), WaterHitParticle, oppoLoc);
@@ -257,8 +251,6 @@ void APokemon::MultiSkill_Implementation(ESkill skill, FVector _myLoc, FVector _
 
 		break;
 	case ESkill::SkillFire:
-
-		FireThrowParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_waterBallHit.P_ky_waterBallHit"));
 		if (FireThrowParticle)
 		{
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), FireThrowParticle, _myLoc);
@@ -277,7 +269,6 @@ void APokemon::MultiSkill_Implementation(ESkill skill, FVector _myLoc, FVector _
 				if (alpha >= 1.0f)
 				{
 					alpha = 0.f;
-					FireHitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_waterBallHit.P_ky_waterBallHit"));
 					// Hit 파티클
 					UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), FireHitParticle, oppoLoc);
 					// Camera Shake
@@ -299,7 +290,6 @@ void APokemon::MultiSkill_Implementation(ESkill skill, FVector _myLoc, FVector _
 		ServerAttackDamage(50.f, OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
 	case ESkill::SkillGrass:
-		FireHitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_storm.P_ky_storm"));
 		// Hit 파티클
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), GrassHitParticle, oppoLoc);
 		// Camera Shake
@@ -319,19 +309,18 @@ void APokemon::MultiSkill_Implementation(ESkill skill, FVector _myLoc, FVector _
 		break;
 	case ESkill::SkillNormalTackle:
 		//몸통박치기 - 염버니
-		NormalHitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_hit1.P_ky_hit1'"));
 		// Hit 파티클
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), NormalHitParticle, oppoLoc);
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), NormalHitParticle, oppoLoc + FVector(0, 0, 50.f));
 		// Camera Shake
 		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraShake(WaterCameraShakeFactory);
+
 		sameType = 1.f;
 
 		//스킬 위력에 따른 데미지 계산, 몸통박치기(위력 : 40/ 명중률 : 100)
-		AttackDamage(40, OwnedTrainer->oppoTrainer->CurrentPokemon);
+		ServerAttackDamage(40, OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
 	case ESkill::SkillNormalPound:
 		//막치기 - 울머기
-		NormalHitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_hit1.P_ky_hit1'"));
 		// Hit 파티클
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), NormalHitParticle, oppoLoc);
 		// Camera Shake
@@ -339,11 +328,10 @@ void APokemon::MultiSkill_Implementation(ESkill skill, FVector _myLoc, FVector _
 		sameType = 1.f;
 
 		//스킬 위력에 따른 데미지 계산, 막치기(위력 : 40/ 명중률 : 100)
-		AttackDamage(40.f, OwnedTrainer->oppoTrainer->CurrentPokemon);
+		ServerAttackDamage(40.f, OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
 	case ESkill::SkillNormalScratch:
 		//할퀴기 - 흥나숭
-		NormalHitParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_hit1.P_ky_hit1'"));
 		// Hit 파티클
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), NormalHitParticle, oppoLoc);
 		// Camera Shake
@@ -351,23 +339,20 @@ void APokemon::MultiSkill_Implementation(ESkill skill, FVector _myLoc, FVector _
 		sameType = 1.f;
 
 		//스킬 위력에 따른 데미지 계산, 할퀴기(위력 : 40/ 명중률 : 100)
-		AttackDamage(40.f, OwnedTrainer->oppoTrainer->CurrentPokemon);
+		ServerAttackDamage(40.f, OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
 	case ESkill::SkillNormalStateChange_AttackPower:
 		//상태변화1
-
-		NormalChangeParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_magicCircle1.P_ky_magicCircle1'"));
 		// Hit 파티클
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), NormalChangeParticle, oppoLoc);
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), NormalChangeParticle, oppoLoc + FVector(0.f, 0.f, 100.f), FRotator(180.f, 0.f, 0.f));
 		//상대방의 공격력 낮추기
 		AttackPower(OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
 	case ESkill::SkillNormalStateChange_DefencePower:
 		//상태변화2
 
-		NormalChangeParticle = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/JIU/Particle/P_ky_magicCircle1.P_ky_magicCircle1'"));
 		// Hit 파티클
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), NormalChangeParticle, oppoLoc);
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), NormalChangeParticle, oppoLoc + FVector(0.f, 0.f, 100.f), FRotator(180.f, 0.f, 0.f));
 		//상대방의 방어력 낮추기
 		DefencePower(OwnedTrainer->oppoTrainer->CurrentPokemon);
 		break;
@@ -485,11 +470,21 @@ void APokemon::AttackPower(APokemon* otherPokemon)
 	UE_LOG(LogTemp, Warning, TEXT("OtherPokeAtkPower: %f"), otherPokemon->pokemonAttack);
 }
 
+void APokemon::ServerAttackPower_Implementation(APokemon* otherPokemon)
+{
+	AttackPower(otherPokemon);
+}
+
 void APokemon::DefencePower(APokemon* otherPokemon)
 {
 	//상대방의 방어력 낮추기
 	otherPokemon->pokemonDefense = otherPokemon->pokemonDefense * 2 / 3;
 	UE_LOG(LogTemp, Warning, TEXT("OtherPokeDefencePower: %f"), otherPokemon->pokemonDefense);
+}
+
+void APokemon::ServerDefencePower_Implementation(APokemon* otherPokemon)
+{
+	DefencePower(otherPokemon);
 }
 
 void APokemon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -500,4 +495,6 @@ void APokemon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetime
 	DOREPLIFETIME(APokemon, myLoc);
 	DOREPLIFETIME(APokemon, oppoLoc);
 	DOREPLIFETIME(APokemon, pokemonCurHealth);
+	DOREPLIFETIME(APokemon, pokemonAttack);
+	DOREPLIFETIME(APokemon, pokemonDefense);
 }

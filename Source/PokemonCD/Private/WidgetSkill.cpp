@@ -103,7 +103,6 @@ void UWidgetSkill::ClickSecondSkill()
 
 void UWidgetSkill::ClickThirdSkill()
 {
-
 	trainer->CurrentPokemon->Skill(trainer->CurrentPokemon->thirdSkill);
 	//¸ùÅ¸ÁÖ ½ÇÇà
 	trainer->CurrentPokemon->PlayThirdSkillAnim();

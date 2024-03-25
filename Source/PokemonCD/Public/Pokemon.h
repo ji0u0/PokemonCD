@@ -23,8 +23,8 @@ enum class ESkill : uint8
 	SkillNormalTackle UMETA(DisplayName = "NormalTackle"),	//몸통박치기 - 염버니
 	SkillNormalPound UMETA(DisplayName = "NormalPound"),	//막치기 - 울머기
 	SkillNormalScratch UMETA(DisplayName = "NormalScratch"),	//할퀴기 - 흥나숭
-	SkillNormalStateChange_AttackPower UMETA(DisplayName = "SkillNormalStateChange_AttackPower"),	//상태변화1
-	SkillNormalStateChange_DefencePower UMETA(DisplayName = "SkillNormalStateChange_DefencePower"),	//상태변화2
+	SkillNormalStateChange_AttackPower UMETA(DisplayName = "Attack Down"),	//상태변화1
+	SkillNormalStateChange_DefencePower UMETA(DisplayName = "Defence Down"),	//상태변화2
 	SkillWater UMETA(DisplayName = "WaterGun"),
 	SkillFire UMETA(DisplayName = "Ember"),
 	SkillGrass UMETA(DisplayName = "LeafStorm")
@@ -78,13 +78,10 @@ public:
 	UFUNCTION()
 	void OnRep_SetHealthBar();
 
-	UFUNCTION(Server, Reliable)
-	void ServerChangeReplicatedVariable();
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, ReplicatedUsing = OnRep_SetHealthBar)
 	float pokemonAttack;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, ReplicatedUsing = OnRep_SetHealthBar)
 	float pokemonDefense;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
@@ -151,5 +148,12 @@ public:
 
 	//----------------------------포켓몬 상태변화---------------------------
 	void AttackPower(APokemon* otherPokemon);	//공격력변화
+
+	UFUNCTION(Server, Reliable)
+	void  ServerAttackPower(APokemon* otherPokemon);
+
 	void DefencePower(APokemon* otherPokemon);	//방어력변화
+
+	UFUNCTION(Server, Reliable)
+	void  ServerDefencePower(APokemon* otherPokemon);
 };
