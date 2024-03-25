@@ -59,7 +59,7 @@ void APokemonWater::PlayFirstSkillAnim()
 {
 	Super::PlayFirstSkillAnim();
 	//타입스킬
-	AttackingAnim(2.4f);
+	AttackingAnim(2.33f);
 }
 
 void APokemonWater::PlaySecondSkillAnim()
@@ -74,14 +74,14 @@ void APokemonWater::PlayThirdSkillAnim()
 {
 	Super::PlayThirdSkillAnim();
 	//노말상태변환스킬1
-	AttackingAnim(2);
+	AttackingAnim(3.3f);
 }
 
 void APokemonWater::PlayFourthSkillAnim()
 {
 	Super::PlayFourthSkillAnim();
 	//노말상태변환스킬2
-	AttackingAnim(3);
+	AttackingAnim(3.3f);
 }
 
 /*void APokemonWater::OnMyAttack(APokemon* otherpokemon)

@@ -74,14 +74,14 @@ void APokemonGrass::PlayThirdSkillAnim()
 {
 	Super::PlayThirdSkillAnim();
 	//노말상태변환스킬1
-	AttackingAnim(2.f);
+	AttackingAnim(3.1f);
 }
 
 void APokemonGrass::PlayFourthSkillAnim()
 {
 	Super::PlayFourthSkillAnim();
 	//노말상태변환스킬2
-	AttackingAnim(3.f);
+	AttackingAnim(3.1f);
 }
 
 /*void APokemonGrass::OnMyAttack(APokemon* otherpokemon)

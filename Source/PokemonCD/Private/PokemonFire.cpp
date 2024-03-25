@@ -73,14 +73,14 @@ void APokemonFire::PlayThirdSkillAnim()
 {
 	Super::PlayThirdSkillAnim();
 	//노말상태변환스킬1
-	AttackingAnim(3.30f);
+	AttackingAnim(3.27f);
 }
 
 void APokemonFire::PlayFourthSkillAnim()
 {
 	Super::PlayFourthSkillAnim();
 	//노말상태변환스킬2
-	AttackingAnim(3.30f);
+	AttackingAnim(3.27f);
 }
 
 /*void APokemonFire::OnMyAttack(APokemon* otherpokemon)
