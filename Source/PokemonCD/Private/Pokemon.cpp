@@ -265,6 +265,7 @@ int32 APokemon::AttackDamage(float power, APokemon* otherPokemon)
 void APokemon::AttackPower(APokemon* otherPokemon)
 {
 	//상대방의 공격력 낮추기
+	
 }
 
 void APokemon::DefencePower(APokemon* otherPokemon)
